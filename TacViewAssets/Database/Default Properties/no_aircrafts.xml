@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DefaultPropertiesCollection LoadingOrder="1.0">
+	<DefaultProperties Id="trainer" Base="FixedWing.Trainer.Jet">
+		<Criteria>
+			<Name>trainer</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Compass</ShortName>
+			<LongName>T/A-30 Compass</LongName>
+			<FullName>T/A-30 Compass</FullName>
+			<Shape>trainer.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+	
+	<DefaultProperties Id="COIN" Base="FixedWing.Fighter.TwinProp">
+		<Criteria>
+			<Name>COIN</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Cricket</ShortName>
+			<LongName>CI-22 Cricket</LongName>
+			<FullName>CI-22 Cricket</FullName>
+			<Shape>COIN.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+	
+	<DefaultProperties Id="Darkreach" Base="FixedWing.Bomber.Jet">
+		<Criteria>
+			<Name>Darkreach</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Darkreach</ShortName>
+			<LongName>SFB-81 Darkreach</LongName>
+			<FullName>SFB-81 Darkreach</FullName>
+			<Shape>SFB.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+	
+	<DefaultProperties Id="AttackHelo1" Base="Rotorcraft.Attack">
+		<Criteria>
+			<Name>AttackHelo1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Chicane</ShortName>
+			<LongName>SAH-46 Chicane</LongName>
+			<FullName>SAH-46 Chicane</FullName>
+			<Shape>Chicane.obj</Shape>
+		</Properties>
+		
+
+	</DefaultProperties>
+	
+
+	<DefaultProperties Id="Fighter1" Base="FixedWing.Fighter.Jet">
+		<Criteria>
+			<Name>Fighter1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Revoker</ShortName>
+			<LongName>FS-12 Revoker</LongName>
+			<FullName>FS-12 Revoker</FullName>
+			<Shape>Revorker.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+<DefaultProperties Id="EW1" Base="FixedWing.Bomber.Jet">
+		<Criteria>
+			<Name>EW1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Medusa</ShortName>
+			<LongName>EW-25 Medusa</LongName>
+			<FullName>EW-25 Medusa</FullName>
+			<Shape>Medusa.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+	
+	<DefaultProperties Id="Multirole1" Base="FixedWing.Fighter.Jet">
+		<Criteria>
+			<Name>Multirole1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Ifrit</ShortName>
+			<LongName>KR-67 Ifrit</LongName>
+			<FullName>KR-67 Ifrit</FullName>
+			<Shape>Ifrit.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+<!-- 	<DefaultProperties Id="FixedWing.GAV-25" Base="FixedWing.Fighter.Jet">
+		<Criteria>
+			<Name></Name>
+		</Criteria>
+		<Properties>
+			<ShortName></ShortName>
+			<LongName></LongName>
+			<FullName></FullName>
+			<Shape>.obj</Shape>
+		</Properties>
+	</DefaultProperties> -->
+
+</DefaultPropertiesCollection>
