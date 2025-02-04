@@ -34,7 +34,7 @@ You can toggle the mod on/off in UMM menu.
 
 When the mod is active, Starting a Single Player game, or Hosting a Multiplayer game will enable recording.
 
-If you join someone else's Multiplayer game, at the moment it can only start recording when you join a faction.
+If you join someone else's Multiplayer game, it will only record the units that you and your allies can see on Datalink (and it also records all friendly units.)
 
 The recording will be saved to disk when you go back to the main menu.
 
