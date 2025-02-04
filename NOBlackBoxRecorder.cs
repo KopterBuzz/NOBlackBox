@@ -141,6 +141,7 @@ namespace NOBlackBox
 
         private void NOBlackBoxWrite(bool server)
         {
+            Debug.Log("NOBlackBox is recording");
             if (
                     GameManager.gameState == GameManager.GameState.Editor ||
                     GameManager.gameState == GameManager.GameState.Encyclopedia ||

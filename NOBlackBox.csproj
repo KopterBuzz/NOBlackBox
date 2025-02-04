@@ -30,12 +30,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-BepinEx|AnyCPU'">
+    <OutputPath>bin\Debug-BepinEx\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\UnityModManagerInstaller\Harmony\2.2\0Harmony.dll</HintPath>
+      <HintPath>..\..\UnityModManagerInstaller\Harmony\2.2\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Mirage, Version=151.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,11 +70,12 @@
       <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>..\..\..\UnityModManagerInstaller\UnityModManager.dll</HintPath>
+      <HintPath>..\..\UnityModManagerInstaller\UnityModManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NOBlackBox.cs" />
+    <Compile Include="NOBlackBoxBepinEx.cs" />
+    <Compile Include="NOBlackBoxUMM.cs" />
     <Compile Include="NOBlackBoxHelper.cs" />
     <Compile Include="NOBlackBoxRecorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

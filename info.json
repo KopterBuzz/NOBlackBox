@@ -4,5 +4,5 @@
   "Author": "github.com/KopterBuzz",
   "Version": "0.1.2",
   "AssemblyName": "NOBlackBox.dll",
-  "EntryMethod": "NOBlackBox.NOBlackBox.Load"
+  "EntryMethod": "NOBlackBox.NOBlackBoxUMM.Load"
 }

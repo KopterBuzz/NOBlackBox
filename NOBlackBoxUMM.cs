@@ -4,7 +4,7 @@ using static UnityModManagerNet.UnityModManager;
 
 namespace NOBlackBox
 {
-    public class NOBlackBox
+    public class NOBlackBoxUMM
     {
         private static GameObject _recorder;
         private static Settings _settings;
@@ -14,7 +14,6 @@ namespace NOBlackBox
         {
 
             _settings = Settings.Load<Settings>(modEntry);
-            _recorder = new GameObject();
             //modEntry.OnGUI = OnGUI;
             //modEntry.OnSaveGUI = OnSaveGUI;
             _recorder = new GameObject();
@@ -22,7 +21,7 @@ namespace NOBlackBox
             modEntry.OnToggle = OnToggle;
 
             UnityEngine.Debug.Log("--- NOBlackBox Initialized ---");
-            Harmony harmony = new Harmony("KopterBuzz.NuclearOption.NOBlackBox");
+            Harmony harmony = new Harmony("KopterBuzz.NuclearOption.NOBlackBoxUMM");
             Harmony.DEBUG = true;
 
             harmony.PatchAll();
