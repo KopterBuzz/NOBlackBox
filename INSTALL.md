@@ -1,4 +1,10 @@
 # Installation and use of NOBlackBox
+[1 The mod](./INSTALL.md#the-mod)
+
+[2 The Tacview assets](./INSTALL.md#the-tacview-assets)
+
+[3 Using NOBlackBox](./INSTALL.md#using-noblackbox)
+
 
 ## The mod
 0. [Download](https://github.com/KopterBuzz/NOBlackBox/releases) the latest release of the mod.
