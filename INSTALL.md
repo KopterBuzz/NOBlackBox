@@ -1,4 +1,4 @@
-# Installation of NOBlackBox
+# Installation and use of NOBlackBox
 
 ## The mod
 0. [Download](https://github.com/KopterBuzz/NOBlackBox/releases) the latest release of the mod.
@@ -27,3 +27,15 @@
 3. Copy all content to %ProgramData%\Tacview\Data
 	Windows might ask you if you want to merge the folders. Let it happen.
 4. Restart Tacview and in its settings, Change Terrain to Falcon 4.0. We currently hijack the Falcon 4.0 support to inject Nuclear Option Terrain into Tacview.
+## Using NOBlackBox
+The mod will be enabled by default after installation.
+
+You can toggle the mod on/off in UMM menu.
+
+When the mod is active, Starting a Single Player game, or Hosting a Multiplayer game will enable recording.
+
+If you join someone else's Multiplayer game, at the moment it can only start recording when you join a faction.
+
+The recording will be saved to disk when you go back to the main menu.
+
+You will find the TacView recordings in %USERPROFILE%\Documents\NOTacView
