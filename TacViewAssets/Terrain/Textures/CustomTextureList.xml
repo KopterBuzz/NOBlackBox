@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Resources>
+	<CustomTextureList>
+
+		<!--
+			Use this file to display custom texture maps in arbitrary position.
+			24-bit png, 32-bit png, or 24-bit jpeg file formats are supported.
+			Use Google Earth to easily find the proper elevation map corners coordinates.
+
+			How to add your own custom textures in Tacview?
+
+			 - Put your PNG or JPEG file in [C:\ProgramData\Tacview\Data\Terrain\Textures\]
+			 - The name of your texture file is free and can be anything.
+			 - Create a new [CustomTexture] xml node. You can copy/paste one of the following example.
+			 - Specify the latitude/longitude coordinates of the four corners of your texture, in degrees.
+			 - The [Layer] attribute is optional and can be one of the following: [DCS World], [Falcon 4], [EECH], [IL2]
+			 - If you want to display your texture all the time, or when real-life terrain is displayed, just omit (remove) the [Layer] attribute.
+		-->
+
+		<!-- BMS Korea map -->
+
+		<!-- Because of the following [Layer] attribute, -->
+		<!-- the following texture will be displayed only when BMS terrain is displayed. -->
+
+		<!--
+			BMS Korea ONC map (View VFR Low) 2015-10-30
+
+			Special thanks to Olivier Beaumont (Red Dog) for providing such high quality maps!
+
+			http://www.combatsimchecklist.net/
+			http://users.skynet.be/bs999158/F4download_navigation.htm
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Korea">
+
+			<File>BMS-ONC_kneemap_korea_4096_print.jpg</File>
+
+			<BottomLeft>
+				<Longitude>123</Longitude>
+				<Latitude>33.79</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>132.26</Longitude>
+				<Latitude>33.79</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>132.26</Longitude>
+				<Latitude>43</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>123</Longitude>
+				<Latitude>43</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+		
+		<CustomTexture Layer="Falcon 4" Id="Boscali.Archipelago">
+
+			<File>NO_terrain.jpg</File>
+
+			<BottomLeft>
+                <Longitude>-0,369</Longitude>
+                <Latitude>-0,369</Latitude>
+            </BottomLeft>
+
+            <BottomRight>
+                <Longitude>0,369</Longitude>
+                <Latitude>-0,369</Latitude>
+            </BottomRight>
+
+            <TopRight>
+                <Longitude>0,369</Longitude>
+                <Latitude>0,369</Latitude>
+            </TopRight>
+
+            <TopLeft>
+                <Longitude>-0,369</Longitude>
+                <Latitude>0,369</Latitude>
+            </TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			BMS Balkan ONC Chart 2009-07-18
+
+			Special thanks to Olivier Beaumont (Red Dog) for providing such high quality maps!
+
+			http://www.combatsimchecklist.net/
+			http://users.skynet.be/bs999158/F4download_navigation.htm
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Balkans">
+
+			<File>BMS-Balkans_ONC.webp</File>
+
+			<BottomLeft>
+				<Longitude>11</Longitude>
+				<Latitude>36.625</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>21</Longitude>
+				<Latitude>36.625</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>21</Longitude>
+				<Latitude>46.64</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>11</Longitude>
+				<Latitude>46.64</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			BMS Israel Map
+
+			Special thanks to Olivier Beaumont (Red Dog) for providing such high quality maps!
+
+			http://www.combatsimchecklist.net/
+			http://users.skynet.be/bs999158/F4download_navigation.htm
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Israel">
+
+			<File>BMS-ITO_Interactive_4096.jpg</File>
+
+			<BottomLeft>
+				<Longitude>30</Longitude>
+				<Latitude>25</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>40</Longitude>
+				<Latitude>25</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>40</Longitude>
+				<Latitude>35</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>30</Longitude>
+				<Latitude>35</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			BMS Taiwan Map
+
+			Special thanks to Olivier Beaumont (Red Dog) for providing such high quality maps!
+
+			http://www.combatsimchecklist.net/
+			http://users.skynet.be/bs999158/F4download_navigation.htm
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Taiwan">
+
+			<File>BMS-Taiwan_ONC_WIP.jpg</File>
+
+			<BottomLeft>
+				<Longitude>114.93</Longitude>
+				<Latitude>20.4</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>125.05</Longitude>
+				<Latitude>20.4</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>125.05</Longitude>
+				<Latitude>29.61</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>114.93</Longitude>
+				<Latitude>29.61</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			BMS Pillars of Hercules Theater
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Iberia">
+
+			<File>BMS-IberiaMap.jpg</File>
+
+			<BottomLeft>
+				<Longitude>-19.7</Longitude>
+				<Latitude>25.6</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>4.1</Longitude>
+				<Latitude>25.6</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>4.1</Longitude>
+				<Latitude>44</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>-19.7</Longitude>
+				<Latitude>44</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			BMS Aegean ONC Chart 2009-06-02
+
+			Special thanks to Olivier Beaumont (Red Dog) for providing such high quality maps!
+
+			http://www.combatsimchecklist.net/
+			http://users.skynet.be/bs999158/F4download_navigation.htm
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Aegean">
+
+			<File>BMS-aegean_ONC.webp</File>
+
+			<BottomLeft>
+				<Longitude>21.625</Longitude>
+				<Latitude>33.41</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>33.35</Longitude>
+				<Latitude>33.41</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>33.35</Longitude>
+				<Latitude>42.61</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>21.625</Longitude>
+				<Latitude>42.61</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Kurile Island conflict 1.3a for BMS 4.34
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Kurile">
+
+			<File>BMS-Kurile-Kneemap.webp</File>
+
+			<BottomLeft>
+				<Longitude>137.28161111</Longitude>
+				<Latitude>42.40695556</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>150.70352778</Longitude>
+				<Latitude>42.40695556</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>150.70352778</Longitude>
+				<Latitude>51.58905000</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>137.28161111</Longitude>
+				<Latitude>51.58905000</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Kuwait 64 4.35.1
+			\Falcon BMS 4.35\Data\Add-On Kuwait 64\Docs\Kuwait.png
+		 -->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Kuwait">
+
+			<File>BMS-Kuwait-object-map.webp</File>
+
+			<BottomLeft>
+				<Longitude>42.000000</Longitude>
+				<Latitude>25.097612</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>52.447291</Longitude>
+				<Latitude>25.097612</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>52.447291</Longitude>
+				<Latitude>34.339213</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>42.000000</Longitude>
+				<Latitude>34.339213</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			MidEast 128 4.35 U2
+			Falcon BMS 4.35\Data\Add-On Mideast128\Docs\kuwait testMap.png
+		 -->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.MidEast">
+
+			<File>BMS-mideast128</File>
+
+			<BottomLeft>
+				<Longitude>37.260378</Longitude>
+				<Latitude>20.693035</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>57.389285</Longitude>
+				<Latitude>20.693035</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>57.389285</Longitude>
+				<Latitude>38.502351</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>37.260378</Longitude>
+				<Latitude>38.502351</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			NTO Polar Vortex v2.4 for BMS 4.34 U4
+			https://www.benchmarksims.org/forum/showthread.php?36874-Add-On-NTO-Polar-Vortex-for-4-34
+		-->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Nordic">
+
+			<File>BMS-nordic.jpg</File>
+
+			<BottomLeft>
+				<Longitude>10.0</Longitude>
+				<Latitude>63.12</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>33.85</Longitude>
+				<Latitude>63.12</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>33.85</Longitude>
+				<Latitude>72.35</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>10.0</Longitude>
+				<Latitude>72.35</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!-- Nevada 4.35.1 -->
+		<!-- https://www.benchmarksims.org/forum/showthread.php?41829-Nevada-BMS-4-3-5-1 -->
+
+		<CustomTexture Layer="Falcon 4" Id="BMS.Nevada">
+
+			<File>BMS-nevada</File>
+
+			<BottomLeft>
+				<Longitude>-120.884</Longitude>
+				<Latitude>33.3969</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>-109.116</Longitude>
+				<Latitude>33.3969</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>-109.116</Longitude>
+				<Latitude>42.6031</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>-120.884</Longitude>
+				<Latitude>42.6031</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			IL-2 map preparation:
+
+			Open the picture in Paint.Net
+			Apply JPGNoiseReduction filter level 1 (https://forums.getpaint.net/topic/18490-noise-reduction-plugin/)
+			Resize the picture to the closest power of 2 size (8192x8192) this will reduce loading time and reduce the file size a bit.
+			Save it as PNG 8-bit, dithering:0 (this will simplify further the picture without loosing important parts of it)
+		-->
+
+		<!--
+			Alternate (alpha layer) preparation:
+
+			Setup Paint.net
+
+				Install Paint.net from https://www.getpaint.net/
+				Install the alpha mask plugin https://forums.getpaint.net/topic/1854-alpha-mask-import-plugin-20/
+				Install the JPG Noise Reduction plugin https://forums.getpaint.net/topic/18490-noise-reduction-plugin/
+
+			Open the best original map possible.
+
+			Cleanup any artifact (even from a PNG picture since the source may have been a jpeg)
+
+				Effects -> Noise -> JPGNoiseReduction -> Apply level 0 to 4 to remove jpeg artifacts without changing the nature of the map
+				The goal is to use as much as necessary filter to remove artifacts and as less as possible to not denature the image
+
+			Optimize picture dimensions for faster loading:
+
+				Resize the picture width and height to a close appropriate power of 2
+				independently in x and y, it does not matter if the map ratio change for a rectangle or a square
+				Usually 8192 is nice enough for bug maps, 4096 should be fine for lower resolution or small maps,
+				16384 is nice but may be too much for 32-bit computers to load.
+
+			Let's create an alpha mask
+
+				Copy / paste the image in a new image
+				Adjustments -> Black and White
+				Adjustments -> Brightness / Contrast -> Brightness: -50 / Contrast: +60
+				Copy the mask (CTRL+C)
+
+			Apply it to the texture
+
+				Select the texture
+				Effects -> Alpha Mask -> Invert Mask / Paste from Clipboard
+				This should apply a nice proportionnal mask with black text more visible and white fully background transparent
+				The green forests and blue water should be visible and transparent at the same time
+
+			Adjust color balance
+
+				Adjustments -> Hue / Saturation -> Hue: 10 -> Saturation: 130
+				This is to make forests greener
+
+			Compress
+
+				Use reduce-png-8bit.cmd to compress in 8-bit with alpha-channel
+		-->
+
+		<!--
+			IL-2 Sturmovik: Battle of Normandy
+
+			This map comes from a community member:
+			https://forum.il2sturmovik.com/topic/75665-normandy-map/#comment-1214296
+			https://mega.nz/folder/fNQijSDY#iHzOBrQs1qiKOMsDt8efIg
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Normandy">
+
+			<File>IL2-BoN.png</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>-1.88</Longitude>
+				<Latitude>48.3</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>2.33</Longitude>
+				<Latitude>48.3</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>2.47</Longitude>
+				<Latitude>51.41672</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>-2.00</Longitude>
+				<Latitude>51.41672</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			IL-2 Sturmovik: Battle of Kuban
+
+			This map has been compiled by Lefuneste and can be downloaded from here:
+			http://tacview.net/download/addons
+
+			See also:
+			http://tiles.il2missionplanner.com/kuban/kuban.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Kuban">
+
+			<File>IL2-BoK.png</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>35.090271</Longitude>
+				<Latitude>42.891473</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>40.731265</Longitude>
+				<Latitude>42.895984</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>40.886095</Longitude>
+				<Latitude>46.117088</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>34.925498</Longitude>
+				<Latitude>46.112218</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			IL-2 Sturmovik: Battle of Moscow
+
+			This map has been compiled by Lefuneste and can be downloaded from here:
+			http://tacview.net/download/addons
+
+			See also:
+			http://tiles.il2missionplanner.com/moscow/moscow.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Moscow">
+
+			<File>IL2-BoM.webp</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>33.599982</Longitude>
+				<Latitude>54.624168</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>37.941891</Longitude>
+				<Latitude>54.533885</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>38.282119</Longitude>
+				<Latitude>57.047932</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>33.636291</Longitude>
+				<Latitude>57.154761</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			IL-2 Sturmovik: Battle of Stalingrad
+
+			This map has been compiled by Lefuneste and can be downloaded from here:
+			http://tacview.net/download/addons
+
+			See also:
+			http://tiles.il2missionplanner.com/stalingrad/stalingrad.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Stalingrad">
+
+			<File>IL2-BoS.webp</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>41.159367</Longitude>
+				<Latitude>47.473298</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>45.912041</Longitude>
+				<Latitude>47.362923</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>45.953233</Longitude>
+				<Latitude>49.602237</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>40.996637</Longitude>
+				<Latitude>49.530973</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Velikie Luki
+
+			See also:
+			http://tiles.il2missionplanner.com/luki/luki.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.VelikieLuki">
+
+			<File>IL2-VelikieLuki.webp</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>29.509774</Longitude>
+				<Latitude>55.844423</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>32.164108</Longitude>
+				<Latitude>55.884366</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>32.145355</Longitude>
+				<Latitude>56.806699</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>29.422955</Longitude>
+				<Latitude>56.757228</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Rheinland
+
+			See also:
+			http://tiles.il2missionplanner.com/rheinland/rheinland.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Rheinland">
+
+			<File>IL2-Rheinland.png</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>3.69695</Longitude>
+				<Latitude>49.76236</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>9.25123</Longitude>
+				<Latitude>49.83565</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>9.34394</Longitude>
+				<Latitude>52.73937</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>3.41585</Longitude>
+				<Latitude>52.65684</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Arras
+
+			See also:
+			http://tiles.il2missionplanner.com/arras/arras.png
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Arras">
+
+			<File>IL2-Arras.webp</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>2.111430</Longitude>
+				<Latitude>49.837776</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>3.598654</Longitude>
+				<Latitude>49.837776</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>3.598654</Longitude>
+				<Latitude> 50.790450</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>2.111430</Longitude>
+				<Latitude> 50.790450</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			Prokhorovka
+
+			See also:
+			https://github.com/gavincabbage/tiles.il2missionplanner.com/tree/master/src/prokhorovka
+		-->
+
+		<CustomTexture Layer="IL2" Id="IL2.Prokhorovka">
+
+			<File>IL2-Prokhorovka</File>
+
+			<Projection>Triangle</Projection>
+
+			<BottomLeft>
+				<Longitude>35.297094</Longitude>
+				<Latitude>50.030331</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>37.619654</Longitude>
+				<Latitude>50.041191</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>37.63975</Longitude>
+				<Latitude>51.536902</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>35.241902</Longitude>
+				<Latitude>51.525432</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+		<!--
+			DCS World 2.5 Caucasus map
+			version 1.0 2020-10-19
+			Generously donated by Flappie
+
+			See also:
+			https://forums.eagle.ru/forum/english/digital-combat-simulator/dlc-maps/dcs-caucasus/245979-accurate-map-for-dcs-2-5-caucasus-theatre?t=244363
+			https://www.digitalcombatsimulator.com/en/files/3305623/
+			http://dcsmaps.com/caucasus/openlayers
+
+			To save space and optimize loading times, I have:
+				- Resized to 29232x16016x24 (Tacview terrain texture loading is faster with even size pictures)
+				- Reduced to 7-bit (best visual vs size ratio I could get) via: pngquant -skip-if-larger -verbose -speed 1 -nofs -strip 128 -ext -7bit.png "picturename.png"
+				- Recompressed via: advdef.exe -z -3 "picturename.png"
+		-->
+
+		<CustomTexture Layer="DCS World" Id="DCS.Caucasus">
+
+			<!-- Tacview will automatically find DCS_Caucasus4Tacview_v1T.webp and display it with 50% transparency -->
+
+			<File>DCS-Caucasus4Tacview-v1</File>
+
+			<BottomLeft>
+				<Longitude>36.2470217</Longitude>
+				<Latitude>40.5537000</Latitude>
+			</BottomLeft>
+
+			<BottomRight>
+				<Longitude>45.4812028</Longitude>
+				<Latitude>40.5537000</Latitude>
+			</BottomRight>
+
+			<TopRight>
+				<Longitude>45.4812028</Longitude>
+				<Latitude>45.6128000</Latitude>
+			</TopRight>
+
+			<TopLeft>
+				<Longitude>36.2470217</Longitude>
+				<Latitude> 45.6128000</Latitude>
+			</TopLeft>
+
+		</CustomTexture>
+
+	</CustomTextureList>
+</Resources>
