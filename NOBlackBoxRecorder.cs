@@ -28,14 +28,6 @@ namespace NOBlackBox
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile"
         };
-        internal HashSet<string> airborneUnitTypes = new HashSet<string>() {
-            "Aircraft",
-            "Missile",
-            "GuidedBomb",
-            "GuidedShell",
-            "CruiseMissile",
-            "Container"
-        };
 
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>() {
             ["HIGH"] = new HashSet<string>() {
@@ -78,30 +70,67 @@ namespace NOBlackBox
         private const float defaultWaitTime = 0.2f;
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
-        private static Regex dateStampPattern = new Regex(":|/|\\.");
+        private readonly Regex dateStampPattern = new Regex(":|/|\\.");
         private static string referenceTime;
+
+        private static int recordedScreenWidth;
+        private static float guiAnchorLeft, guiAnchorRight;
 
         private HashSet<int> knownUnits = new HashSet<int>();
         private Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
         private List<int> purgeIDs = new List<int>();
+        private static List<Player> players = new List<Player>();
+        private static Dictionary<int,string> playerAircraftList = new Dictionary<int,string>();
+
 
         private static string startTime = "none";
         private static string missionName = "none";
 
         private bool saving = false;
+        private bool recording = false;
 
         private static int tick = 0;
         private static string pollType = "ALL";
 
+        private static void UpdatePlayerAircraftList()
+        {
+            playerAircraftList.Clear();
+            if (!players.Any())
+            {
+                Debug.Log("NO PLAYERS");
+                return;
+            }
+            foreach (Player player in players)
+            {
+                Debug.Log("Adding ID " + player.Aircraft.persistentID.ToString() + " NAME " + player.PlayerName);
+                playerAircraftList.Add(player.Aircraft.persistentID,player.PlayerName);
+            }
+        }
+        private static void UpdateGuiAnchors()
+        {
+            recordedScreenWidth = Screen.width;
+            guiAnchorLeft = (int)Math.Round(0.03 * recordedScreenWidth);
+            guiAnchorRight = (int)Math.Round(0.7 * recordedScreenWidth);
+        }
+
         void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
+            UpdateGuiAnchors();
             StartCoroutine(DebugFrameCounter());
         }
 
         // Increase the number of calls to Update.
         void Update()
         {
+            UpdateGuiAnchors();
+            if (GameManager.gameState.IsSingleOrMultiplayer())
+            {
+                recording = true;
+            } else
+            {
+                recording = false;
+            }
             try
             {
                 updateCount += 1;
@@ -111,7 +140,7 @@ namespace NOBlackBox
                     return;
                 }
                 timer += Time.deltaTime;
-                if (timer >= defaultWaitTime)
+                if (timer >= defaultWaitTime && recording)
                 {
                     tick += 1;
                     if (tick == 5)
@@ -125,7 +154,6 @@ namespace NOBlackBox
                         pollType = "HIGH";
 
                     }
-                    //Debug.Log("POLL TYPE DEBUG: " + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) + "," + pollType + "," + tick.ToString());
                     if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
                     {
                         NOBlackBoxWrite(true);
@@ -146,7 +174,6 @@ namespace NOBlackBox
 
         }
 
-        // Increase the number of calls to FixedUpdate.
         void FixedUpdate()
         {
             fixedUpdateCount += 1;
@@ -168,11 +195,15 @@ namespace NOBlackBox
         {
             GUIStyle fontSize = new GUIStyle(GUI.skin.GetStyle("label"));
             fontSize.fontSize = 24;
-            GUI.Label(new Rect(100, 100, 200, 50), "Update: " + updateUpdateCountPerSecond.ToString(), fontSize);
-            GUI.Label(new Rect(100, 150, 200, 50), "FixedUpdate: " + updateFixedUpdateCountPerSecond.ToString(), fontSize);
+            GUI.Label(new Rect(guiAnchorRight, 100, 200, 50), "Update: " + updateUpdateCountPerSecond.ToString(), fontSize);
+            GUI.Label(new Rect(guiAnchorRight, 150, 200, 50), "FixedUpdate: " + updateFixedUpdateCountPerSecond.ToString(), fontSize);
             if (saving)
             {
-                GUI.Label(new Rect(100, 500, 200, 50), "SAVING...", fontSize);
+                GUI.Label(new Rect(guiAnchorRight, 500, 200, 50), "SAVING...", fontSize);
+            }
+            if (recording)
+            {
+                GUI.Label(new Rect(guiAnchorRight, 300, 200, 50), "REC", fontSize);
             }
 
         }
@@ -229,6 +260,10 @@ namespace NOBlackBox
                 string startTimeString = "0,ReferenceTime=" + referenceTime + "T" + startTime + "Z\n";
                 sb.Append(startTimeString);               
             }
+            players.Clear();
+            players.AddRange(FactionRegistry.HqFromName("Primeva").GetPlayers(false));
+            players.AddRange(FactionRegistry.HqFromName("Boscali").GetPlayers(false));
+            UpdatePlayerAircraftList();
 
             unitIDs.Clear();
             if (server)
@@ -376,7 +411,13 @@ namespace NOBlackBox
                     "Name=" + unit.name + "," +
                     "Coalition=" + unit.NetworkHQ.faction.factionName + "," +
                     "Color=" + color + "," +
-                    "Type=" + unitType + "\n";
+                    "Type=" + unitType;
+                if (playerAircraftList.ContainsKey(unit.persistentID))
+                {
+                    output += ",CallSign=" + playerAircraftList[unit.persistentID];
+                }
+
+                output += "\n";
             }
             else
             {
