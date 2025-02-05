@@ -357,14 +357,14 @@
 		
 		<CustomHeightmap Layer="Falcon 4">
 		
-			<File>boscali2.raw</File>
+			<File>NuclearOption2.raw</File>
 			
 			<BigEndian>0</BigEndian>
 			
-			<Width>4097</Width>
-			<Height>4097</Height>
+			<Width>2049</Width>
+			<Height>2049</Height>
 			
-			<AltitudeFactor>0.1</AltitudeFactor>
+			<AltitudeFactor>0.04</AltitudeFactor>
 			<AltitudeOffset>0</AltitudeOffset>
 			
 			<Projection>Triangle</Projection>
