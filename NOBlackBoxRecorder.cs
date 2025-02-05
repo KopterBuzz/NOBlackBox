@@ -8,6 +8,7 @@ using System.Text;
 using UnityEngine;
 using System.Linq;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace NOBlackBox
 {
@@ -34,7 +35,9 @@ namespace NOBlackBox
         private float timer = 0.0f;
         private const float defaultWaitTime = 0.25f;
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
-        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-").Replace(".","-");
+        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
+        private static Regex dateStampPattern = new Regex(":|/|.");
+        private static string referenceTime;
 
         private HashSet<int> knownUnits = new HashSet<int>();
         private Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
@@ -163,7 +166,8 @@ namespace NOBlackBox
                 }
                 missionName = MissionManager.CurrentMission.Name;
                 startTime = NOBlackBoxHelper.TimeOfDay(LevelInfo.i.timeOfDay);
-                string startTimeString = "0,ReferenceTime=" + dateStamp + "T" + startTime + "Z\n";
+                referenceTime = dateStampPattern.Replace(dateStamp, "-");
+                string startTimeString = "0,ReferenceTime=" + referenceTime + "T" + startTime + "Z\n";
                 sb.Append(startTimeString);               
             }
 
@@ -334,6 +338,7 @@ namespace NOBlackBox
             updateUpdateCountPerSecond = 0;
             startTime = "none";
             missionName = "none";
+            referenceTime = null;
             dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
             StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         }
