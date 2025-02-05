@@ -14,10 +14,10 @@ namespace NOBlackBox
 {
     internal class NOBlackBoxRecorder : MonoBehaviour
     {
-        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>() { 
-            ["Aircraft"]= "Air+Fixedwing",
-            ["Building"]= "Ground+Static+Building",
-            ["Container"]= "Misc+Container",
+        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>() {
+            ["Aircraft"] = "Air+Fixedwing",
+            ["Building"] = "Ground+Static+Building",
+            ["Container"] = "Misc+Container",
             ["CruiseMissile"] = "Weapon+Missile",
             ["Factory"] = "Ground+Static+Building",
             ["GroundVehicle"] = "Ground+Vehicle",
@@ -28,15 +28,58 @@ namespace NOBlackBox
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile"
         };
-        private static float updateCount = 0;
-        private static float fixedUpdateCount = 0;
+        internal HashSet<string> airborneUnitTypes = new HashSet<string>() {
+            "Aircraft",
+            "Missile",
+            "GuidedBomb",
+            "GuidedShell",
+            "CruiseMissile"
+        };
+
+        internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>() {
+            ["HIGH"] = new HashSet<string>() {
+                "Aircraft",
+                "Missile",
+                "GuidedBomb",
+                "GuidedShell",
+                "CruiseMissile",
+                "Container"
+            },
+            ["LOW"] = new HashSet<string>()
+            {
+                "Building",
+                "Factory",
+                "Ship",
+                "VehicleDepot",
+                "GoundVehicle",
+                "PilotDismounted"
+            },
+            ["ALL"] = new HashSet<string>()
+            {
+                "Aircraft",
+                "Missile",
+                "GuidedBomb",
+                "GuidedShell",
+                "CruiseMissile",
+                "Container",
+                "Building",
+                "Factory",
+                "Ship",
+                "VehicleDepot",
+                "GoundVehicle"
+            }
+        };
+        private static float updateCount = 1;
+        private static float fixedUpdateCount = 1;
+        private static float currentFixedUpdateCount;
         private static float updateUpdateCountPerSecond;
         private static float updateFixedUpdateCountPerSecond;
         private float timer = 0.0f;
-        private const float defaultWaitTime = 0.25f;
+        private const float defaultWaitTime = 1.0f;
+        private const float airborneWaitTime = 0.25f;
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
-        private static Regex dateStampPattern = new Regex(":|/|.");
+        private static Regex dateStampPattern = new Regex(":|/|\\.");
         private static string referenceTime;
 
         private HashSet<int> knownUnits = new HashSet<int>();
@@ -47,7 +90,9 @@ namespace NOBlackBox
         private static string missionName = "none";
 
         private bool saving = false;
-        
+
+        private string pollType = "ALL";
+        private bool doPoll = true;
 
         void Awake()
         {
@@ -58,6 +103,7 @@ namespace NOBlackBox
         // Increase the number of calls to Update.
         void Update()
         {
+            currentFixedUpdateCount = fixedUpdateCount;
             updateCount += 1;
             timer += Time.deltaTime;
             if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
@@ -65,25 +111,15 @@ namespace NOBlackBox
                 NOBlackBoxSave();
                 return;
             }
-            if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
+            if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0 && doPoll)
             {
-                
-                if (timer >= defaultWaitTime)
-                {
-                    NOBlackBoxWrite(true);
-                    timer = 0f;
-                    return;
-                }
+                NOBlackBoxWrite(true, pollType);
+                return;
             }
-            if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
+            if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0 && doPoll)
             {
-
-                if (timer >= defaultWaitTime)
-                {
-                    NOBlackBoxWrite(false);
-                    timer = 0f;
-                    return;
-                }
+                NOBlackBoxWrite(false, pollType);
+                return;
             }
         }
 
@@ -91,6 +127,27 @@ namespace NOBlackBox
         void FixedUpdate()
         {
             fixedUpdateCount += 1;
+            if ((currentFixedUpdateCount % 12) != 0 && (currentFixedUpdateCount % 60) == 0)
+            {
+                pollType = "LOW";
+                doPoll = true;
+            }
+            if ((currentFixedUpdateCount % 12) == 0 && (currentFixedUpdateCount % 60) != 0)
+            {
+                pollType = "HIGH";
+                doPoll = true;
+            }
+            if ((currentFixedUpdateCount % 12) == 0 && (currentFixedUpdateCount % 60) == 0)
+            {
+                pollType = "ALL";
+                doPoll = true;
+            }
+            if ((currentFixedUpdateCount % 12) != 0 && (currentFixedUpdateCount % 60) != 0)
+            {
+                pollType = "NONE";
+                doPoll = false;
+            }
+
         }
         void OnEnable()
         {
@@ -126,8 +183,8 @@ namespace NOBlackBox
                 yield return new WaitForSeconds(1);
                 updateUpdateCountPerSecond = updateCount;
                 updateFixedUpdateCountPerSecond = fixedUpdateCount;
-                updateCount = 0;
-                fixedUpdateCount = 0;
+                updateCount = 1;
+                fixedUpdateCount = 1;
             }
         }
 
@@ -143,7 +200,7 @@ namespace NOBlackBox
             yield break;
         }
 
-        private void NOBlackBoxWrite(bool server)
+        private void NOBlackBoxWrite(bool server, string unitsToPoll)
         {
             if (
                     GameManager.gameState == GameManager.GameState.Editor ||
@@ -200,7 +257,8 @@ namespace NOBlackBox
 
             for (int i = 0; i < unitIDs.Count; i++)
             {
-                ProcessUnit(unitIDs[i]);
+
+                ProcessUnit(unitIDs[i],unitsToPoll);
                 knownUnits.Add(unitIDs[i]);
             }
 
@@ -222,7 +280,7 @@ namespace NOBlackBox
             
         }
 
-        private void ProcessUnit(int unitId)
+        private void ProcessUnit(int unitId,string unitsToPoll)
         {
             Unit unit = null;
             UnitRegistry.TryGetUnit(unitId, out unit);
@@ -230,15 +288,18 @@ namespace NOBlackBox
             {
                 try
                 {
-                    if (null != unit.NetworkHQ.faction)
+                    if (unitTypesToPoll[unitsToPoll].Contains(unit.GetType().Name))
                     {
-                        if (!knownUnits.Contains(unitId))
+                        if (null != unit.NetworkHQ.faction)
                         {
-                            sb.Append(TacViewACMI(unit, true));
-                        }
-                        if (knownUnits.Contains(unitId) && unit.speed != 0)
-                        {
-                            sb.Append(TacViewACMI(unit, false));
+                            if (!knownUnits.Contains(unitId))
+                            {
+                                sb.Append(TacViewACMI(unit, true));
+                            }
+                            if (knownUnits.Contains(unitId) && unit.speed != 0)
+                            {
+                                sb.Append(TacViewACMI(unit, false));
+                            }
                         }
                     }
                     return;
