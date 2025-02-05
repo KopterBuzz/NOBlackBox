@@ -7,6 +7,8 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using System.Linq;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace NOBlackBox
 {
@@ -33,7 +35,9 @@ namespace NOBlackBox
         private float timer = 0.0f;
         private const float defaultWaitTime = 0.25f;
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
-        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
+        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
+        private static Regex dateStampPattern = new Regex(":|/|.");
+        private static string referenceTime;
 
         private HashSet<int> knownUnits = new HashSet<int>();
         private Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
@@ -162,7 +166,8 @@ namespace NOBlackBox
                 }
                 missionName = MissionManager.CurrentMission.Name;
                 startTime = NOBlackBoxHelper.TimeOfDay(LevelInfo.i.timeOfDay);
-                string startTimeString = "0,ReferenceTime=" + dateStamp + "T" + startTime + "Z\n";
+                referenceTime = dateStampPattern.Replace(dateStamp, "-");
+                string startTimeString = "0,ReferenceTime=" + referenceTime + "T" + startTime + "Z\n";
                 sb.Append(startTimeString);               
             }
 
@@ -191,7 +196,7 @@ namespace NOBlackBox
 
             }
 
-            sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString()+"\n");
+            sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) +"\n");
 
             for (int i = 0; i < unitIDs.Count; i++)
             {
@@ -302,12 +307,12 @@ namespace NOBlackBox
             {
                 string unitType = UnitTypes[unit.GetType().Name];
                 output = unit.persistentID + ",T=" +
-                    latlon[1].ToString() + "|" +
-                    latlon[0].ToString() + "|" +
-                    unit.GlobalPosition().y.ToString() + "|" +
-                    euler.z.ToString() + "|" +
-                    euler.x.ToString() + "|" +
-                    euler.y.ToString() + "," +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    unit.GlobalPosition().y.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.z.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.x.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.y.ToString(CultureInfo.InvariantCulture) + "," +
                     "Name=" + unit.name + "," +
                     "Coalition=" + unit.NetworkHQ.faction.factionName + "," +
                     "Color=" + color + "," +
@@ -316,12 +321,12 @@ namespace NOBlackBox
             else
             {
                 output = unit.persistentID + ",T=" +
-                    latlon[1].ToString() + "|" +
-                    latlon[0].ToString() + "|" +
-                    unit.GlobalPosition().y.ToString() + "|" +
-                    euler.z.ToString() + "|" +
-                    euler.x.ToString() + "|" +
-                    euler.y.ToString() + "\n";
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    unit.GlobalPosition().y.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.z.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.x.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.y.ToString(CultureInfo.InvariantCulture) + "\n";
             }
 
             return output;
@@ -333,6 +338,7 @@ namespace NOBlackBox
             updateUpdateCountPerSecond = 0;
             startTime = "none";
             missionName = "none";
+            referenceTime = null;
             dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
             StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         }
