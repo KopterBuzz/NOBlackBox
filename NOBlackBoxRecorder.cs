@@ -33,7 +33,8 @@ namespace NOBlackBox
             "Missile",
             "GuidedBomb",
             "GuidedShell",
-            "CruiseMissile"
+            "CruiseMissile",
+            "Container"
         };
 
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>() {
@@ -51,7 +52,7 @@ namespace NOBlackBox
                 "Factory",
                 "Ship",
                 "VehicleDepot",
-                "GoundVehicle",
+                "GroundVehicle",
                 "PilotDismounted"
             },
             ["ALL"] = new HashSet<string>()
@@ -66,17 +67,15 @@ namespace NOBlackBox
                 "Factory",
                 "Ship",
                 "VehicleDepot",
-                "GoundVehicle"
+                "GroundVehicle"
             }
         };
         private static float updateCount = 1;
         private static float fixedUpdateCount = 1;
-        private static float currentFixedUpdateCount;
         private static float updateUpdateCountPerSecond;
         private static float updateFixedUpdateCountPerSecond;
         private float timer = 0.0f;
-        private const float defaultWaitTime = 1.0f;
-        private const float airborneWaitTime = 0.25f;
+        private const float defaultWaitTime = 0.2f;
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
         private static Regex dateStampPattern = new Regex(":|/|\\.");
@@ -91,8 +90,8 @@ namespace NOBlackBox
 
         private bool saving = false;
 
-        private string pollType = "ALL";
-        private bool doPoll = true;
+        private static int tick = 0;
+        private static string pollType = "ALL";
 
         void Awake()
         {
@@ -103,51 +102,54 @@ namespace NOBlackBox
         // Increase the number of calls to Update.
         void Update()
         {
-            currentFixedUpdateCount = fixedUpdateCount;
-            updateCount += 1;
-            timer += Time.deltaTime;
-            if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
+            try
             {
-                NOBlackBoxSave();
-                return;
+                updateCount += 1;
+                if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
+                {
+                    NOBlackBoxSave();
+                    return;
+                }
+                timer += Time.deltaTime;
+                if (timer >= defaultWaitTime)
+                {
+                    tick += 1;
+                    if (tick == 5)
+                    {
+                        pollType = "ALL";
+                        timer = 0.0f;
+                        tick = 0;
+                    }
+                    else
+                    {
+                        pollType = "HIGH";
+
+                    }
+                    //Debug.Log("POLL TYPE DEBUG: " + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) + "," + pollType + "," + tick.ToString());
+                    if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
+                    {
+                        NOBlackBoxWrite(true);
+                        return;
+                    }
+                    if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
+                    {
+                        NOBlackBoxWrite(false);
+                        return;
+                    }
+                }
             }
-            if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0 && doPoll)
+            catch
             {
-                NOBlackBoxWrite(true, pollType);
-                return;
+                //lazy way to stop null reference error when sitting in menu
             }
-            if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0 && doPoll)
-            {
-                NOBlackBoxWrite(false, pollType);
-                return;
-            }
+
+
         }
 
         // Increase the number of calls to FixedUpdate.
         void FixedUpdate()
         {
             fixedUpdateCount += 1;
-            if ((currentFixedUpdateCount % 12) != 0 && (currentFixedUpdateCount % 60) == 0)
-            {
-                pollType = "LOW";
-                doPoll = true;
-            }
-            if ((currentFixedUpdateCount % 12) == 0 && (currentFixedUpdateCount % 60) != 0)
-            {
-                pollType = "HIGH";
-                doPoll = true;
-            }
-            if ((currentFixedUpdateCount % 12) == 0 && (currentFixedUpdateCount % 60) == 0)
-            {
-                pollType = "ALL";
-                doPoll = true;
-            }
-            if ((currentFixedUpdateCount % 12) != 0 && (currentFixedUpdateCount % 60) != 0)
-            {
-                pollType = "NONE";
-                doPoll = false;
-            }
-
         }
         void OnEnable()
         {
@@ -200,7 +202,7 @@ namespace NOBlackBox
             yield break;
         }
 
-        private void NOBlackBoxWrite(bool server, string unitsToPoll)
+        private void NOBlackBoxWrite(bool server)
         {
             if (
                     GameManager.gameState == GameManager.GameState.Editor ||
@@ -258,7 +260,7 @@ namespace NOBlackBox
             for (int i = 0; i < unitIDs.Count; i++)
             {
 
-                ProcessUnit(unitIDs[i],unitsToPoll);
+                ProcessUnit(unitIDs[i]);
                 knownUnits.Add(unitIDs[i]);
             }
 
@@ -280,7 +282,7 @@ namespace NOBlackBox
             
         }
 
-        private void ProcessUnit(int unitId,string unitsToPoll)
+        private void ProcessUnit(int unitId)
         {
             Unit unit = null;
             UnitRegistry.TryGetUnit(unitId, out unit);
@@ -288,18 +290,15 @@ namespace NOBlackBox
             {
                 try
                 {
-                    if (unitTypesToPoll[unitsToPoll].Contains(unit.GetType().Name))
+                    if (null != unit.NetworkHQ.faction)
                     {
-                        if (null != unit.NetworkHQ.faction)
+                        if (!knownUnits.Contains(unitId))
                         {
-                            if (!knownUnits.Contains(unitId))
-                            {
-                                sb.Append(TacViewACMI(unit, true));
-                            }
-                            if (knownUnits.Contains(unitId) && unit.speed != 0)
-                            {
-                                sb.Append(TacViewACMI(unit, false));
-                            }
+                            sb.Append(TacViewACMI(unit, true));
+                        }
+                        if (knownUnits.Contains(unitId) && unit.speed != 0 && unitTypesToPoll[pollType].Contains(unit.GetType().Name))
+                        {
+                            sb.Append(TacViewACMI(unit, false));
                         }
                     }
                     return;
