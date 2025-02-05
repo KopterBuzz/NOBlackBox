@@ -97,12 +97,12 @@ namespace NOBlackBox
             playerAircraftList.Clear();
             if (!players.Any())
             {
-                Debug.Log("NO PLAYERS");
+                //Debug.Log("NO PLAYERS");
                 return;
             }
             foreach (Player player in players)
             {
-                Debug.Log("Adding ID " + player.Aircraft.persistentID.ToString() + " NAME " + player.PlayerName);
+                //Debug.Log("Adding ID " + player.Aircraft.persistentID.ToString() + " NAME " + player.PlayerName);
                 playerAircraftList.Add(player.Aircraft.persistentID,player.PlayerName);
             }
         }
