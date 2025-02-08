@@ -66,8 +66,9 @@ namespace NOBlackBox
         private static float fixedUpdateCount = 1;
         private static float updateUpdateCountPerSecond;
         private static float updateFixedUpdateCountPerSecond;
-        private float timer = 0.0f;
-        private const float defaultWaitTime = 0.2f;
+        private static float timer = 0.0f;
+        private static float defaultWaitTime = 0.2f;
+
         private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
         private readonly Regex dateStampPattern = new Regex(":|/|\\.");
@@ -76,9 +77,9 @@ namespace NOBlackBox
         private static int recordedScreenWidth;
         private static float guiAnchorLeft, guiAnchorRight;
 
-        private HashSet<int> knownUnits = new HashSet<int>();
-        private Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
-        private List<int> purgeIDs = new List<int>();
+        private static HashSet<int> knownUnits = new HashSet<int>();
+        private static Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
+        private static List<int> purgeIDs = new List<int>();
         private static List<Player> players = new List<Player>();
         private static Dictionary<int,string> playerAircraftList = new Dictionary<int,string>();
 
@@ -87,7 +88,7 @@ namespace NOBlackBox
         private static string missionName = "none";
 
         private bool saving = false;
-        private bool recording = false;
+        private static bool recording = false;
 
         private static int tick = 0;
         private static string pollType = "ALL";
@@ -154,24 +155,14 @@ namespace NOBlackBox
                         pollType = "HIGH";
 
                     }
-                    if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
-                    {
-                        NOBlackBoxWrite(true);
-                        return;
-                    }
-                    if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
-                    {
-                        NOBlackBoxWrite(false);
-                        return;
-                    }
+                    NOBlackBoxWrite(NetworkManagerNuclearOption.i.Server.Active);
+                    return;
                 }
             }
             catch
             {
                 //lazy way to stop null reference error when sitting in menu
             }
-
-
         }
 
         void FixedUpdate()
@@ -433,15 +424,26 @@ namespace NOBlackBox
             return output;
         }
         public static void Flush() {
-            updateCount = 0;
-            fixedUpdateCount = 0;
-            updateFixedUpdateCountPerSecond = 0;
-            updateUpdateCountPerSecond = 0;
+            timer = 0.0f;
+            defaultWaitTime = 0.2f;
             startTime = "none";
             missionName = "none";
             referenceTime = null;
+
+            knownUnits = new HashSet<int>();
+            unitIDs = new Mirage.Collections.SyncList<int>();
+            purgeIDs = new List<int>();
+            players = new List<Player>();
+            playerAircraftList = new Dictionary<int, string>();
+
+            recording = false;
+
+            tick = 0;
+            pollType = "ALL";
+
             dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
-            StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
+            sb.Clear();
+            sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         }
     }
 }

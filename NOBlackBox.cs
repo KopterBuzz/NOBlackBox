@@ -14,7 +14,6 @@ namespace NOBlackBox
         {
 
             _settings = Settings.Load<Settings>(modEntry);
-            _recorder = new GameObject();
             //modEntry.OnGUI = OnGUI;
             //modEntry.OnSaveGUI = OnSaveGUI;
             _recorder = new GameObject();
