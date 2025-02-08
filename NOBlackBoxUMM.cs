@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using UnityEngine;
+﻿using UnityEngine;
 using static UnityModManagerNet.UnityModManager;
 
 namespace NOBlackBox
@@ -21,10 +20,10 @@ namespace NOBlackBox
             modEntry.OnToggle = OnToggle;
 
             UnityEngine.Debug.Log("--- NOBlackBox Initialized ---");
-            Harmony harmony = new Harmony("KopterBuzz.NuclearOption.NOBlackBoxUMM");
-            Harmony.DEBUG = true;
+            //Harmony harmony = new Harmony("KopterBuzz.NuclearOption.NOBlackBoxUMM");
+            //Harmony.DEBUG = true;
 
-            harmony.PatchAll();
+            //harmony.PatchAll();
             return true;
         }
         static bool OnToggle(ModEntry modEntry, bool value)

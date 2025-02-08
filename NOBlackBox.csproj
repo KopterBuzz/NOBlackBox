@@ -74,7 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NOBlackBoxBepinEx.cs" />
+    <Compile Include="NOBlackBoxBepInEx.cs" />
     <Compile Include="NOBlackBoxUMM.cs" />
     <Compile Include="NOBlackBoxHelper.cs" />
     <Compile Include="NOBlackBoxRecorder.cs" />

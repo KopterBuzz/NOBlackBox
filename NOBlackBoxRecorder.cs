@@ -7,15 +7,18 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using System.Linq;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace NOBlackBox
 {
     internal class NOBlackBoxRecorder : MonoBehaviour
     {
-        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>() { 
-            ["Aircraft"]= "Air+Fixedwing",
-            ["Building"]= "Ground+Static+Building",
-            ["Container"]= "Misc+Container",
+        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>()
+        {
+            ["Aircraft"] = "Air+Fixedwing",
+            ["Building"] = "Ground+Static+Building",
+            ["Container"] = "Misc+Container",
             ["CruiseMissile"] = "Weapon+Missile",
             ["Factory"] = "Ground+Static+Building",
             ["GroundVehicle"] = "Ground+Vehicle",
@@ -26,64 +29,145 @@ namespace NOBlackBox
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile"
         };
-        private static float updateCount = 0;
-        private static float fixedUpdateCount = 0;
+
+        internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
+        {
+            ["HIGH"] = new HashSet<string>() {
+                "Aircraft",
+                "Missile",
+                "GuidedBomb",
+                "GuidedShell",
+                "CruiseMissile",
+                "Container"
+            },
+            ["LOW"] = new HashSet<string>()
+            {
+                "Building",
+                "Factory",
+                "Ship",
+                "VehicleDepot",
+                "GroundVehicle",
+                "PilotDismounted"
+            },
+            ["ALL"] = new HashSet<string>()
+            {
+                "Aircraft",
+                "Missile",
+                "GuidedBomb",
+                "GuidedShell",
+                "CruiseMissile",
+                "Container",
+                "Building",
+                "Factory",
+                "Ship",
+                "VehicleDepot",
+                "GroundVehicle"
+            }
+        };
+        private static float updateCount = 1;
+        private static float fixedUpdateCount = 1;
         private static float updateUpdateCountPerSecond;
         private static float updateFixedUpdateCountPerSecond;
-        private float timer = 0.0f;
-        private const float defaultWaitTime = 0.25f;
-        private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
-        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
+        private static float timer = 0.0f;
+        private static float defaultWaitTime = 0.2f;
 
-        private HashSet<int> knownUnits = new HashSet<int>();
-        private Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
-        private List<int> purgeIDs = new List<int>();
+        private static StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
+        private static string dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy");
+        private readonly Regex dateStampPattern = new Regex(":|/|\\.");
+        private static string referenceTime;
+
+        private static int recordedScreenWidth;
+        private static float guiAnchorLeft, guiAnchorRight;
+
+        private static HashSet<int> knownUnits = new HashSet<int>();
+        private static Mirage.Collections.SyncList<int> unitIDs = new Mirage.Collections.SyncList<int>();
+        private static List<int> purgeIDs = new List<int>();
+        private static List<Player> players = new List<Player>();
+        private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
+
 
         private static string startTime = "none";
         private static string missionName = "none";
 
         private bool saving = false;
-        
+        private static bool recording = false;
+
+        private static int tick = 0;
+        private static string pollType = "ALL";
+
+        private static void UpdatePlayerAircraftList()
+        {
+            playerAircraftList.Clear();
+            if (!players.Any())
+            {
+                //Debug.Log("NO PLAYERS");
+                return;
+            }
+            foreach (Player player in players)
+            {
+                //Debug.Log("Adding ID " + player.Aircraft.persistentID.ToString() + " NAME " + player.PlayerName);
+                playerAircraftList.Add(player.Aircraft.persistentID, player.PlayerName);
+            }
+        }
+        private static void UpdateGuiAnchors()
+        {
+            recordedScreenWidth = Screen.width;
+            guiAnchorLeft = (int)Math.Round(0.03 * recordedScreenWidth);
+            guiAnchorRight = (int)Math.Round(0.7 * recordedScreenWidth);
+        }
 
         void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
+            UpdateGuiAnchors();
             StartCoroutine(DebugFrameCounter());
         }
 
         // Increase the number of calls to Update.
         void Update()
         {
-            updateCount += 1;
-            timer += Time.deltaTime;
-            if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
+            UpdateGuiAnchors();
+            if (GameManager.gameState.IsSingleOrMultiplayer())
             {
-                NOBlackBoxSave();
-                return;
+                recording = true;
             }
-            if (NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
+            else
             {
-                
-                if (timer >= defaultWaitTime)
+                recording = false;
+            }
+            try
+            {
+                updateCount += 1;
+                if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
                 {
-                    NOBlackBoxWrite(true);
-                    timer = 0f;
+                    NOBlackBoxSave();
                     return;
                 }
-            }
-            if (!NetworkManagerNuclearOption.i.Server.Active && UnitRegistry.allUnits.Count > 0)
-            {
+                timer += Time.deltaTime;
+                if (timer >= defaultWaitTime && recording)
+                {
+                    tick += 1;
+                    if (tick == 5)
+                    {
+                        pollType = "ALL";
+                        timer = 0.0f;
+                        tick = 0;
+                    }
+                    else
+                    {
+                        pollType = "HIGH";
 
-                if (timer >= defaultWaitTime)
-                {
-                    NOBlackBoxWrite(false);
-                    timer = 0f;
+                    }
+                    NOBlackBoxWrite(NetworkManagerNuclearOption.i.Server.Active);
                     return;
                 }
+            }
+            catch
+            {
+                //lazy way to stop null reference error when sitting in menu
             }
         }
 
-        // Increase the number of calls to FixedUpdate.
         void FixedUpdate()
         {
             fixedUpdateCount += 1;
@@ -105,11 +189,15 @@ namespace NOBlackBox
         {
             GUIStyle fontSize = new GUIStyle(GUI.skin.GetStyle("label"));
             fontSize.fontSize = 24;
-            GUI.Label(new Rect(100, 100, 200, 50), "Update: " + updateUpdateCountPerSecond.ToString(), fontSize);
-            GUI.Label(new Rect(100, 150, 200, 50), "FixedUpdate: " + updateFixedUpdateCountPerSecond.ToString(), fontSize);
+            GUI.Label(new Rect(guiAnchorRight, 100, 200, 50), "Update: " + updateUpdateCountPerSecond.ToString(), fontSize);
+            GUI.Label(new Rect(guiAnchorRight, 150, 200, 50), "FixedUpdate: " + updateFixedUpdateCountPerSecond.ToString(), fontSize);
             if (saving)
             {
-                GUI.Label(new Rect(100, 500, 200, 50), "SAVING...", fontSize);
+                GUI.Label(new Rect(guiAnchorRight, 500, 200, 50), "SAVING...", fontSize);
+            }
+            if (recording)
+            {
+                GUI.Label(new Rect(guiAnchorRight, 300, 200, 50), "REC", fontSize);
             }
 
         }
@@ -122,8 +210,8 @@ namespace NOBlackBox
                 yield return new WaitForSeconds(1);
                 updateUpdateCountPerSecond = updateCount;
                 updateFixedUpdateCountPerSecond = fixedUpdateCount;
-                updateCount = 0;
-                fixedUpdateCount = 0;
+                updateCount = 1;
+                fixedUpdateCount = 1;
             }
         }
 
@@ -141,7 +229,6 @@ namespace NOBlackBox
 
         private void NOBlackBoxWrite(bool server)
         {
-            Debug.Log("NOBlackBox is recording");
             if (
                     GameManager.gameState == GameManager.GameState.Editor ||
                     GameManager.gameState == GameManager.GameState.Encyclopedia ||
@@ -158,14 +245,20 @@ namespace NOBlackBox
             if (missionName == "none")
             {
                 List<Faction> factionList = FactionRegistry.factions;
-                foreach (Faction faction in factionList) {
+                foreach (Faction faction in factionList)
+                {
                     Debug.Log("DEBUG FACTION LIST: " + faction.name);
                 }
                 missionName = MissionManager.CurrentMission.Name;
                 startTime = NOBlackBoxHelper.TimeOfDay(LevelInfo.i.timeOfDay);
-                string startTimeString = "0,ReferenceTime=" + dateStamp + "T" + startTime + "Z\n";
-                sb.Append(startTimeString);               
+                referenceTime = dateStampPattern.Replace(dateStamp, "-");
+                string startTimeString = "0,ReferenceTime=" + referenceTime + "T" + startTime + "Z\n";
+                sb.Append(startTimeString);
             }
+            players.Clear();
+            players.AddRange(FactionRegistry.HqFromName("Primeva").GetPlayers(false));
+            players.AddRange(FactionRegistry.HqFromName("Boscali").GetPlayers(false));
+            UpdatePlayerAircraftList();
 
             unitIDs.Clear();
             if (server)
@@ -176,8 +269,9 @@ namespace NOBlackBox
             else
             {
                 unitIDs.AddRange(GameManager.LocalFactionHQ.factionUnits);
-                if (DynamicMap.i.HQ.trackingDatabase.Any()) {
-                    foreach (KeyValuePair<int,TrackingInfo> info in DynamicMap.i.HQ.trackingDatabase)
+                if (DynamicMap.i.HQ.trackingDatabase.Any())
+                {
+                    foreach (KeyValuePair<int, TrackingInfo> info in DynamicMap.i.HQ.trackingDatabase)
                     {
                         try
                         {
@@ -192,10 +286,11 @@ namespace NOBlackBox
 
             }
 
-            sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString()+"\n");
+            sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) + "\n");
 
             for (int i = 0; i < unitIDs.Count; i++)
             {
+
                 ProcessUnit(unitIDs[i]);
                 knownUnits.Add(unitIDs[i]);
             }
@@ -215,7 +310,7 @@ namespace NOBlackBox
             }
 
             purgeIDs.Clear();
-            
+
         }
 
         private void ProcessUnit(int unitId)
@@ -232,13 +327,14 @@ namespace NOBlackBox
                         {
                             sb.Append(TacViewACMI(unit, true));
                         }
-                        if (knownUnits.Contains(unitId) && unit.speed != 0)
+                        if (knownUnits.Contains(unitId) && unit.speed != 0 && unitTypesToPoll[pollType].Contains(unit.GetType().Name))
                         {
                             sb.Append(TacViewACMI(unit, false));
                         }
                     }
                     return;
-                } catch
+                }
+                catch
                 {
                     return;
                 }
@@ -285,7 +381,7 @@ namespace NOBlackBox
             StartCoroutine(SaveTacViewFile(sb.ToString(), timestamp));
         }
 
-        public string TacViewACMI(Unit unit,bool firstReport)
+        public string TacViewACMI(Unit unit, bool firstReport)
         {
             string color = "Cyan";
             if (unit.NetworkHQ.faction.factionName == "Boscali") { color = "Blue"; }
@@ -303,39 +399,58 @@ namespace NOBlackBox
             {
                 string unitType = UnitTypes[unit.GetType().Name];
                 output = unit.persistentID + ",T=" +
-                    latlon[1].ToString() + "|" +
-                    latlon[0].ToString() + "|" +
-                    unit.GlobalPosition().y.ToString() + "|" +
-                    euler.z.ToString() + "|" +
-                    euler.x.ToString() + "|" +
-                    euler.y.ToString() + "," +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    unit.GlobalPosition().y.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.z.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.x.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.y.ToString(CultureInfo.InvariantCulture) + "," +
                     "Name=" + unit.name + "," +
                     "Coalition=" + unit.NetworkHQ.faction.factionName + "," +
                     "Color=" + color + "," +
-                    "Type=" + unitType + "\n";
+                    "Type=" + unitType;
+                if (playerAircraftList.ContainsKey(unit.persistentID))
+                {
+                    output += ",CallSign=" + playerAircraftList[unit.persistentID];
+                }
+
+                output += "\n";
             }
             else
             {
                 output = unit.persistentID + ",T=" +
-                    latlon[1].ToString() + "|" +
-                    latlon[0].ToString() + "|" +
-                    unit.GlobalPosition().y.ToString() + "|" +
-                    euler.z.ToString() + "|" +
-                    euler.x.ToString() + "|" +
-                    euler.y.ToString() + "\n";
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    unit.GlobalPosition().y.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.z.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.x.ToString(CultureInfo.InvariantCulture) + "|" +
+                    euler.y.ToString(CultureInfo.InvariantCulture) + "\n";
             }
 
             return output;
         }
-        public static void Flush() {
-            updateCount = 0;
-            fixedUpdateCount = 0;
-            updateFixedUpdateCountPerSecond = 0;
-            updateUpdateCountPerSecond = 0;
+        public static void Flush()
+        {
+            timer = 0.0f;
+            defaultWaitTime = 0.2f;
             startTime = "none";
             missionName = "none";
+            referenceTime = null;
+
+            knownUnits = new HashSet<int>();
+            unitIDs = new Mirage.Collections.SyncList<int>();
+            purgeIDs = new List<int>();
+            players = new List<Player>();
+            playerAircraftList = new Dictionary<int, string>();
+
+            recording = false;
+
+            tick = 0;
+            pollType = "ALL";
+
             dateStamp = System.DateTime.Now.ToString("MM/dd/yyyy").Replace(":", "-").Replace("/", "-");
-            StringBuilder sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
+            sb.Clear();
+            sb = new StringBuilder("FileType=text/acmi/tacview\nFileVersion=2.2\n");
         }
     }
 }

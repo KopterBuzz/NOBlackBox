@@ -1,29 +1,21 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
 namespace NOBlackBox
 {
-    [BepInPlugin("com.NuclearOption.NOBlackBoxBepinEx", "NOBlackBox", "0.1.2")]
-    internal class NOBlackBoxBepinEx : BaseUnityPlugin
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBoxBepinEx", "NOBlackBox", "0.1.2")]
+    internal class NOBlackBoxBepInEx : BaseUnityPlugin
     {
-        private static GameObject _recorder;
-        private Harmony _harmony;
-
-        void Awake()
-        { 
-            _harmony = new Harmony("com.NuclearOption.NOBlackBoxBepinEx");
-            Harmony.DEBUG = true;
-            _harmony.PatchAll();
-            Load();
-        }
-
-        private void Load()
+        private static NOBlackBoxBepInEx _instance;
+        private void Awake()
         {
-            _recorder = new GameObject();
-            _recorder.AddComponent<NOBlackBoxRecorder>();
-            _recorder.GetComponent<NOBlackBoxRecorder>().enabled = true;
+            _instance = this;
+            DontDestroyOnLoad(this);
+            _instance.gameObject.AddComponent<NOBlackBoxRecorder>();
         }
     }
 }
