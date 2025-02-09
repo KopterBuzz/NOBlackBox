@@ -86,9 +86,6 @@
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityModManager">
-      <HintPath>..\..\UnityModManagerInstaller\UnityModManager.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoadingManager.cs" />
@@ -96,7 +93,6 @@
     <Compile Include="NOBlackBoxHelper.cs" />
     <Compile Include="NOBlackBoxRecorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
