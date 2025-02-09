@@ -59,7 +59,8 @@ namespace NOBlackBox
                 "Factory",
                 "Ship",
                 "VehicleDepot",
-                "GroundVehicle"
+                "GroundVehicle",
+                "PilotDismounted"
             }
         };
         private static float updateCount = 1;
