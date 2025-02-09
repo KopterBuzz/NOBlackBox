@@ -29,7 +29,6 @@ namespace NOBlackBox
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile"
         };
-
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
         {
             ["HIGH"] = new HashSet<string>() {
@@ -94,7 +93,6 @@ namespace NOBlackBox
 
         private static int tick = 0;
         private static string pollType = "ALL";
-
         private static void UpdatePlayerAircraftList()
         {
             playerAircraftList.Clear();
@@ -123,14 +121,12 @@ namespace NOBlackBox
             guiAnchorLeft = (int)Math.Round(0.03 * recordedScreenWidth);
             guiAnchorRight = (int)Math.Round(0.7 * recordedScreenWidth);
         }
-
         void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
             UpdateGuiAnchors();
             StartCoroutine(DebugFrameCounter());
         }
-
         // Increase the number of calls to Update.
         void Update()
         {
@@ -154,7 +150,6 @@ namespace NOBlackBox
                 return;
             }
         }
-
         void FixedUpdate()
         {
             fixedUpdateCount += 1;
@@ -170,7 +165,6 @@ namespace NOBlackBox
             StopAllCoroutines();
             Flush();
         }
-
         // Show the number of calls to both messages.
         void OnGUI()
         {
@@ -188,7 +182,6 @@ namespace NOBlackBox
             }
 
         }
-
         // Update both CountsPerSecond values every second.
         IEnumerator DebugFrameCounter()
         {
@@ -201,7 +194,6 @@ namespace NOBlackBox
                 fixedUpdateCount = 1;
             }
         }
-
         IEnumerator SaveTacViewFile(string acmi, string timestamp)
         {
             saving = true;
@@ -213,7 +205,6 @@ namespace NOBlackBox
             Flush();
             yield break;
         }
-
         private void NOBlackBoxWrite(bool server)
         {
             /*
@@ -258,41 +249,13 @@ namespace NOBlackBox
                 Debug.Log("[NOBLACKBOX]: NO UNITS!!!!");
                 return;
             }
-            /*
-            if (server)
-            {
-                unitIDs.AddRange(FactionRegistry.HqFromName("Primeva").factionUnits);
-                unitIDs.AddRange(FactionRegistry.HqFromName("Boscali").factionUnits);
-            }
-            else
-            {
-                unitIDs.AddRange(GameManager.LocalFactionHQ.factionUnits);
-                if (DynamicMap.i.HQ.trackingDatabase.Any())
-                {
-                    foreach (KeyValuePair<int, TrackingInfo> info in DynamicMap.i.HQ.trackingDatabase)
-                    {
-                        try
-                        {
-                            unitIDs.Add(info.Value.id);
-                        }
-                        catch
-                        {
-                            Debug.Log("Failed to process unit from DynamicMap.i.HQ.trackingDatabase");
-                        }
-                    }
-                }
-
-            }
-            */
             sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) + "\n");
-
             for (int i = 0; i < unitIDs.Count; i++)
             {
 
                 ProcessUnit(unitIDs[i]);
                 knownUnits.Add(unitIDs[i]);
             }
-
             foreach (int id in knownUnits)
             {
                 if (!unitIDs.Contains(id))
@@ -301,16 +264,12 @@ namespace NOBlackBox
                     sb.Append("-" + id + "\n");
                 }
             }
-
             for (int i = 0; i < purgeIDs.Count; i++)
             {
                 knownUnits.Remove(purgeIDs[i]);
             }
-
             purgeIDs.Clear();
-
         }
-
         private void ProcessUnit(int unitId)
         {
             Unit unit = null;
@@ -345,7 +304,6 @@ namespace NOBlackBox
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 // Create a new zip archive in the memory stream
-
                 using (ZipArchive archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
                 {
                     // Create a new entry in the zip archive
@@ -357,7 +315,6 @@ namespace NOBlackBox
                         writer.Write(content);
                     }
                 }
-
                 // Save the zip archive to disk
                 using (FileStream fileStream = new FileStream(destinationZipPath, FileMode.Create, FileAccess.Write))
                 {
@@ -365,10 +322,8 @@ namespace NOBlackBox
                     memoryStream.CopyTo(fileStream);
                 }
             }
-
             Console.WriteLine("Zip archive created successfully.");
         }
-
         private void NOBlackBoxSave()
         {
             string timestamp = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss").Replace(":", "-").Replace("/", "-");
@@ -407,7 +362,6 @@ namespace NOBlackBox
                 {
                     output += ",CallSign=" + playerAircraftList[unit.persistentID];
                 }
-
                 output += "\n";
             }
             else
@@ -420,16 +374,13 @@ namespace NOBlackBox
                     euler.x.ToString(CultureInfo.InvariantCulture) + "|" +
                     euler.y.ToString(CultureInfo.InvariantCulture) + "\n";
             }
-
             return output;
         }
-
         public void StartRecording()
         {
             Debug.Log("[NOBLACKBOX]: START RECORDING");
             recording = true;
         }
-
         public void StopRecording()
         {
             Debug.Log("[NOBLACKBOX]: STOP RECORDING");

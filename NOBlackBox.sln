@@ -18,14 +18,17 @@ Global
 		Debug-BepinEx|Any CPU = Debug-BepinEx|Any CPU
 		Debug-UMM|Any CPU = Debug-UMM|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Release-UMM|Any CPU = Release-UMM|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-BepinEx|Any CPU.ActiveCfg = Debug-BepinEx|Any CPU
 		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-BepinEx|Any CPU.Build.0 = Debug-BepinEx|Any CPU
-		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-UMM|Any CPU.ActiveCfg = Debug|Any CPU
-		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-UMM|Any CPU.Build.0 = Debug|Any CPU
-		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-UMM|Any CPU.ActiveCfg = Debug-UMM|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Debug-UMM|Any CPU.Build.0 = Debug-UMM|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release|Any CPU.ActiveCfg = Release-BepInEx|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release|Any CPU.Build.0 = Release-BepInEx|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release-UMM|Any CPU.ActiveCfg = Debug-UMM|Any CPU
+		{78DABEB4-B9E3-432B-8D10-171121B16EB7}.Release-UMM|Any CPU.Build.0 = Debug-UMM|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

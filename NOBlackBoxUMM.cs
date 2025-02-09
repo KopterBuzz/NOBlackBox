@@ -8,10 +8,8 @@ namespace NOBlackBox
         private static GameObject _instance;
         private static Settings _settings;
         private static bool enabled;
-
-        public bool Load(ModEntry modEntry)
+        public static bool Load(ModEntry modEntry)
         {
-
             _settings = Settings.Load<Settings>(modEntry);
             //modEntry.OnGUI = OnGUI;
             //modEntry.OnSaveGUI = OnSaveGUI;
@@ -23,7 +21,6 @@ namespace NOBlackBox
             UnityEngine.Debug.Log("--- NOBlackBox Initialized ---");
             //Harmony harmony = new Harmony("xyz.KopterBuzz.NOBlackBoxUMM");
             //Harmony.DEBUG = true;
-
             //harmony.PatchAll();
             return true;
         }
@@ -34,7 +31,6 @@ namespace NOBlackBox
                 enabled = false;
                 _instance.SetActive(false);
                 _instance.GetComponent<NOBlackBoxRecorder>().SendMessage("Flush");
-
             }
             else
             {
@@ -45,18 +41,15 @@ namespace NOBlackBox
 
             return true;
         }
-
-        private void LoadingFinished()
+        private static void LoadingFinished()
         {
             _instance.gameObject.GetComponent<NOBlackBoxRecorder>().SendMessage("StartRecording");
             Debug.Log("[NOBLACKBOX]: HIT LoadingFinished");
         }
-        private void MissionUnload()
+        private static void MissionUnload()
         {
             _instance.gameObject.GetComponent<NOBlackBoxRecorder>().SendMessage("StopRecording");
             Debug.Log("[NOBLACKBOX]: HIT MissionUnload");
         }
-
-
     }
 }
