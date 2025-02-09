@@ -3,18 +3,15 @@ using HarmonyLib;
 using Mirage;
 using NuclearOption.Networking;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace NOBlackBox
 {
     public class LoadingManager
     {
-        private static readonly Harmony harmony = new("xyz.KopterBuzz.NOBlackBoxBepinEx");
+        private static readonly Harmony harmony = new("xyz.KopterBuzz.NOBlackBox");
 
         public static event Action? GameLoaded;
         public static event Action? NetworkReady;

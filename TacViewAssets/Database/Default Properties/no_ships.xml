@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DefaultPropertiesCollection LoadingOrder="1.0">
+
+	    <DefaultProperties Id="Watercraft.Military" Base="Core.Watercraft">
+        <Properties>
+            <AdditionalType>Sea+Watercraft+Warship</AdditionalType>
+        </Properties>
+    </DefaultProperties>
+
+	<DefaultProperties Id="Destroyer1" Base="Watercraft.Military">
+		<Criteria>
+			<Name>Destroyer1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Destroyer</ShortName>
+			<LongName>Dynamo Destroyer</LongName>
+			<FullName>Dynamo Class Destroyer</FullName>
+			<Shape>d1_ship.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+		<DefaultProperties Id="Corvette1" Base="Watercraft.Military">
+		<Criteria>
+			<Name>Corvette1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Corvette</ShortName>
+			<LongName>Dynamo Corvette</LongName>
+			<FullName>Shard Class Corvette</FullName>
+			<Shape>d1_ship.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+	<DefaultProperties Id="FleetCarrier1" Base="Watercraft.Military">
+		<Criteria>
+			<Name>FleetCarrier1</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Carrier</ShortName>
+			<LongName>Hyperion Carrier</LongName>
+			<FullName>Hyperion Class Carrier</FullName>
+			<Shape>carrier.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+
+</DefaultPropertiesCollection>

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <DefaultPropertiesCollection LoadingOrder="1.0">
+
     <DefaultProperties Id="6x6_1_AT" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>6x6_1_AT</Name>
@@ -13,6 +14,7 @@
         </Properties>
         
     </DefaultProperties>
+
     <DefaultProperties Id="6x6_1_IFV" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>6x6_1_IFV</Name>
@@ -109,33 +111,7 @@
         
     </DefaultProperties>
 
-    <DefaultProperties Id="Corvette1" Base="Watercraft.Military">
-        <Criteria>
-            <Name>Corvette1</Name>
-        </Criteria>
-        <Properties>
-            <ShortName>Shard Class Corvette</ShortName>
-            <LongName>Shard Class Corvette</LongName>
-            <FullName>Shard Class Corvette</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
         
-    </DefaultProperties>
-
-    <DefaultProperties Id="Destroyer1" Base="Watercraft.Military">
-        <Criteria>
-            <Name>Destroyer1</Name>
-        </Criteria>
-        <Properties>
-            <ShortName>Dynamo Class Destroyer</ShortName>
-            <LongName>Dynamo Class Destroyer</LongName>
-            <FullName>Dynamo Class Destroyer</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
-    </DefaultProperties>
     <DefaultProperties Id="enrichmentPlant1" Base="Core.Default">
         <Criteria>
             <Name>enrichmentPlant1</Name>
@@ -175,18 +151,6 @@
         </Properties>
         
     </DefaultProperties>
-
-    <DefaultProperties Id="FleetCarrier1" Base="Watercraft.Military">
-        <Criteria>
-            <Name>FleetCarrier1</Name>
-        </Criteria>
-        <Properties>
-            <ShortName>Hyperion Class Carrier</ShortName>
-            <LongName>Hyperion Class Carrier</LongName>
-            <FullName>Hyperion Class Carrier</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
         
     </DefaultProperties>
     <DefaultProperties Id="hangar_med" Base="Core.Default">

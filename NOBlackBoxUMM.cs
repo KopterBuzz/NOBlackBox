@@ -5,22 +5,23 @@ namespace NOBlackBox
 {
     public class NOBlackBoxUMM
     {
-        private static GameObject _recorder;
+        private static GameObject _instance;
         private static Settings _settings;
         private static bool enabled;
 
-        public static bool Load(ModEntry modEntry)
+        public bool Load(ModEntry modEntry)
         {
 
             _settings = Settings.Load<Settings>(modEntry);
             //modEntry.OnGUI = OnGUI;
             //modEntry.OnSaveGUI = OnSaveGUI;
-            _recorder = new GameObject();
-            _recorder.AddComponent<NOBlackBoxRecorder>();
+            _instance = new GameObject();
+            _instance.AddComponent<NOBlackBoxRecorder>();
+            LoadingManager.MissionUnloaded += MissionUnload;
+            LoadingManager.MissionLoaded += LoadingFinished;
             modEntry.OnToggle = OnToggle;
-
             UnityEngine.Debug.Log("--- NOBlackBox Initialized ---");
-            //Harmony harmony = new Harmony("KopterBuzz.NuclearOption.NOBlackBoxUMM");
+            //Harmony harmony = new Harmony("xyz.KopterBuzz.NOBlackBoxUMM");
             //Harmony.DEBUG = true;
 
             //harmony.PatchAll();
@@ -31,18 +32,29 @@ namespace NOBlackBox
             if (enabled)
             {
                 enabled = false;
-                _recorder.SetActive(false);
-                _recorder.GetComponent<NOBlackBoxRecorder>().SendMessage("Flush");
+                _instance.SetActive(false);
+                _instance.GetComponent<NOBlackBoxRecorder>().SendMessage("Flush");
 
             }
             else
             {
                 enabled = true;
-                _recorder.SetActive(true);
-                _recorder.GetComponent<NOBlackBoxRecorder>().SendMessage("Flush");
+                _instance.SetActive(true);
+                _instance.GetComponent<NOBlackBoxRecorder>().SendMessage("Flush");
             }
 
             return true;
+        }
+
+        private void LoadingFinished()
+        {
+            _instance.gameObject.GetComponent<NOBlackBoxRecorder>().SendMessage("StartRecording");
+            Debug.Log("[NOBLACKBOX]: HIT LoadingFinished");
+        }
+        private void MissionUnload()
+        {
+            _instance.gameObject.GetComponent<NOBlackBoxRecorder>().SendMessage("StopRecording");
+            Debug.Log("[NOBLACKBOX]: HIT MissionUnload");
         }
 
 

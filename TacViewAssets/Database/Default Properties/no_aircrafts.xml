@@ -36,7 +36,7 @@
 		</Properties>
 	</DefaultProperties>
 	
-	<DefaultProperties Id="AttackHelo1" Base="Rotorcraft.Attack">
+	<DefaultProperties Id="AttackHelo1" Base="FixedWing.Fighter.TwinProp">
 		<Criteria>
 			<Name>AttackHelo1</Name>
 		</Criteria>

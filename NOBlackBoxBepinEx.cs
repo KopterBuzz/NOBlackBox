@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBoxBepinEx", "NOBlackBox", "0.1.2")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.1.4")]
     [BepInProcess("NuclearOption.exe")]
     internal class NOBlackBoxBepInEx : BaseUnityPlugin
     {
