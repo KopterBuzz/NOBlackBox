@@ -89,7 +89,7 @@ namespace NOBlackBox
         private static string startTime = "none";
         private static string missionName = "none";
 
-        private bool saving = false;
+        private static bool saving = false;
         private static bool recording = false;
 
         private static int tick = 0;
@@ -100,13 +100,21 @@ namespace NOBlackBox
             playerAircraftList.Clear();
             if (!players.Any())
             {
-                //Debug.Log("NO PLAYERS");
+                Debug.Log("NO PLAYERS");
                 return;
             }
             foreach (Player player in players)
             {
                 //Debug.Log("Adding ID " + player.Aircraft.persistentID.ToString() + " NAME " + player.PlayerName);
-                playerAircraftList.Add(player.Aircraft.persistentID, player.PlayerName);
+                try
+                {
+                    playerAircraftList.Add(player.Aircraft.persistentID, player.PlayerName);
+                }
+                catch
+                {
+                    //nothing
+                }
+                
             }
         }
         private static void UpdateGuiAnchors()
@@ -127,44 +135,23 @@ namespace NOBlackBox
         void Update()
         {
             UpdateGuiAnchors();
-            if (GameManager.gameState.IsSingleOrMultiplayer())
+            updateCount += 1;
+            timer += Time.deltaTime;
+            if (timer >= defaultWaitTime && recording)
             {
-                recording = true;
-            }
-            else
-            {
-                recording = false;
-            }
-            try
-            {
-                updateCount += 1;
-                if (!NetworkManagerNuclearOption.i.Server.Active && !GameManager.LocalPlayer && missionName != "none")
+                tick += 1;
+                if (tick == 5)
                 {
-                    NOBlackBoxSave();
-                    return;
+                    pollType = "ALL";
+                    timer = 0.0f;
+                    tick = 0;
                 }
-                timer += Time.deltaTime;
-                if (timer >= defaultWaitTime && recording)
+                else
                 {
-                    tick += 1;
-                    if (tick == 5)
-                    {
-                        pollType = "ALL";
-                        timer = 0.0f;
-                        tick = 0;
-                    }
-                    else
-                    {
-                        pollType = "HIGH";
-
-                    }
-                    NOBlackBoxWrite(NetworkManagerNuclearOption.i.Server.Active);
-                    return;
+                    pollType = "HIGH";
                 }
-            }
-            catch
-            {
-                //lazy way to stop null reference error when sitting in menu
+                NOBlackBoxWrite(NetworkManagerNuclearOption.i.Server.Active);
+                return;
             }
         }
 
@@ -229,6 +216,7 @@ namespace NOBlackBox
 
         private void NOBlackBoxWrite(bool server)
         {
+            /*
             if (
                     GameManager.gameState == GameManager.GameState.Editor ||
                     GameManager.gameState == GameManager.GameState.Encyclopedia ||
@@ -238,10 +226,12 @@ namespace NOBlackBox
             {
                 return;
             }
+            
             if (!server && (DynamicMap.i == null || DynamicMap.i.HQ == null))
             {
                 return;
             }
+            */
             if (missionName == "none")
             {
                 List<Faction> factionList = FactionRegistry.factions;
@@ -261,6 +251,14 @@ namespace NOBlackBox
             UpdatePlayerAircraftList();
 
             unitIDs.Clear();
+            unitIDs.AddRange(FactionRegistry.HqFromName("Primeva").factionUnits);
+            unitIDs.AddRange(FactionRegistry.HqFromName("Boscali").factionUnits);
+            if (!unitIDs.Any())
+            {
+                Debug.Log("[NOBLACKBOX]: NO UNITS!!!!");
+                return;
+            }
+            /*
             if (server)
             {
                 unitIDs.AddRange(FactionRegistry.HqFromName("Primeva").factionUnits);
@@ -285,7 +283,7 @@ namespace NOBlackBox
                 }
 
             }
-
+            */
             sb.Append("#" + MissionManager.i.NetworkmissionTime.ToString(CultureInfo.InvariantCulture) + "\n");
 
             for (int i = 0; i < unitIDs.Count; i++)
@@ -374,10 +372,6 @@ namespace NOBlackBox
         private void NOBlackBoxSave()
         {
             string timestamp = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss").Replace(":", "-").Replace("/", "-");
-            //string myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //Directory.CreateDirectory(myDocs + "\\NOTacView");
-            //string ACMIFilePath = myDocs + "\\NOTacView\\" + timestamp + "-" + missionName + "TacView" + ".zip";
-            //CreateZipWithText(sb.ToString(), "missionData.acmi", ACMIFilePath);
             StartCoroutine(SaveTacViewFile(sb.ToString(), timestamp));
         }
 
@@ -428,6 +422,19 @@ namespace NOBlackBox
             }
 
             return output;
+        }
+
+        public void StartRecording()
+        {
+            Debug.Log("[NOBLACKBOX]: START RECORDING");
+            recording = true;
+        }
+
+        public void StopRecording()
+        {
+            Debug.Log("[NOBLACKBOX]: STOP RECORDING");
+            recording = false;
+            NOBlackBoxSave();
         }
         public static void Flush()
         {

@@ -51,13 +51,5 @@ namespace NOBlackBox
             }
             return hourString+":"+minutesString+":"+secondsString;
         }
-        public static float CopySign(float x, float y)
-        {
-            if ((x < 0 && y > 0) || (x > 0 && y < 0))
-            {
-                return -x;
-            }
-            return x;
-        }
     }
 }
