@@ -1,5 +1,4 @@
-﻿using NuclearOption.Networking;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -123,6 +122,8 @@ namespace NOBlackBox
         }
         void Awake()
         {
+            LoadingManager.MissionUnloaded += StopRecording;
+            LoadingManager.MissionLoaded += StartRecording;
             DontDestroyOnLoad(this.gameObject);
             UpdateGuiAnchors();
             StartCoroutine(DebugFrameCounter());
@@ -146,7 +147,7 @@ namespace NOBlackBox
                 {
                     pollType = "HIGH";
                 }
-                NOBlackBoxWrite(NetworkManagerNuclearOption.i.Server.Active);
+                NOBlackBoxWrite(true);
                 return;
             }
         }
@@ -194,7 +195,7 @@ namespace NOBlackBox
                 fixedUpdateCount = 1;
             }
         }
-        IEnumerator SaveTacViewFile(string acmi, string timestamp)
+        private static void SaveTacViewFile(string acmi, string timestamp)
         {
             saving = true;
             string myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -203,26 +204,9 @@ namespace NOBlackBox
             CreateZipWithText(acmi, "missionData.acmi", ACMIFilePath);
             saving = false;
             Flush();
-            yield break;
         }
         private void NOBlackBoxWrite(bool server)
         {
-            /*
-            if (
-                    GameManager.gameState == GameManager.GameState.Editor ||
-                    GameManager.gameState == GameManager.GameState.Encyclopedia ||
-                    MissionManager.Runner == null ||
-                    GameplayUI.GameIsPaused
-                )
-            {
-                return;
-            }
-            
-            if (!server && (DynamicMap.i == null || DynamicMap.i.HQ == null))
-            {
-                return;
-            }
-            */
             if (missionName == "none")
             {
                 List<Faction> factionList = FactionRegistry.factions;
@@ -237,13 +221,30 @@ namespace NOBlackBox
                 sb.Append(startTimeString);
             }
             players.Clear();
-            players.AddRange(FactionRegistry.HqFromName("Primeva").GetPlayers(false));
-            players.AddRange(FactionRegistry.HqFromName("Boscali").GetPlayers(false));
-            UpdatePlayerAircraftList();
+            if (FactionRegistry.HqFromName("Primeva").GetPlayers(false).Any())
+            {
+                players.AddRange(FactionRegistry.HqFromName("Primeva").GetPlayers(false));
+            }
+            if (FactionRegistry.HqFromName("Boscali").GetPlayers(false).Any())
+            {
+                players.AddRange(FactionRegistry.HqFromName("Boscali").GetPlayers(false));
+            }
+            if (players.Any())
+            {
+                UpdatePlayerAircraftList();
+            }
+
 
             unitIDs.Clear();
-            unitIDs.AddRange(FactionRegistry.HqFromName("Primeva").factionUnits);
-            unitIDs.AddRange(FactionRegistry.HqFromName("Boscali").factionUnits);
+            if (FactionRegistry.HqFromName("Primeva").factionUnits.Any())
+            {
+                unitIDs.AddRange(FactionRegistry.HqFromName("Primeva").factionUnits);
+            }
+            if (FactionRegistry.HqFromName("Boscali").factionUnits.Any())
+            {
+                unitIDs.AddRange(FactionRegistry.HqFromName("Boscali").factionUnits);
+            }
+                
             if (!unitIDs.Any())
             {
                 Debug.Log("[NOBLACKBOX]: NO UNITS!!!!");
@@ -324,10 +325,10 @@ namespace NOBlackBox
             }
             Console.WriteLine("Zip archive created successfully.");
         }
-        private void NOBlackBoxSave()
+        private static void NOBlackBoxSave()
         {
             string timestamp = System.DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss").Replace(":", "-").Replace("/", "-");
-            StartCoroutine(SaveTacViewFile(sb.ToString(), timestamp));
+            SaveTacViewFile(sb.ToString(), timestamp);
         }
 
         public string TacViewACMI(Unit unit, bool firstReport)
@@ -376,12 +377,12 @@ namespace NOBlackBox
             }
             return output;
         }
-        public void StartRecording()
+        public static void StartRecording()
         {
             Debug.Log("[NOBLACKBOX]: START RECORDING");
             recording = true;
         }
-        public void StopRecording()
+        public static void StopRecording()
         {
             Debug.Log("[NOBLACKBOX]: STOP RECORDING");
             recording = false;

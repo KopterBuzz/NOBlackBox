@@ -1,8 +1,0 @@
-{
-  "Id": "NOBlackBox",
-  "DisplayName": "NOBlackBox - Mission Recorder for Nuclear Option",
-  "Author": "github.com/KopterBuzz",
-  "Version": "0.1.4",
-  "AssemblyName": "NOBlackBox.dll",
-  "EntryMethod": "NOBlackBox.NOBlackBoxUMM.Load"
-}
