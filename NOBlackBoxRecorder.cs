@@ -28,7 +28,8 @@ namespace NOBlackBox
             ["Ship"] = "Sea+Watercraft+Warship",
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile",
-            ["Tracer"] = ""
+            ["tracer(Clone)"] = "Projectile+Bullet",
+            ["IRFlare(Clone)"] = "Misc+Decoy+Flare"
         };
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
         {
@@ -62,7 +63,9 @@ namespace NOBlackBox
                 "Ship",
                 "VehicleDepot",
                 "GroundVehicle",
-                "PilotDismounted"
+                "PilotDismounted",
+                "tracer(Clone)",
+                "IRFlare(Clone)"
             }
         };
         private static float updateCount = 1;
