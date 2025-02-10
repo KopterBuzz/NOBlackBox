@@ -90,6 +90,7 @@ namespace NOBlackBox
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
         static IEnumerable<UnityEngine.GameObject> bullets;
+        static IEnumerable<UnityEngine.GameObject> flares;
 
 
         private static string startTime = "none";
@@ -354,7 +355,21 @@ namespace NOBlackBox
             }
             
         }
-            public string TacViewACMI(Unit unit, bool firstReport)
+
+        private static void FindIRFlares()
+        {
+            try
+            {
+                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)");
+                //Debug.Log("BULLET COUNT: " + bullets.Count().ToString());
+            }
+            catch
+            {
+                bullets = null;
+            }
+        }
+
+        public string TacViewACMI(Unit unit, bool firstReport)
         {
             string color = "Cyan";
             if (unit.NetworkHQ.faction.factionName == "Boscali") { color = "Blue"; }
