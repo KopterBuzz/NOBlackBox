@@ -14,7 +14,7 @@ namespace NOBlackBox
 {
     internal class NOBlackBoxRecorder : MonoBehaviour
     {
-        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>()
+        internal Dictionary<string, string> RecordTypes = new Dictionary<string, string>()
         {
             ["Aircraft"] = "Air+Fixedwing",
             ["Building"] = "Ground+Static+Building",
@@ -27,7 +27,15 @@ namespace NOBlackBox
             ["PilotDismounted"] = "Ground+Light+Human+Air+Parachutist",
             ["Ship"] = "Sea+Watercraft+Warship",
             ["VehicleDepot"] = "Ground+Static+Building",
-            ["GuidedShell"] = "Weapon+Missile"
+            ["GuidedShell"] = "Weapon+Missile",
+            ["Bullet"] = "Projectile+Bullet",
+            ["Flare"] = "Misc+Decoy"
+        };
+
+        internal Dictionary<string, string> TranslatedInstanceNames = new Dictionary<string, string>()
+        {
+            ["tracer(Clone)"] = "Bullet",
+            ["IRFlare(Clone)"] = "Flare"
         };
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
         {
@@ -61,7 +69,9 @@ namespace NOBlackBox
                 "Ship",
                 "VehicleDepot",
                 "GroundVehicle",
-                "PilotDismounted"
+                "PilotDismounted",
+                "Bullet",
+                "Flare"
             }
         };
         private static float updateCount = 1;
@@ -85,7 +95,10 @@ namespace NOBlackBox
         private static List<Player> players = new List<Player>();
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
-        static IEnumerable<UnityEngine.GameObject> bullets;
+        private static Dictionary<int, NonUnitRecord> NonUnitRegistry = new Dictionary<int, NonUnitRecord>();
+        private static List<int> NonUnitIDs = new List<int>();
+        int[] flares;
+        int[] tracers;
 
 
         private static string startTime = "none";
@@ -136,7 +149,6 @@ namespace NOBlackBox
         void Update()
         {
             UpdateGuiAnchors();
-            FindBullets();
             updateCount += 1;
             timer += Time.deltaTime;
             if (timer >= defaultWaitTime && recording)
@@ -151,6 +163,7 @@ namespace NOBlackBox
                 else
                 {
                     pollType = "HIGH";
+                    UpdateBulletsAndFlares();
                 }
                 NOBlackBoxWrite(true);
                 return;
@@ -185,8 +198,10 @@ namespace NOBlackBox
             if (recording)
             {
                 GUI.Label(new Rect(guiAnchorRight, 300, 200, 50), "REC", fontSize);
+                GUI.Label(new Rect(guiAnchorRight, 400, 200, 50), "Bullets&Flares: " + NonUnitRegistry.Count().ToString(), fontSize);
             }
-            GUI.Label(new Rect(guiAnchorRight, 400, 200, 50), "Bullets: " + bullets.Count().ToString(), fontSize);
+
+            
 
         }
         // Update both CountsPerSecond values every second.
@@ -289,11 +304,11 @@ namespace NOBlackBox
                     {
                         if (!knownUnits.Contains(unitId))
                         {
-                            sb.Append(TacViewACMI(unit, true));
+                            sb.Append(TacViewACMIUnit(unit, true));
                         }
                         if (knownUnits.Contains(unitId) && unit.speed != 0 && unitTypesToPoll[pollType].Contains(unit.GetType().Name))
                         {
-                            sb.Append(TacViewACMI(unit, false));
+                            sb.Append(TacViewACMIUnit(unit, false));
                         }
                     }
                     return;
@@ -337,20 +352,79 @@ namespace NOBlackBox
             SaveTacViewFile(sb.ToString(), timestamp);
         }
 
-        private static void FindBullets()
+        private void UpdateBulletsAndFlares()
         {
-            try
+            List<GameObject> nonUnits = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)" || obj.name == "IRFlare(Clone)").ToList();
+
+            foreach (GameObject obj in nonUnits)
             {
-                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)");
-                //Debug.Log("BULLET COUNT: " + bullets.Count().ToString());
+                int id = Math.Abs(obj.GetInstanceID());
+                Debug.Log(obj.name);
+                string name = TranslatedInstanceNames[obj.name];
+                Debug.Log(name);
+                Vector3 pos = obj.transform.GlobalPosition().AsVector3();
+                NonUnitRecord rec = new NonUnitRecord(id, name, pos);
+                NonUnitIDs.Add(id);
+                if (!NonUnitRegistry.ContainsKey(id))
+                {
+
+                    NonUnitRegistry.Add(id, rec);
+                    sb.Append(TacViewACMINonUnit(rec, true));
+                }
+                
+                else 
+                {
+                    NonUnitRegistry[id] = rec;
+                    sb.Append(TacViewACMINonUnit(rec, false));
+                }
+                
             }
-            catch
+            if (NonUnitRegistry.Any())
             {
-                bullets = null;
+                int[] asd = NonUnitRegistry.Keys.ToArray();
+                for (int i = 0; i < asd.Length; i++)
+                {
+                    if (!NonUnitIDs.Contains(asd[i]))
+                    {
+                        sb.Append("-" + asd[i] + "\n");
+                        NonUnitRegistry.Remove(asd[i]);
+                    }
+                }
+                asd = null;
             }
-            
+            NonUnitIDs.Clear();
+
         }
-            public string TacViewACMI(Unit unit, bool firstReport)
+
+        public string TacViewACMINonUnit(NonUnitRecord nonUnit, bool firstReport)
+        {
+            string output = string.Empty;
+            string color = "Orange";
+            float[] latlon = NOBlackBoxHelper.ConvertUnityToLatLong(nonUnit.pos.x, nonUnit.pos.y, nonUnit.pos.z);
+            string id = nonUnit.id.ToString("X");
+            if (firstReport)
+            {
+                string typeName = nonUnit.typeName;
+                output = nonUnit.id + ",T=" +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    nonUnit.pos.y.ToString(CultureInfo.InvariantCulture) + "," +
+                    "Name=" + typeName + "," +
+                    "Color=" + color + "," +
+                    "Type=" + RecordTypes[typeName];
+                if (typeName == "Gullet") { output += ",Speed=343\n"; } else { output += "\n"; }
+            }
+            else
+            {
+                output = nonUnit.id + ",T=" +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    nonUnit.pos.y.ToString(CultureInfo.InvariantCulture) + "\n";
+            }
+            return output;
+        }
+
+        public string TacViewACMIUnit(Unit unit, bool firstReport)
         {
             string color = "Cyan";
             if (unit.NetworkHQ.faction.factionName == "Boscali") { color = "Blue"; }
@@ -366,7 +440,7 @@ namespace NOBlackBox
             string output = null;
             if (firstReport)
             {
-                string unitType = UnitTypes[unit.GetType().Name];
+                string unitType = RecordTypes[unit.GetType().Name];
                 output = unit.persistentID + ",T=" +
                     latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
                     latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +

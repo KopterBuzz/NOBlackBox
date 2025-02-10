@@ -92,6 +92,7 @@
     <Compile Include="NOBlackBoxBepInEx.cs" />
     <Compile Include="NOBlackBoxHelper.cs" />
     <Compile Include="NOBlackBoxRecorder.cs" />
+    <Compile Include="NonUnitRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
