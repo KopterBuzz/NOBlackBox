@@ -28,8 +28,14 @@ namespace NOBlackBox
             ["Ship"] = "Sea+Watercraft+Warship",
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile",
-            ["tracer(Clone)"] = "Projectile+Bullet",
-            ["IRFlare(Clone)"] = "Misc+Decoy+Flare"
+            ["Bullet"] = "Projectile+Bullet",
+            ["Flare"] = "Misc+Decoy"
+        };
+
+        internal Dictionary<string, string> TranslatedInstanceNames = new Dictionary<string, string>()
+        {
+            ["tracer(Clone)"] = "Bullet",
+            ["IRFlare(Clone)"] = "Flare"
         };
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
         {
@@ -64,8 +70,8 @@ namespace NOBlackBox
                 "VehicleDepot",
                 "GroundVehicle",
                 "PilotDismounted",
-                "tracer(Clone)",
-                "IRFlare(Clone)"
+                "Bullet",
+                "Flare"
             }
         };
         private static float updateCount = 1;
@@ -147,7 +153,6 @@ namespace NOBlackBox
             timer += Time.deltaTime;
             if (timer >= defaultWaitTime && recording)
             {
-                FindBulletsAndFlares();
                 tick += 1;
                 if (tick == 5)
                 {
@@ -158,6 +163,7 @@ namespace NOBlackBox
                 else
                 {
                     pollType = "HIGH";
+                    UpdateBulletsAndFlares();
                 }
                 NOBlackBoxWrite(true);
                 return;
@@ -346,46 +352,75 @@ namespace NOBlackBox
             SaveTacViewFile(sb.ToString(), timestamp);
         }
 
-        private static void FindBulletsAndFlares()
+        private void UpdateBulletsAndFlares()
         {
-            try
-            {
-                var nonUnits = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)" || obj.name == "IRFlare(Clone)").ToList();
-                UpdateBulletsAndFlares(nonUnits);
-            }
-            catch { }             
-        }
+            List<GameObject> nonUnits = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)" || obj.name == "IRFlare(Clone)").ToList();
 
-        private static void UpdateBulletsAndFlares(List<GameObject> nonUnits)
-        {
             foreach (GameObject obj in nonUnits)
             {
-                int id = obj.GetInstanceID();
+                int id = Math.Abs(obj.GetInstanceID());
                 NonUnitIDs.Add(id);
                 if (!NonUnitRegistry.ContainsKey(id))
                 {
-                    string name = obj.name;
-                    Vector3 pos = obj.transform.position;
+                    Debug.Log(obj.name);
+                    string name = TranslatedInstanceNames[obj.name];
+                    Debug.Log(name);
+                    Vector3 pos = obj.transform.GlobalPosition().AsVector3();
                     NonUnitRecord rec = new NonUnitRecord(id, name, pos);
                     NonUnitRegistry.Add(id, rec);
+                    sb.Append(TacViewACMINonUnit(rec, true));
                 }
-                if (NonUnitRegistry.ContainsKey(id))
+                else 
                 {
                     Vector3 pos = obj.transform.position;
                     NonUnitRegistry[id].pos.Set(pos.x, pos.y, pos.z);
+                    NonUnitRecord rec = NonUnitRegistry[id];
+                    sb.Append(TacViewACMINonUnit(rec, false));
                 }
             }
-
-            foreach (int key in NonUnitRegistry.Keys)
+            if (NonUnitRegistry.Any())
             {
-                if (!NonUnitIDs.Contains(key))
+                int[] asd = NonUnitRegistry.Keys.ToArray();
+                for (int i = 0; i < asd.Length; i++)
                 {
-                    NonUnitRegistry.Remove(key);
+                    if (!NonUnitIDs.Contains(asd[i]))
+                    {
+                        sb.Append("-" + asd[i] + "\n");
+                        NonUnitRegistry.Remove(asd[i]);
+                    }
                 }
+                asd = null;
             }
             NonUnitIDs.Clear();
+
         }
 
+        public string TacViewACMINonUnit(NonUnitRecord nonUnit, bool firstReport)
+        {
+            string output = string.Empty;
+            string color = "Orange";
+            float[] latlon = NOBlackBoxHelper.ConvertUnityToLatLong(nonUnit.pos.x, nonUnit.pos.y, nonUnit.pos.z);
+            string id = nonUnit.id.ToString("X");
+            if (firstReport)
+            {
+                string typeName = nonUnit.typeName;
+                output = nonUnit.id + ",T=" +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    nonUnit.pos.y.ToString(CultureInfo.InvariantCulture) + "," +
+                    "Name=" + typeName + "," +
+                    "Color=" + color + "," +
+                    "Type=" + RecordTypes[typeName] + "\n";
+            }
+            else
+            {
+                output = nonUnit.id + ",T=" +
+                    latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
+                    latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
+                    nonUnit.pos.y.ToString(CultureInfo.InvariantCulture) + "\n";
+            }
+            return output;
+        }
 
         public string TacViewACMIUnit(Unit unit, bool firstReport)
         {
