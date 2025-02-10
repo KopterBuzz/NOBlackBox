@@ -89,8 +89,11 @@ namespace NOBlackBox
         private static List<Player> players = new List<Player>();
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
-        static IEnumerable<UnityEngine.GameObject> bullets;
-        static IEnumerable<UnityEngine.GameObject> flares;
+        static List<GameObject> bullets;
+        static List<GameObject> flares;
+        static List<GameObject>? stuff;
+        private readonly Regex bulletsFlaresPattern = new Regex("tracer\\(Clone\\)|IRFlare\\(Clone\\)");
+        static Dictionary<int, NonUnitRecord> NonUnitRegistry = new Dictionary<int, NonUnitRecord>();
 
 
         private static string startTime = "none";
@@ -294,11 +297,11 @@ namespace NOBlackBox
                     {
                         if (!knownUnits.Contains(unitId))
                         {
-                            sb.Append(TacViewACMI(unit, true));
+                            sb.Append(TacViewACMIUnit(unit, true));
                         }
                         if (knownUnits.Contains(unitId) && unit.speed != 0 && unitTypesToPoll[pollType].Contains(unit.GetType().Name))
                         {
-                            sb.Append(TacViewACMI(unit, false));
+                            sb.Append(TacViewACMIUnit(unit, false));
                         }
                     }
                     return;
@@ -346,8 +349,7 @@ namespace NOBlackBox
         {
             try
             {
-                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)");
-                //Debug.Log("BULLET COUNT: " + bullets.Count().ToString());
+                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList();
             }
             catch
             {
@@ -356,20 +358,31 @@ namespace NOBlackBox
             
         }
 
-        private static void FindIRFlares()
+        private static void FindBulletsAndFlares()
         {
-            try
+            stuff.Clear();
+            stuff.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList());
+            stuff.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)").ToList());
+
+            foreach (GameObject obj in stuff)
             {
-                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)");
-                //Debug.Log("BULLET COUNT: " + bullets.Count().ToString());
-            }
-            catch
-            {
-                bullets = null;
+                int id = obj.GetInstanceID();
+
+                if (!NonUnitRegistry.ContainsKey(id))
+                {
+                    string name = obj.name;
+                    Vector3 pos = obj.transform.position;
+
+                    NonUnitRecord rec = new NonUnitRecord(id,name,pos);
+                } else
+                {
+                    Vector3 pos = obj.transform.position;
+                    NonUnitRegistry[id].pos.Set(pos.x,pos.y,pos.z);
+                }
             }
         }
 
-        public string TacViewACMI(Unit unit, bool firstReport)
+        public string TacViewACMIUnit(Unit unit, bool firstReport)
         {
             string color = "Cyan";
             if (unit.NetworkHQ.faction.factionName == "Boscali") { color = "Blue"; }

@@ -4,15 +4,15 @@ namespace NOBlackBox
 {
     public struct NonUnitRecord
     {
-        public int id;
+        public int id { get; set; }
         public string typeName;
         public Vector3 pos;
 
         public NonUnitRecord(int _id, string _typeName, Vector3 _pos)
         {
-            id = _id;
-            typeName = _typeName;
-            pos = _pos;
+            this.id = _id;
+            this.typeName = _typeName;
+            this.pos = _pos;
         }
     }
 }
