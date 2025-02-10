@@ -89,7 +89,10 @@ namespace NOBlackBox
         private static List<Player> players = new List<Player>();
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
-        static Dictionary<int, NonUnitRecord> NonUnitRegistry = new Dictionary<int, NonUnitRecord>();
+        private static Dictionary<int, NonUnitRecord> NonUnitRegistry = new Dictionary<int, NonUnitRecord>();
+        private static List<int> NonUnitIDs = new List<int>();
+        int[] flares;
+        int[] tracers;
 
 
         private static string startTime = "none";
@@ -347,24 +350,18 @@ namespace NOBlackBox
         {
             try
             {
-                var tracers = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)");
-                UpdateBulletsAndFlares(tracers);
+                var nonUnits = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)" || obj.name == "IRFlare(Clone)").ToList();
+                UpdateBulletsAndFlares(nonUnits);
             }
-            catch { }
-            try
-            {
-                var flares = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)");
-                UpdateBulletsAndFlares(flares);
-            }
-            catch { }                      
+            catch { }             
         }
 
-        private static void UpdateBulletsAndFlares(IEnumerable NonUnits)
+        private static void UpdateBulletsAndFlares(List<GameObject> nonUnits)
         {
-            foreach (GameObject obj in NonUnits)
+            foreach (GameObject obj in nonUnits)
             {
                 int id = obj.GetInstanceID();
-
+                NonUnitIDs.Add(id);
                 if (!NonUnitRegistry.ContainsKey(id))
                 {
                     string name = obj.name;
@@ -372,13 +369,23 @@ namespace NOBlackBox
                     NonUnitRecord rec = new NonUnitRecord(id, name, pos);
                     NonUnitRegistry.Add(id, rec);
                 }
-                else
+                if (NonUnitRegistry.ContainsKey(id))
                 {
                     Vector3 pos = obj.transform.position;
                     NonUnitRegistry[id].pos.Set(pos.x, pos.y, pos.z);
                 }
             }
+
+            foreach (int key in NonUnitRegistry.Keys)
+            {
+                if (!NonUnitIDs.Contains(key))
+                {
+                    NonUnitRegistry.Remove(key);
+                }
+            }
+            NonUnitIDs.Clear();
         }
+
 
         public string TacViewACMIUnit(Unit unit, bool firstReport)
         {
