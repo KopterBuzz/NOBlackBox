@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Linq;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace NOBlackBox
 {
@@ -84,6 +85,8 @@ namespace NOBlackBox
         private static List<Player> players = new List<Player>();
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
+        static IEnumerable<UnityEngine.GameObject> bullets;
+
 
         private static string startTime = "none";
         private static string missionName = "none";
@@ -133,6 +136,7 @@ namespace NOBlackBox
         void Update()
         {
             UpdateGuiAnchors();
+            FindBullets();
             updateCount += 1;
             timer += Time.deltaTime;
             if (timer >= defaultWaitTime && recording)
@@ -182,6 +186,7 @@ namespace NOBlackBox
             {
                 GUI.Label(new Rect(guiAnchorRight, 300, 200, 50), "REC", fontSize);
             }
+            GUI.Label(new Rect(guiAnchorRight, 400, 200, 50), "Bullets: " + bullets.Count().ToString(), fontSize);
 
         }
         // Update both CountsPerSecond values every second.
@@ -332,7 +337,20 @@ namespace NOBlackBox
             SaveTacViewFile(sb.ToString(), timestamp);
         }
 
-        public string TacViewACMI(Unit unit, bool firstReport)
+        private static void FindBullets()
+        {
+            try
+            {
+                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)");
+                //Debug.Log("BULLET COUNT: " + bullets.Count().ToString());
+            }
+            catch
+            {
+                bullets = null;
+            }
+            
+        }
+            public string TacViewACMI(Unit unit, bool firstReport)
         {
             string color = "Cyan";
             if (unit.NetworkHQ.faction.factionName == "Boscali") { color = "Blue"; }
