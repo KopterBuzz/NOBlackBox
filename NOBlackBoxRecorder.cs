@@ -89,10 +89,6 @@ namespace NOBlackBox
         private static List<Player> players = new List<Player>();
         private static Dictionary<int, string> playerAircraftList = new Dictionary<int, string>();
 
-        static List<GameObject> bullets;
-        static List<GameObject> flares;
-        static List<GameObject>? stuff;
-        private readonly Regex bulletsFlaresPattern = new Regex("tracer\\(Clone\\)|IRFlare\\(Clone\\)");
         static Dictionary<int, NonUnitRecord> NonUnitRegistry = new Dictionary<int, NonUnitRecord>();
 
 
@@ -144,11 +140,11 @@ namespace NOBlackBox
         void Update()
         {
             UpdateGuiAnchors();
-            FindBullets();
             updateCount += 1;
             timer += Time.deltaTime;
             if (timer >= defaultWaitTime && recording)
             {
+                FindBulletsAndFlares();
                 tick += 1;
                 if (tick == 5)
                 {
@@ -193,8 +189,10 @@ namespace NOBlackBox
             if (recording)
             {
                 GUI.Label(new Rect(guiAnchorRight, 300, 200, 50), "REC", fontSize);
+                GUI.Label(new Rect(guiAnchorRight, 400, 200, 50), "Bullets&Flares: " + NonUnitRegistry.Count().ToString(), fontSize);
             }
-            GUI.Label(new Rect(guiAnchorRight, 400, 200, 50), "Bullets: " + bullets.Count().ToString(), fontSize);
+
+            
 
         }
         // Update both CountsPerSecond values every second.
@@ -345,26 +343,25 @@ namespace NOBlackBox
             SaveTacViewFile(sb.ToString(), timestamp);
         }
 
-        private static void FindBullets()
+        private static void FindBulletsAndFlares()
         {
             try
             {
-                bullets = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList();
+                var tracers = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)");
+                UpdateBulletsAndFlares(tracers);
             }
-            catch
+            catch { }
+            try
             {
-                bullets = null;
+                var flares = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)");
+                UpdateBulletsAndFlares(flares);
             }
-            
+            catch { }                      
         }
 
-        private static void FindBulletsAndFlares()
+        private static void UpdateBulletsAndFlares(IEnumerable NonUnits)
         {
-            stuff.Clear();
-            stuff.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList());
-            stuff.AddRange(Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "IRFlare(Clone)").ToList());
-
-            foreach (GameObject obj in stuff)
+            foreach (GameObject obj in NonUnits)
             {
                 int id = obj.GetInstanceID();
 
@@ -372,12 +369,13 @@ namespace NOBlackBox
                 {
                     string name = obj.name;
                     Vector3 pos = obj.transform.position;
-                    NonUnitRecord rec = new NonUnitRecord(id,name,pos);
+                    NonUnitRecord rec = new NonUnitRecord(id, name, pos);
                     NonUnitRegistry.Add(id, rec);
-                } else
+                }
+                else
                 {
                     Vector3 pos = obj.transform.position;
-                    NonUnitRegistry[id].pos.Set(pos.x,pos.y,pos.z);
+                    NonUnitRegistry[id].pos.Set(pos.x, pos.y, pos.z);
                 }
             }
         }
