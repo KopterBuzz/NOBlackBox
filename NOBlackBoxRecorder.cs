@@ -359,24 +359,25 @@ namespace NOBlackBox
             foreach (GameObject obj in nonUnits)
             {
                 int id = Math.Abs(obj.GetInstanceID());
+                Debug.Log(obj.name);
+                string name = TranslatedInstanceNames[obj.name];
+                Debug.Log(name);
+                Vector3 pos = obj.transform.GlobalPosition().AsVector3();
+                NonUnitRecord rec = new NonUnitRecord(id, name, pos);
                 NonUnitIDs.Add(id);
                 if (!NonUnitRegistry.ContainsKey(id))
                 {
-                    Debug.Log(obj.name);
-                    string name = TranslatedInstanceNames[obj.name];
-                    Debug.Log(name);
-                    Vector3 pos = obj.transform.GlobalPosition().AsVector3();
-                    NonUnitRecord rec = new NonUnitRecord(id, name, pos);
+
                     NonUnitRegistry.Add(id, rec);
                     sb.Append(TacViewACMINonUnit(rec, true));
                 }
+                
                 else 
                 {
-                    Vector3 pos = obj.transform.position;
-                    NonUnitRegistry[id].pos.Set(pos.x, pos.y, pos.z);
-                    NonUnitRecord rec = NonUnitRegistry[id];
+                    NonUnitRegistry[id] = rec;
                     sb.Append(TacViewACMINonUnit(rec, false));
                 }
+                
             }
             if (NonUnitRegistry.Any())
             {
@@ -410,7 +411,8 @@ namespace NOBlackBox
                     nonUnit.pos.y.ToString(CultureInfo.InvariantCulture) + "," +
                     "Name=" + typeName + "," +
                     "Color=" + color + "," +
-                    "Type=" + RecordTypes[typeName] + "\n";
+                    "Type=" + RecordTypes[typeName];
+                if (typeName == "Gullet") { output += ",Speed=343\n"; } else { output += "\n"; }
             }
             else
             {
