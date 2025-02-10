@@ -14,7 +14,7 @@ namespace NOBlackBox
 {
     internal class NOBlackBoxRecorder : MonoBehaviour
     {
-        internal Dictionary<string, string> UnitTypes = new Dictionary<string, string>()
+        internal Dictionary<string, string> RecordTypes = new Dictionary<string, string>()
         {
             ["Aircraft"] = "Air+Fixedwing",
             ["Building"] = "Ground+Static+Building",
@@ -27,7 +27,8 @@ namespace NOBlackBox
             ["PilotDismounted"] = "Ground+Light+Human+Air+Parachutist",
             ["Ship"] = "Sea+Watercraft+Warship",
             ["VehicleDepot"] = "Ground+Static+Building",
-            ["GuidedShell"] = "Weapon+Missile"
+            ["GuidedShell"] = "Weapon+Missile",
+            ["Tracer"] = ""
         };
         internal Dictionary<string, HashSet<string>> unitTypesToPoll = new Dictionary<string, HashSet<string>>()
         {
@@ -366,7 +367,7 @@ namespace NOBlackBox
             string output = null;
             if (firstReport)
             {
-                string unitType = UnitTypes[unit.GetType().Name];
+                string unitType = RecordTypes[unit.GetType().Name];
                 output = unit.persistentID + ",T=" +
                     latlon[1].ToString(CultureInfo.InvariantCulture) + "|" +
                     latlon[0].ToString(CultureInfo.InvariantCulture) + "|" +
