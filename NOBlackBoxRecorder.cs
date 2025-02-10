@@ -24,7 +24,7 @@ namespace NOBlackBox
             ["GroundVehicle"] = "Ground+Vehicle",
             ["GuidedBomb"] = "Weapon+Bomb",
             ["Missile"] = "Weapon+Missile",
-            ["PilotDismounted"] = "Ground+Light+Human",
+            ["PilotDismounted"] = "Ground+Light+Human+Air+Parachutist",
             ["Ship"] = "Sea+Watercraft+Warship",
             ["VehicleDepot"] = "Ground+Static+Building",
             ["GuidedShell"] = "Weapon+Missile"
