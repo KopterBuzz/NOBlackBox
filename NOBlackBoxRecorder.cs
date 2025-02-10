@@ -372,8 +372,8 @@ namespace NOBlackBox
                 {
                     string name = obj.name;
                     Vector3 pos = obj.transform.position;
-
                     NonUnitRecord rec = new NonUnitRecord(id,name,pos);
+                    NonUnitRegistry.Add(id, rec);
                 } else
                 {
                     Vector3 pos = obj.transform.position;
