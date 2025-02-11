@@ -34,4 +34,4 @@ Flight recording automatically starts when a mission is loaded, and automaticall
 
 The recording will be saved to disk when you go back to the main menu.
 
-You will find the TacView recordings in the %USERPROFILE%\Documents\NOTacView directory.
+You will find the TacView recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
