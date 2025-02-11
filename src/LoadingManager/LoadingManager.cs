@@ -1,11 +1,9 @@
-﻿//https://github.com/TYKUHN2/NuclearVOIP/blob/main/LoadingManager.cs
-using HarmonyLib;
+﻿using HarmonyLib;
 using Mirage;
 using NuclearOption.Networking;
 using System;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace NOBlackBox
 {
@@ -26,7 +24,7 @@ namespace NOBlackBox
             Type netManager = typeof(NetworkManagerNuclearOption);
             harmony.Patch(
                 netManager.GetMethod("Awake"),
-                null,
+                null, 
                 HookMethod(NetworkManagerPostfix)
             );
 
@@ -45,9 +43,9 @@ namespace NOBlackBox
 
         private static void MainMenuPostfix()
         {
-            Debug.Log("[NOBLACKBOX]: Reached GameLoaded");
+            Plugin.Logger.LogDebug("Reached GameLoaded");
             GameLoaded?.Invoke();
-
+            
             MethodBase original = harmony.GetPatchedMethods().Where(a => a.DeclaringType == typeof(MainMenu)).First();
             harmony.Unpatch(original, HookMethod(MainMenuPostfix).method);
         }
@@ -57,13 +55,13 @@ namespace NOBlackBox
             NetworkManagerNuclearOption.i.Client.Connected.AddListener(ClientConnectCallback);
             NetworkManagerNuclearOption.i.Client.Disconnected.AddListener(ClientDisconectCallback);
 
-            Debug.Log("[NOBLACKBOX]: Reached NetworkReady");
+            Plugin.Logger.LogDebug("Reached NetworkReady");
             NetworkReady?.Invoke();
         }
 
         private static void MissionLoadCallback()
         {
-            Debug.Log("[NOBLACKBOX]: Reached MissionLoaded");
+            Plugin.Logger.LogDebug("Reached MissionLoaded");
             MissionLoaded?.Invoke();
         }
 
@@ -74,12 +72,13 @@ namespace NOBlackBox
 
         private static void ClientConnectCallback(INetworkPlayer player)
         {
-            player.OnIdentityChanged += OnIdentity;
+            if (GameManager.gameState == GameManager.GameState.Singleplayer || GameManager.gameState == GameManager.GameState.Multiplayer)
+                player.OnIdentityChanged += OnIdentity;
         }
 
         private static void ClientDisconectCallback(ClientStoppedReason reason)
         {
-            Debug.Log("[NOBLACKBOX]: Reached MissionUnloaded");
+            Plugin.Logger.LogDebug("Reached MissionUnloaded");
             MissionUnloaded?.Invoke();
         }
     }
