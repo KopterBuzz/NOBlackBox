@@ -13,7 +13,7 @@ namespace NOBlackBox
 
         public readonly IRFlare flare;
 
-        public ACMIFlare(IRSource source): base((Interlocked.Increment(ref FLAREID) & int.MaxValue) | (1 << 32))
+        public ACMIFlare(IRSource source) : base(Mathf.Abs(source.transform.gameObject.GetInstanceID()))
         {
             if (source.flare == false)
                 throw new ArgumentException("IRSource is not flare");

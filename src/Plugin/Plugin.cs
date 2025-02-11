@@ -13,7 +13,7 @@ namespace NOBlackBox
     {
         internal static new ManualLogSource Logger;
         private Recorder? recorder;
-
+        private int ticker = 0;
         private float waitTime = 0.2f;
         private float timer = 0f;
 

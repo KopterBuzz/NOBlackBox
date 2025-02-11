@@ -116,10 +116,9 @@ namespace NOBlackBox
 
             flares.AddRange(newFlare);
             newFlare.Clear();
-
             tracersClones = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList();
             tracersClones.ForEach(obj => { newTracers.Add(new ACMITracer(new Tracer(obj))); });
-
+            
             foreach (ACMITracer tracer in newTracers)
             {
                 Dictionary<string, string> props = tracer.Update();
@@ -130,7 +129,6 @@ namespace NOBlackBox
                 writer.UpdateObject(tracer, curTime, tracer.Update());
             tracers.AddRange(newTracers);
             newTracers.Clear();
-
             writer.Flush();
         }
 

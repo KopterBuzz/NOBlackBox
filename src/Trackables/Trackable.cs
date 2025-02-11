@@ -9,16 +9,17 @@ namespace NOBlackBox
     {
         internal Dictionary<string, string> TranslatedInstanceNames = new Dictionary<string, string>()
         {
-            ["tracer(Clone)"] = "Bullet",
-            ["IRFlare(Clone)"] = "Flare"
+            ["tracer(Clone)"] = "Bullet"
         };
         internal int id { get; set; }
         internal Vector3 pos { get; set; }
+        internal string typeName { get; set; }
 
         public Trackable(GameObject obj)
         {
             this.id = Mathf.Abs(obj.GetInstanceID());
             this.pos = obj.transform.GlobalPosition().AsVector3();
+            this.typeName = TranslatedInstanceNames[obj.name];
         }
     }
 }

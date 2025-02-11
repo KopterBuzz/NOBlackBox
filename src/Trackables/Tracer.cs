@@ -7,7 +7,7 @@ namespace NOBlackBox
         internal string typeName { get; set; }
         public Tracer(GameObject obj): base(obj)
         {
-            this.typeName = TranslatedInstanceNames[obj.name];
+            
         }
     }
 }
