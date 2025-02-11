@@ -10,6 +10,7 @@
 	<DefaultProperties Id="Destroyer1" Base="Watercraft.Military">
 		<Criteria>
 			<Name>Destroyer1</Name>
+			<Name>Dynamo Class Destroyer</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Destroyer</ShortName>
@@ -22,10 +23,11 @@
 		<DefaultProperties Id="Corvette1" Base="Watercraft.Military">
 		<Criteria>
 			<Name>Corvette1</Name>
+			<Name>Shard Class Corvette</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Corvette</ShortName>
-			<LongName>Dynamo Corvette</LongName>
+			<LongName>Shard Class Corvette</LongName>
 			<FullName>Shard Class Corvette</FullName>
 			<Shape>d1_ship.obj</Shape>
 		</Properties>
@@ -34,6 +36,7 @@
 	<DefaultProperties Id="FleetCarrier1" Base="Watercraft.Military">
 		<Criteria>
 			<Name>FleetCarrier1</Name>
+			<Name>Hyperion Class Carrier</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Carrier</ShortName>

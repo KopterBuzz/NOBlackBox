@@ -3,6 +3,7 @@
 	<DefaultProperties Id="bomb_glide1" Base="Bomb.Glider">
 		<Criteria>
 			<Name>bomb_glide1</Name>
+			<Name>PAB-80LR</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>PAB-80LR</ShortName>
@@ -15,6 +16,7 @@
 	<DefaultProperties Id="AAM2" Base="Core.Missile">
 		<Criteria>
 			<Name>AAM2</Name>
+			<Name>AAM-29</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>AAM-29</ShortName>
@@ -27,6 +29,7 @@
 	<DefaultProperties Id="AAM1" Base="Core.Missile">
 		<Criteria>
 			<Name>AAM1</Name>
+			<Name>MMR-S3</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>MMR-S3</ShortName>
@@ -39,6 +42,7 @@
 	<DefaultProperties Id="bomb_250_1" Base="Bomb.Glider">
 		<Criteria>
 			<Name>bomb_250_1</Name>
+			<Name>PAB-250</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>PAB-250</ShortName>
@@ -51,6 +55,7 @@
 	<DefaultProperties Id="SAM_Radar2" Base="Core.Missile">
 		<Criteria>
 			<Name>SAM_Radar2</Name>
+			<Name>Stratolance R9</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Stratolance R9</ShortName>
@@ -63,6 +68,7 @@
 	<DefaultProperties Id="Rocket1" Base="Core.Missile">
 		<Criteria>
 			<Name>Rocket1</Name>
+			<Name>AGR-18</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>AGR-18</ShortName>
@@ -75,6 +81,7 @@
 	<DefaultProperties Id="SAM_IR1" Base="Core.Missile">
 		<Criteria>
 			<Name>SAM_IR1</Name>
+			<Name>IRM-S1</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>IRM-S1</ShortName>
@@ -87,6 +94,7 @@
 	<DefaultProperties Id="AGM1" Base="Core.Missile">
 		<Criteria>
 			<Name>AGM1</Name>
+			<Name>AGM-48</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>AGM-48</ShortName>
@@ -99,6 +107,7 @@
 	<DefaultProperties Id="SAM_Radar1" Base="Core.Missile">
 		<Criteria>
 			<Name>SAM_Radar1</Name>
+			<Name>RAM-45</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>RAM-45</ShortName>
@@ -111,6 +120,7 @@
 	<DefaultProperties Id="AGM_heavy" Base="Core.Missile">
 		<Criteria>
 			<Name>AGM_heavy</Name>
+			<Name>AGM-68</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>AGM-68</ShortName>
@@ -123,13 +133,13 @@
 	<DefaultProperties Id="AShM1" Base="Core.Missile">
         <Criteria>
             <Name>AShM1</Name>
+			<Name>AShM-300</Name>
         </Criteria>
         <Properties>
             <ShortName>AShM-300</ShortName>
             <LongName>AShM-300</LongName>
             <FullName>AShM-300</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
+            <Shape>cruise_missile_1_simple.obj</Shape>
         </Properties>
         
     </DefaultProperties>
@@ -137,13 +147,13 @@
     <DefaultProperties Id="Missile_G2G" Base="Core.Missile">
         <Criteria>
             <Name>Missile_G2G</Name>
+			<Name>Ground to Ground Missile</Name>
         </Criteria>
         <Properties>
             <ShortName>Ground to Ground Missile</ShortName>
             <LongName>Ground to Ground Missile</LongName>
             <FullName>Ground to Ground Missile</FullName>
             <Shape>gtg_missile_1.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
@@ -151,13 +161,13 @@
     <DefaultProperties Id="Shell_76mm_guided" Base="Core.Missile">
         <Criteria>
             <Name>Shell_76mm_guided</Name>
+			<Name>76mm Shell</Name>
         </Criteria>
         <Properties>
             <ShortName>76mm Shell</ShortName>
             <LongName>76mm Shell</LongName>
             <FullName>76mm Shell</FullName>
             <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
@@ -165,13 +175,13 @@
     <DefaultProperties Id="ARM1" Base="Core.Missile">
         <Criteria>
             <Name>ARM1</Name>
+			<Name>ARAD-116</Name>
         </Criteria>
         <Properties>
             <ShortName>ARAD-116</ShortName>
             <LongName>ARAD-116</LongName>
             <FullName>ARAD-116</FullName>
             <Shape>arm_1_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
@@ -179,26 +189,27 @@
     <DefaultProperties Id="nuclearBomb1" Base="Core.Missile">
         <Criteria>
             <Name>nuclearBomb1</Name>
+			<Name>GPO-N [1.5kt]</Name>
         </Criteria>
         <Properties>
             <ShortName>GPO-N [1.5kt]</ShortName>
             <LongName>GPO-N [1.5kt]</LongName>
             <FullName>GPO-N [1.5kt]</FullName>
             <Shape>bomb_nuclear_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
-    <DefaultProperties Id="nuclearBomb1_strategic" Base="Core.Missile">
+    
+	<DefaultProperties Id="nuclearBomb1_strategic" Base="Core.Missile">
         <Criteria>
             <Name>nuclearBomb1_strategic</Name>
+			<Name>GPO-N [250kt]</Name>
         </Criteria>
         <Properties>
             <ShortName>GPO-N [250kt]</ShortName>
             <LongName>GPO-N [250kt]</LongName>
             <FullName>GPO-N [250kt]</FullName>
             <Shape>bomb_nuclear_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
@@ -206,52 +217,55 @@
     <DefaultProperties Id="CruiseMissile1" Base="Core.Missile">
         <Criteria>
             <Name>CruiseMissile1</Name>
+			<Name>ALCM-C450</Name>
         </Criteria>
         <Properties>
             <ShortName>ALM-C450</ShortName>
             <LongName>ALM-C450</LongName>
             <FullName>ALM-C450</FullName>
             <Shape>cruise_missile_1_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
+	
     <DefaultProperties Id="CruiseMissile20kt" Base="Core.Missile">
         <Criteria>
             <Name>CruiseMissile20kt</Name>
+			<Name>ALND-4 (20kt)</Name>
         </Criteria>
         <Properties>
             <ShortName>ALND-4 (20kt)</ShortName>
             <LongName>ALND-4 (20kt)</LongName>
             <FullName>ALND-4 (20kt)</FullName>
             <Shape>cruise_missile_20kt_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
+	
     <DefaultProperties Id="bomb_penetrator" Base="Core.Missile">
         <Criteria>
             <Name>bomb_penetrator</Name>
+			<Name>GPO-2P Auger</Name>
         </Criteria>
         <Properties>
             <ShortName>GPO-2P Auger</ShortName>
             <LongName>GPO-2P Auger</LongName>
             <FullName>GPO-2P Auger</FullName>
             <Shape>bomb_penetrator_1_simple.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>
+	
     <DefaultProperties Id="GTG1" Base="Core.Missile">
         <Criteria>
             <Name>GTG1</Name>
+			<Name>Ground to Ground Missile</Name>
         </Criteria>
         <Properties>
             <ShortName>Ground to Ground Missile</ShortName>
             <LongName>Ground to Ground Missile</LongName>
             <FullName>Ground to Ground Missile</FullName>
             <Shape>gtg_missile_1.obj</Shape>
-            <Type><Type/>
         </Properties>
         
     </DefaultProperties>	

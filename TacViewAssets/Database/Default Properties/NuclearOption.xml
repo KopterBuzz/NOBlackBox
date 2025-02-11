@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <DefaultPropertiesCollection LoadingOrder="1.0">
 
-    <DefaultProperties Id="6x6_1_AT" Base="Vehicle.Military.Truck">
+    <DefaultProperties Id="6x6_1_AT" Base="Vehicle.Military.APC">
         <Criteria>
             <Name>6x6_1_AT</Name>
         </Criteria>
@@ -9,13 +9,10 @@
             <ShortName>AFV6 AT</ShortName>
             <LongName>AFV6 AT</LongName>
             <FullName>AFV6 AT</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>        
     </DefaultProperties>
 
-    <DefaultProperties Id="6x6_1_IFV" Base="Vehicle.Military.Truck">
+    <DefaultProperties Id="6x6_1_IFV" Base="Vehicle.Military.Tank">
         <Criteria>
             <Name>6x6_1_IFV</Name>
         </Criteria>
@@ -23,12 +20,10 @@
             <ShortName>AFV6 IFV</ShortName>
             <LongName>AFV6 IFV</LongName>
             <FullName>AFV6 IFV</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
-    <DefaultProperties Id="6x6_1_APC" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="6x6_1_APC" Base="Vehicle.Military.APC">
         <Criteria>
             <Name>6x6_1_APC</Name>
         </Criteria>
@@ -36,11 +31,9 @@
             <ShortName>AFV6 APC</ShortName>
             <LongName>AFV6 APC</LongName>
             <FullName>AFV6 APC</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>        
     </DefaultProperties>
+	
     <DefaultProperties Id="6x6_1_AA" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>6x6_1_AA</Name>
@@ -49,25 +42,20 @@
             <ShortName>AFV6 AA</ShortName>
             <LongName>AFV6 AA</LongName>
             <FullName>AFV6 AA</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
 
     <DefaultProperties Id="AFV8_APC" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>AFV8_APC</Name>
         </Criteria>
-        <Properties>
-            <ShortName>AFV8 Armored Personnel Carrier</ShortName>
-            <LongName>AFV8 Armored Personnel Carrier</LongName>
-            <FullName>AFV8 Armored Personnel Carrier</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+		<Properties>
+			<ShortName>AFV8 Armored Personnel Carrier</ShortName>
+			<LongName>AFV8 Armored Personnel Carrier</LongName>
+			<FullName>AFV8 Armored Personnel Carrier</FullName>
+		</Properties>      
     </DefaultProperties>
+	
     <DefaultProperties Id="AFV8_IFV" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>AFV8_IFV</Name>
@@ -76,11 +64,9 @@
             <ShortName>AFV8 Infantry Fighting Vehicle</ShortName>
             <LongName>AFV8 Infantry Fighting Vehicle</LongName>
             <FullName>AFV8 Infantry Fighting Vehicle</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>       
     </DefaultProperties>
+	
     <DefaultProperties Id="AFV8_SAM" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>AFV8_SAM</Name>
@@ -89,13 +75,8 @@
             <ShortName>AFV8 Mobile Air Defense</ShortName>
             <LongName>AFV8 Mobile Air Defense</LongName>
             <FullName>AFV8 Mobile Air Defense</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>       
     </DefaultProperties>
-
-
 
     <DefaultProperties Id="bomb500" Base="Core.Bomb">
         <Criteria>
@@ -105,13 +86,10 @@
             <ShortName>GPO-500</ShortName>
             <LongName>GPO-500</LongName>
             <FullName>GPO-500</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+            <Shape>bomb_500_1_simple.obj</Shape>
+        </Properties>       
     </DefaultProperties>
-
-        
+       
     <DefaultProperties Id="enrichmentPlant1" Base="Core.Default">
         <Criteria>
             <Name>enrichmentPlant1</Name>
@@ -120,11 +98,9 @@
             <ShortName>Enrichment Plant</ShortName>
             <LongName>Enrichment Plant</LongName>
             <FullName>Enrichment Plant</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>   
     </DefaultProperties>
+	
     <DefaultProperties Id="factory_large" Base="Core.Default">
         <Criteria>
             <Name>factory_large</Name>
@@ -133,11 +109,9 @@
             <ShortName>Large Factory</ShortName>
             <LongName>Large Factory</LongName>
             <FullName>Large Factory</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>       
     </DefaultProperties>
+	
     <DefaultProperties Id="factory_tall" Base="Core.Default">
         <Criteria>
             <Name>factory_tall</Name>
@@ -146,13 +120,9 @@
             <ShortName>Vertical Factory</ShortName>
             <LongName>Vertical Factory</LongName>
             <FullName>Vertical Factory</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>        
     </DefaultProperties>
-        
-    </DefaultProperties>
+ 
     <DefaultProperties Id="hangar_med" Base="Core.Default">
         <Criteria>
             <Name>hangar_med</Name>
@@ -161,11 +131,9 @@
             <ShortName>Medium Hangar</ShortName>
             <LongName>Medium Hangar</LongName>
             <FullName>Medium Hangar</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="Helipad" Base="Core.Default">
         <Criteria>
             <Name>Helipad</Name>
@@ -174,24 +142,20 @@
             <ShortName>Helipad</ShortName>
             <LongName>Helipad</LongName>
             <FullName>Helipad</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="HLT-FT" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>HLT-FT</Name>
         </Criteria>
-        <Properties>
-            <ShortName>HLT Fuel Truck</ShortName>
-            <LongName>HLT Fuel Truck</LongName>
-            <FullName>HLT Fuel Truck</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+		<Properties>
+			<ShortName>HLT Fuel Truck</ShortName>
+			<LongName>HLT Fuel Truck</LongName>
+			<FullName>HLT Fuel Truck</FullName>
+		</Properties>
     </DefaultProperties>
+	
     <DefaultProperties Id="HLT-L" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>HLT-L</Name>
@@ -200,11 +164,9 @@
             <ShortName>HLT Flatbed</ShortName>
             <LongName>HLT Flatbed</LongName>
             <FullName>HLT Flatbed</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="HLT-M" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>HLT-M</Name>
@@ -213,37 +175,31 @@
             <ShortName>HLT Munitions Truck</ShortName>
             <LongName>HLT Munitions Truck</LongName>
             <FullName>HLT Munitions Truck</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="HLT-R" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>HLT-R</Name>
         </Criteria>
-        <Properties>
-            <ShortName>HLT Radar Truck</ShortName>
-            <LongName>HLT Radar Truck</LongName>
-            <FullName>HLT Radar Truck</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+		<Properties>
+			<ShortName>HLT Radar Truck</ShortName>
+			<LongName>HLT Radar Truck</LongName>
+			<FullName>HLT Radar Truck</FullName>
+		</Properties>
     </DefaultProperties>
+	
     <DefaultProperties Id="HLT-T" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>HLT-T</Name>
         </Criteria>
-        <Properties>
-            <ShortName>HLT Tractor</ShortName>
-            <LongName>HLT Tractor</LongName>
-            <FullName>HLT Tractor</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+		<Properties>
+			<ShortName>HLT Tractor</ShortName>
+			<LongName>HLT Tractor</LongName>
+			<FullName>HLT Tractor</FullName>
+		</Properties>
     </DefaultProperties>
+	
     <DefaultProperties Id="LCV45" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>LCV45</Name>
@@ -252,11 +208,9 @@
             <ShortName>LCV45 Recon Truck</ShortName>
             <LongName>LCV45 Recon Truck</LongName>
             <FullName>LCV45 Recon Truck</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="Linebreaker_APC" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>Linebreaker_APC</Name>
@@ -265,11 +219,9 @@
             <ShortName>Linebreaker APC</ShortName>
             <LongName>Linebreaker APC</LongName>
             <FullName>Linebreaker APC</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="Linebreaker_IFV" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>Linebreaker_IFV</Name>
@@ -278,12 +230,10 @@
             <ShortName>Linebreaker IFV</ShortName>
             <LongName>Linebreaker IFV</LongName>
             <FullName>Linebreaker IFV</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
-    <DefaultProperties Id="Linebreaker_SAM" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="Linebreaker_SAM" Base="Vehicle.Military.Tank">
         <Criteria>
             <Name>Linebreaker_SAM</Name>
         </Criteria>
@@ -291,12 +241,10 @@
             <ShortName>Linebreaker SAM</ShortName>
             <LongName>Linebreaker SAM</LongName>
             <FullName>Linebreaker SAM</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
-    <DefaultProperties Id="MBT" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="MBT" Base="Vehicle.Military.Tank">
         <Criteria>
             <Name>MBT</Name>
         </Criteria>
@@ -304,11 +252,9 @@
             <ShortName>Main Battle Tank</ShortName>
             <LongName>Main Battle Tank</LongName>
             <FullName>Main Battle Tank</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="MBT1" Base="Vehicle.Military.Truck">
         <Criteria>
             <Name>MBT1</Name>
@@ -317,10 +263,7 @@
             <ShortName>Spearhead MBT</ShortName>
             <LongName>Spearhead MBT</LongName>
             <FullName>Spearhead MBT</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>   
     </DefaultProperties>
 
     <DefaultProperties Id="pillbox" Base="Core.Default">
@@ -331,11 +274,9 @@
             <ShortName>Pillbox</ShortName>
             <LongName>Pillbox</LongName>
             <FullName>Pillbox</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="pilotDismounted" Base="Core.Default">
         <Criteria>
             <Name>pilotDismounted</Name>
@@ -344,10 +285,7 @@
             <ShortName>Dismounted Pilot</ShortName>
             <LongName>Dismounted Pilot</LongName>
             <FullName>Dismounted Pilot</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
 
     <DefaultProperties Id="RadarSAM1" Base="Vehicle.Military.Truck">
@@ -358,11 +296,9 @@
             <ShortName>T9K41 Botstrike</ShortName>
             <LongName>T9K41 Botstrike</LongName>
             <FullName>T9K41 Botstrike</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>  
     </DefaultProperties>
+	
     <DefaultProperties Id="radarStation1" Base="Core.Default">
         <Criteria>
             <Name>radarStation1</Name>
@@ -371,11 +307,9 @@
             <ShortName>Radar Station</ShortName>
             <LongName>Radar Station</LongName>
             <FullName>Radar Station</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="refinery_main" Base="Core.Default">
         <Criteria>
             <Name>refinery_main</Name>
@@ -384,11 +318,9 @@
             <ShortName>Refinery</ShortName>
             <LongName>Refinery</LongName>
             <FullName>Refinery</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>    
     </DefaultProperties>
+	
     <DefaultProperties Id="revetment1" Base="Core.Default">
         <Criteria>
             <Name>revetment1</Name>
@@ -397,10 +329,7 @@
             <ShortName>Aircraft Revetment</ShortName>
             <LongName>Aircraft Revetment</LongName>
             <FullName>Aircraft Revetment</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
 
     <DefaultProperties Id="SAMTrailer1" Base="Vehicle.Military.Truck">
@@ -411,10 +340,7 @@
             <ShortName>StratoLance R9 Launcher</ShortName>
             <LongName>StratoLance R9 Launcher</LongName>
             <FullName>StratoLance R9 Launcher</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>    
     </DefaultProperties>
 
     <DefaultProperties Id="shelter1" Base="Core.Default">
@@ -425,12 +351,10 @@
             <ShortName>Hardened Aircraft Sheleter</ShortName>
             <LongName>Hardened Aircraft Sheleter</LongName>
             <FullName>Hardened Aircraft Sheleter</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>    
     </DefaultProperties>
-    <DefaultProperties Id="SPAAG1" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="SPAAG1" Base="AntiAircraft.AAA">
         <Criteria>
             <Name>SPAAG1</Name>
         </Criteria>
@@ -438,12 +362,10 @@
             <ShortName>AeroSentry SPAAG</ShortName>
             <LongName>AeroSentry SPAAG</LongName>
             <FullName>AeroSentry SPAAG</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>    
     </DefaultProperties>
-    <DefaultProperties Id="SPAAG2" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="SPAAG2" Base="Vehicle.Military.Tank">
         <Criteria>
             <Name>SPAAG2</Name>
         </Criteria>
@@ -451,11 +373,9 @@
             <ShortName>FGA-57 Anvil</ShortName>
             <LongName>FGA-57 Anvil</LongName>
             <FullName>FGA-57 Anvil</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
+	
     <DefaultProperties Id="storageTank" Base="Core.Default">
         <Criteria>
             <Name>storageTank</Name>
@@ -464,10 +384,7 @@
             <ShortName>Storage Tank</ShortName>
             <LongName>Storage Tank</LongName>
             <FullName>Storage Tank</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
 
     <DefaultProperties Id="VehicleDepot1" Base="Core.Default">
@@ -478,10 +395,7 @@
             <ShortName>Vehicle Depot</ShortName>
             <LongName>Vehicle Depot</LongName>
             <FullName>Vehicle Depot</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
 
     <DefaultProperties Id="bomb_demolition" Base="Core.Missile">
@@ -492,10 +406,8 @@
             <ShortName>Demolition Bomb</ShortName>
             <LongName>Demolition Bomb</LongName>
             <FullName>Demolition Bomb</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+            <Shape>bomb_demolition_1_simple.obj</Shape>
+        </Properties>    
     </DefaultProperties>
 
     <DefaultProperties Id="LightTruck1_AA" Base="Vehicle.Military.Truck">
@@ -506,12 +418,10 @@
             <ShortName>LCV25 AA</ShortName>
             <LongName>LCV25 AA</LongName>
             <FullName>LCV25 AA</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
         </Properties>
-        
     </DefaultProperties>
-    <DefaultProperties Id="LightTruck1_AT" Base="Vehicle.Military.Truck">
+	
+    <DefaultProperties Id="LightTruck1_AT" Base="Vehicle.Military.Tank">
         <Criteria>
             <Name>LightTruck1_AT</Name>
         </Criteria>
@@ -519,10 +429,7 @@
             <ShortName>LCV25 AT</ShortName>
             <LongName>LCV25 AT</LongName>
             <FullName>LCV25 AT</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
-            <Type><Type/>
-        </Properties>
-        
+        </Properties>        
     </DefaultProperties>
 
 </DefaultPropertiesCollection>

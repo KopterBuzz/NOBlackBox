@@ -3,9 +3,10 @@
 	<DefaultProperties Id="trainer" Base="FixedWing.Trainer.Jet">
 		<Criteria>
 			<Name>trainer</Name>
+			<Name>T/A-30</Name>
 		</Criteria>
 		<Properties>
-			<ShortName>Compass</ShortName>
+			<ShortName>T/A-30</ShortName>
 			<LongName>T/A-30 Compass</LongName>
 			<FullName>T/A-30 Compass</FullName>
 			<Shape>trainer.obj</Shape>
@@ -15,6 +16,7 @@
 	<DefaultProperties Id="COIN" Base="FixedWing.Fighter.TwinProp">
 		<Criteria>
 			<Name>COIN</Name>
+			<Name>CI-22</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Cricket</ShortName>
@@ -27,6 +29,7 @@
 	<DefaultProperties Id="Darkreach" Base="FixedWing.Bomber.Jet">
 		<Criteria>
 			<Name>Darkreach</Name>
+			<Name>SFB-81</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Darkreach</ShortName>
@@ -39,6 +42,7 @@
 	<DefaultProperties Id="AttackHelo1" Base="FixedWing.Fighter.TwinProp">
 		<Criteria>
 			<Name>AttackHelo1</Name>
+			<Name>SAH-46</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Chicane</ShortName>
@@ -54,6 +58,7 @@
 	<DefaultProperties Id="Fighter1" Base="FixedWing.Fighter.Jet">
 		<Criteria>
 			<Name>Fighter1</Name>
+			<Name>FS-12</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Revoker</ShortName>
@@ -66,6 +71,7 @@
 <DefaultProperties Id="EW1" Base="FixedWing.Bomber.Jet">
 		<Criteria>
 			<Name>EW1</Name>
+			<Name>EW-25</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Medusa</ShortName>
@@ -78,6 +84,7 @@
 	<DefaultProperties Id="Multirole1" Base="FixedWing.Fighter.Jet">
 		<Criteria>
 			<Name>Multirole1</Name>
+			<Name>KR-67</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Ifrit</ShortName>
