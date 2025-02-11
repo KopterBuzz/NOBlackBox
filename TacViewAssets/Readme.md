@@ -1,1 +1,1 @@
-these folders go to %ProgramData%Tacview\Data
+these folders go to %ProgramData%\Tacview\Data
