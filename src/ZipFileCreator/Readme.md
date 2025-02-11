@@ -1,0 +1,1 @@
+ZIPFileCreator will be used for compression.

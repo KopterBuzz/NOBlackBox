@@ -1,0 +1,1 @@
+This is a manager class to help stop/start recording when mission loads/unloads.
