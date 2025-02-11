@@ -12,3 +12,12 @@ To report an Issue with the mod, please use GitHub Issues on this repository.
 
 ### Contributing
 If you wish to contribute, please fork this repository, implement your change in the fork and create a pull request.
+
+### Authors
+- 7ep3s: Programming, Tacview customisation
+
+- TunderTunder: Tacview customisation
+
+- RehabRocket: Programming, Tacview customisation
+
+- TYKUHN2: Programming
