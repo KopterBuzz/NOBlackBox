@@ -4,5 +4,6 @@ NOBlackBox - NOBlackBox - Tacview Recorder for Nuclear Option
 # 7ep3s		Programming, Tacview customisation	#
 # TunderTunder	Tacview customisation		 	#
 # RehabRocket	Programming, Tacview customisation	#
+# TYKUHN2	Programming				#
 ---------------------------------------------------------
 For installation guide please check out https://github.com/KopterBuzz/NOBlackBox/blob/main/INSTALL.md
