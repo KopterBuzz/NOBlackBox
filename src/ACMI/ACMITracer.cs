@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace NOBlackBox.ACMI
+namespace NOBlackBox
 {
     internal class ACMITracer(Tracer tracer) : ACMIObject(tracer.id)
     {

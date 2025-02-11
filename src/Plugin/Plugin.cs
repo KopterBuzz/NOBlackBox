@@ -31,10 +31,8 @@ namespace NOBlackBox
         private void Update()
         {
             timer += Time.deltaTime;
-            Logger.LogInfo(Time.deltaTime.ToString());
             if (recorder != null && timer >= waitTime)
             {
-                Logger.LogInfo("[NOBlackBox]: UPDATE!");
                 recorder?.Update(timer);
                 timer = 0f;
             }

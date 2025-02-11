@@ -1,5 +1,4 @@
-﻿using NOBlackBox.ACMI;
-using NuclearOption.SavedMission;
+﻿using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
 using System.Linq;

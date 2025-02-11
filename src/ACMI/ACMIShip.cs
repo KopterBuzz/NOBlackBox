@@ -14,7 +14,7 @@ namespace NOBlackBox
 
         private static readonly Dictionary<string, int> RANGES = new()
         {
-            { "Shared Class Corvette", 15000 },
+            { "Shard Class Corvette", 15000 },
             { "Dynamo Class Destroyer", 50000 },
             { "Hyperion Class Carrier", 15000 }
         };
