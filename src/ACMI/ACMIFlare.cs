@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace NOBlackBox
 
         public readonly IRFlare flare;
 
-        public ACMIFlare(IRSource source) : base(Mathf.Abs(source.transform.gameObject.GetInstanceID()))
+        public ACMIFlare(IRSource source) : base((long)(Interlocked.Increment(ref FLAREID) - 1) | (1L << 32))
         {
             if (source.flare == false)
                 throw new ArgumentException("IRSource is not flare");

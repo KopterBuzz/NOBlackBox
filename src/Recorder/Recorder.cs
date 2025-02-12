@@ -1,23 +1,26 @@
-using NuclearOption.SavedMission;
+﻿using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace NOBlackBox
 {
     internal class Recorder
     {
+        private static readonly FieldInfo bulletSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
+
         private readonly DateTime startDate;
         private DateTime curTime;
         private ACMIWriter writer;
         private readonly Dictionary<long, ACMIUnit> objects = [];
         private readonly List<ACMIFlare> flares = [];
         private readonly List<ACMIFlare> newFlare = [];
-
-        private List<GameObject> tracersClones = [];
+        
         private readonly List<ACMITracer> newTracers = [];
-        private readonly List<ACMITracer> tracers = [];
+        private readonly Dictionary<BulletSim.Bullet, ACMITracer> tracers = [];
 
         internal Recorder(Mission mission)
         {
@@ -47,6 +50,13 @@ namespace NOBlackBox
                 if (acmi.flare == null || !acmi.flare.enabled) // Apparently we can lose references? wtf?
                 {
                     flares.Remove(acmi);
+                    writer.RemoveObject(acmi, curTime);
+                }
+
+            foreach (var acmi in tracers.Values.ToList())
+                if (acmi.bullet.tracer == null || !acmi.bullet.tracer.activeSelf) // Apparently we can lose references? wtf?
+                {
+                    tracers.Remove(acmi.bullet);
                     writer.RemoveObject(acmi, curTime);
                 }
 
@@ -116,19 +126,46 @@ namespace NOBlackBox
 
             flares.AddRange(newFlare);
             newFlare.Clear();
-            tracersClones = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == "tracer(Clone)").ToList();
-            tracersClones.ForEach(obj => { newTracers.Add(new ACMITracer(new Tracer(obj))); });
             
+            foreach (ACMIUnit unit in objects.Values)
+            {
+                var gunStations = unit.unit.weaponStations.Where(a => a.weaponInfo.gun);
+                var bulletSims = gunStations.SelectMany(
+                    station => station.weapons.Select(
+                        a => (BulletSim?)bulletSim.GetValue(a)
+                    )
+                );
+
+                foreach (var bulletSim in bulletSims)
+                {
+                    if (bulletSim == null)
+                        continue;
+
+                    List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
+
+                    foreach (var bullet in bullets)
+                    {
+                        if (!tracers.ContainsKey(bullet))
+                        {
+                            newTracers.Add(new ACMITracer(bulletSim, bullet));
+                        }
+                    }
+                }
+            }
+
+            foreach (ACMITracer tracer in tracers.Values)
+                writer.UpdateObject(tracer, curTime, tracer.Update());
+
             foreach (ACMITracer tracer in newTracers)
             {
                 Dictionary<string, string> props = tracer.Update();
                 props = props.Concat(tracer.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
                 writer.UpdateObject(tracer, curTime, props);
+                tracers.Add(tracer.bullet, tracer);
             }
-            foreach (ACMITracer tracer in tracers)
-                writer.UpdateObject(tracer, curTime, tracer.Update());
-            tracers.AddRange(newTracers);
+
             newTracers.Clear();
+
             writer.Flush();
         }
 

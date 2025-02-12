@@ -1,27 +1,39 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace NOBlackBox
 {
-    internal class ACMITracer(Tracer tracer) : ACMIObject(tracer.id)
+    internal class ACMITracer: ACMIObject
     {
+        private static int BULLETID = 0;
+
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
+
+        public readonly BulletSim sim;
+        public readonly BulletSim.Bullet bullet;
+
+        public ACMITracer(BulletSim sim, BulletSim.Bullet bullet): base((long)(Interlocked.Increment(ref BULLETID) - 1) | (1L << 33))
+        {
+            this.sim = sim;
+            this.bullet = bullet;
+        }
 
         public override Dictionary<string, string> Init()
         {
             return new()
             {
-                { "Type", "Projectile+Bullet" }
+                { "Type", "Misc+Projectile+Shell" }
             };
         }
         public override Dictionary<string, string> Update()
         {
             Dictionary<string, string> props = [];
 
-            float fx = MathF.Round(tracer.pos.x, 2);
-            float fy = MathF.Round(tracer.pos.y, 2);
-            float fz = MathF.Round(tracer.pos.z, 2);
+            float fx = MathF.Round(bullet.position.x, 2);
+            float fy = MathF.Round(bullet.position.y, 2);
+            float fz = MathF.Round(bullet.position.z, 2);
 
             Vector3 newPos = new(fx, fy, fz);
 
