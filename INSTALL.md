@@ -25,7 +25,8 @@ EnableAssemblyCache = true
 1. [Install TacView](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
 2. Unzip the TacViewAssets Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
 3. Copy all content to %ProgramData%\Tacview\Data
-	Windows might ask you if you want to merge the folders. Let it happen.
+	
+- Windows might ask you if you want to merge the folders. Let it happen.
 4. Restart Tacview and in its settings, Change Terrain to Falcon 4.0. We currently hijack the Falcon 4.0 support to inject Nuclear Option Terrain into Tacview.
 ## Using NOBlackBox
 The mod will be enabled by default after installation.
