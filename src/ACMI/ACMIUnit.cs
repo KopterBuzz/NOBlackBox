@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,32 +51,21 @@ namespace NOBlackBox
         }
         private string UpdatePosition(Vector3 newPos, Vector3 newRot)
         {
-            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString();
-            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString();
-            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString();
+            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##");
+            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##");
+            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##");
 
             float adjusted_roll = newRot.z > 180.0f ? 360 - newRot.z : -newRot.z;
             float adjusted_pitch = newRot.x > 180.0f ? 360 - newRot.x : -newRot.x;
             float adjusted_yaw = newRot.y;
 
-            string roll = Mathf.Approximately(newRot.z, lastRot.z) ? "" : adjusted_roll.ToString();
-            string pitch = Mathf.Approximately(newRot.x, lastRot.x) ? "" : adjusted_pitch.ToString();
-            string yaw = Mathf.Approximately(newRot.y, lastRot.y) ? "" : adjusted_yaw.ToString();
-
-            /*ACMITransform lat_long = ConvertTransform(lastPos);
-            string lat = z != "" ? lat_long.Item1.ToString() : "";
-            string lon = x != "" ? lat_long.Item2.ToString() : "";*/
+            string roll = Mathf.Approximately(newRot.z, lastRot.z) ? "" : adjusted_roll.ToString("0.##");
+            string pitch = Mathf.Approximately(newRot.x, lastRot.x) ? "" : adjusted_pitch.ToString("0.##");
+            string yaw = Mathf.Approximately(newRot.y, lastRot.y) ? "" : adjusted_yaw.ToString("0.##");
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 
-            return $"{longitude}|{latitude}|{y}|{roll}|{pitch}|{yaw}|{x}|{z}|{yaw}";
-        }
-
-        private ACMITransform ConvertTransform(Vector3 pos)
-        {
-            double new_latitude = pos.z / 6378 * (180 / Math.PI);
-            double new_longitude = pos.x / 6378 * (180 / Math.PI);
-            return (new_latitude, new_longitude);
+            return $"{(newPos.x != lastPos.x ? longitude : string.Empty)}|{(newPos.z != lastPos.z ? latitude : string.Empty)}|{y}|{roll}|{pitch}|{yaw}|{x}|{z}|{yaw}";
         }
     }
 }

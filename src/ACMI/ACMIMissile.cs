@@ -71,8 +71,8 @@ namespace NOBlackBox
 
             if (unit.speed != lastTAS)
             {
-                baseProps.Add("TAS", unit.speed.ToString());
-                baseProps.Add("Mach", (unit.speed / 340).ToString());
+                baseProps.Add("TAS", unit.speed.ToString("0.##"));
+                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###"));
                 lastTAS = unit.speed;
             }
 
@@ -81,13 +81,13 @@ namespace NOBlackBox
 
             if (num != lastAOA)
             {
-                baseProps.Add("AOA", num.ToString());
+                baseProps.Add("AOA", num.ToString("0.##"));
                 lastAOA = num;
             }
 
             if (unit.radarAlt != lastAGL)
             {
-                baseProps.Add("AGL", unit.radarAlt.ToString());
+                baseProps.Add("AGL", unit.radarAlt.ToString("0.##"));
                 lastAGL = unit.radarAlt;
             }
 
