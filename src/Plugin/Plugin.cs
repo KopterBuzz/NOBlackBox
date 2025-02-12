@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using UnityEngine;
 using NuclearOption.SavedMission;
+using System;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -31,6 +32,9 @@ namespace NOBlackBox
         {
             Configuration.InitSettings(Config);
             Logger.LogInfo("[NOBlackBox]: LOADED.");
+
+            waitTime = 1f / Configuration.UpdateRate.Value;
+            waitTime = MathF.Round(waitTime, 3);
         }
         private void Update()
         {
