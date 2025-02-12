@@ -17,7 +17,7 @@ The mod works with the following loaders:
 2. After BepInEx has been installed, change this setting in BepInEx.cfg:
 ```
 [Caching]
-EnableAssemblyCache = true
+HideManagerGameObject = true
 ```
 3. Copy the NOBlackBox.dll file to the game's BepInEx plugins folder.
 
