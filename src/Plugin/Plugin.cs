@@ -29,7 +29,8 @@ namespace NOBlackBox
         }
         private void Awake()
         {
-           Logger.LogInfo("[NOBlackBox]: LOADED.");
+            Configuration.InitSettings(Config);
+            Logger.LogInfo("[NOBlackBox]: LOADED.");
         }
         private void Update()
         {
