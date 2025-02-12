@@ -126,29 +126,18 @@ namespace NOBlackBox
 
             flares.AddRange(newFlare);
             newFlare.Clear();
-            
-            foreach (ACMIUnit unit in objects.Values)
+
+            var bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
+
+            foreach (var bulletSim in bulletSims)
             {
-                var gunStations = unit.unit.weaponStations.Where(a => a.weaponInfo.gun);
-                var bulletSims = gunStations.SelectMany(
-                    station => station.weapons.Select(
-                        a => (BulletSim?)bulletSim.GetValue(a)
-                    )
-                );
+                List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
 
-                foreach (var bulletSim in bulletSims)
+                foreach (var bullet in bullets)
                 {
-                    if (bulletSim == null)
-                        continue;
-
-                    List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
-
-                    foreach (var bullet in bullets)
+                    if (!tracers.ContainsKey(bullet))
                     {
-                        if (!tracers.ContainsKey(bullet))
-                        {
-                            newTracers.Add(new ACMITracer(bulletSim, bullet));
-                        }
+                        newTracers.Add(new ACMITracer(bulletSim, bullet));
                     }
                 }
             }
