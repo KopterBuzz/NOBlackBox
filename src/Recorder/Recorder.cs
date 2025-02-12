@@ -1,4 +1,4 @@
-﻿using NuclearOption.SavedMission;
+using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace NOBlackBox
 
         ~Recorder()
         {
-            writer?.CloseStreamWriter();
+            Close();
         }
 
         internal void Update(float delta)
@@ -138,9 +138,9 @@ namespace NOBlackBox
             writer.Flush();
         }
 
-        internal void CloseStreamWriter()
+        internal void Close()
         {
-            writer?.CloseStreamWriter();
+            writer?.Close();
         }
     }
 }

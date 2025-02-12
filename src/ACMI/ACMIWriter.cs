@@ -1,10 +1,8 @@
-﻿using Mirage.Serialization;
 using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -12,7 +10,6 @@ namespace NOBlackBox
     internal class ACMIWriter
     {
         private readonly StreamWriter output;
-        //private readonly StringBuilder sb;
         private readonly DateTime reference;
         private TimeSpan lastUpdate;
         internal ACMIWriter(DateTime reference)
@@ -36,8 +33,6 @@ namespace NOBlackBox
 
             output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
-            //sb.Append("FileType=text/acmi/tacview");
-            //sb.Append("FileVersion=2.2\n");
 
             Dictionary<string, string> initProps = new()
             {
@@ -57,13 +52,11 @@ namespace NOBlackBox
 
             output.WriteLine($"0,{StringifyProps(initProps)}");
             output.Flush();
-            //sb.Append($"0,{StringifyProps(initProps)}\n");
         }
 
         ~ACMIWriter()
         {
-            output.Close();
-            //sb.Clear();
+            Close();
         }
 
         internal void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
@@ -116,9 +109,8 @@ namespace NOBlackBox
             output.Flush();
         }
 
-        internal void CloseStreamWriter()
+        internal void Close()
         {
-            output.Flush();
             output.Close();
         }
     }
