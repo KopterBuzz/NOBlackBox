@@ -1,9 +1,7 @@
 ﻿using BepInEx.Configuration;
 using System.Linq;
 using UnityEngine;
-using System.IO;
 using System;
-using NOBlackBox.src.Helpers;
 
 namespace NOBlackBox
 {
@@ -22,7 +20,7 @@ namespace NOBlackBox
 
             UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {UpdateRate.Value}");
-            if (!Enumerable.Range(0,1000).Contains(UpdateRate.Value))
+            if (!Enumerable.Range(0,1001).Contains(UpdateRate.Value))
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: UpdateRate out of range! Setting default value {DefaultUpdateRate}!");
                 UpdateRate.Value = DefaultUpdateRate;
