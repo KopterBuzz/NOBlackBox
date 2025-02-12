@@ -9,12 +9,11 @@ namespace NOBlackBox
 {
     internal class Recorder
     {
-        private static readonly FieldInfo bulletSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private readonly DateTime startDate;
         private DateTime curTime;
-        private ACMIWriter writer;
+        private readonly ACMIWriter writer;
         private readonly Dictionary<long, ACMIUnit> objects = [];
         private readonly List<ACMIFlare> flares = [];
         private readonly List<ACMIFlare> newFlare = [];
@@ -134,12 +133,8 @@ namespace NOBlackBox
                 List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
 
                 foreach (var bullet in bullets)
-                {
                     if (!tracers.ContainsKey(bullet))
-                    {
                         newTracers.Add(new ACMITracer(bulletSim, bullet));
-                    }
-                }
             }
 
             foreach (ACMITracer tracer in tracers.Values)
