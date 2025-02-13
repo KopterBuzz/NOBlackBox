@@ -11,8 +11,11 @@ namespace NOBlackBox
 
         internal const int DefaultUpdateRate = 5;
 
+        internal const int DefaultAutoSaveInterval = 60;
+
         internal static ConfigEntry<int>? UpdateRate;
         internal static ConfigEntry<string>? OutputPath;
+        internal static ConfigEntry<int>? AutoSaveInterval;
 
         internal static void InitSettings(ConfigFile config)
         {
@@ -35,6 +38,15 @@ namespace NOBlackBox
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid OutputPath! Setting default value {DefaultOutputPath}!");
                 OutputPath.Value = DefaultOutputPath;
+            }
+
+            AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {AutoSaveInterval.Value}");
+
+            if (AutoSaveInterval.Value < 60)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid AutoSaveInterval! Setting default value {DefaultAutoSaveInterval}!");
+                AutoSaveInterval.Value = DefaultAutoSaveInterval;
             }
         }
     }
