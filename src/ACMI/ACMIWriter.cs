@@ -9,9 +9,10 @@ namespace NOBlackBox
 {
     internal class ACMIWriter
     {
-        private readonly StreamWriter output;
+        private StreamWriter output;
         private readonly DateTime reference;
         private TimeSpan lastUpdate;
+        internal string filename;
         internal ACMIWriter(DateTime reference)
         {
             string dir = Configuration.OutputPath.Value;
@@ -22,7 +23,7 @@ namespace NOBlackBox
 
             string basename = dir + DateTime.Now.ToString("s").Replace(":", "-");
             basename += " " + MissionManager.CurrentMission.Name;
-            string filename = basename + ".acmi";
+            filename = basename + ".acmi";
             int postfix = 0;
             while (File.Exists(filename))
                 filename = basename + $" ({++postfix}).acmi";
@@ -68,10 +69,13 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                output.WriteLine("#" + diff.TotalSeconds);
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
             }
-            
-            output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+
+            //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+            WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
         internal void RemoveObject(ACMIObject aObject, DateTime updateTime)
@@ -80,10 +84,12 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                output.WriteLine("#" + diff.TotalSeconds);
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
             }
 
-            output.WriteLine($"-{aObject.id:X}");
+            //output.WriteLine($"-{aObject.id:X}");
+            WriteLine($"-{aObject.id:X}");
         }
 
         internal void WriteEvent(DateTime eventTime, string name, string[] items)
@@ -92,16 +98,29 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                output.WriteLine("#" + diff.TotalSeconds);
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
             }
 
-            output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
+            //output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
+            WriteLine($"0,Event={name}|{string.Join("|", items)}");
         }
 
         private string StringifyProps(Dictionary<string, string> props)
         {
             string[] propStrings = props.Select(x => x.Key + "=" + x.Value.Replace(",", "\\,")).ToArray();
             return string.Join(",", propStrings);
+        }
+
+        internal void WriteLine(string line)
+        {
+            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval.Value && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval.Value < 1))
+            {
+                output.Flush();
+                output.Close();
+                output = new StreamWriter(filename, append: true);
+            }
+            output.WriteLine(line);
         }
 
         internal void Flush()
