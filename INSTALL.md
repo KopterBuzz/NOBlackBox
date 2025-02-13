@@ -41,7 +41,7 @@ The recording will be saved to disk when you go back to the main menu.
 You will find the TacView recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
 
 ## Configuring NOBlackBox
-The Following parameters are configurable in BepInEx/xzy.KopteBuzz.NOBlackBox.cfg. You have to load the mod at least once for the config file to exist.
+The Following parameters are configurable in BepInEx/config/xzy.KopteBuzz.NOBlackBox.cfg. You have to load the mod at least once for the config file to exist.
 
 Default values are automatically set.
 
