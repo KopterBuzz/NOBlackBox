@@ -42,7 +42,7 @@ namespace NOBlackBox
 
             if (newPos != lastPos || newRot != lastRot)
             {
-                props.Add("T", UpdatePosition(newPos, newRot));
+                props.Add("T", UpdatePosition(newPos, newRot).ToString(CultureInfo.InvariantCulture));
 
                 lastPos = newPos;
                 lastRot = newRot;
