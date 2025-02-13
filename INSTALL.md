@@ -47,7 +47,9 @@ Default values are automatically set.
 
 ### UpdateRate
 
-The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000
+The number of times per second NOBlackBox will record events. Max Value: 1000
+
+Please do note that higher values impact performance.
 
 Default value: 5
 
