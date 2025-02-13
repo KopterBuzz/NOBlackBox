@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
 using NuclearOption.SavedMission;
@@ -48,7 +48,7 @@ namespace NOBlackBox
         private void OnMissionUnload()
         {
             Logger.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
-            recorder?.CloseStreamWriter();
+            recorder?.Close();
             recorder = null;
         }
     }

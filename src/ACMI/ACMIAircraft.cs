@@ -59,8 +59,8 @@ namespace NOBlackBox
 
             if (unit.speed != lastTAS)
             {
-                baseProps.Add("TAS", MathF.Round(unit.speed, 2).ToString());
-                baseProps.Add("Mach", MathF.Round(unit.speed / 340, 3).ToString());
+                baseProps.Add("TAS", unit.speed.ToString("0.##"));
+                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###"));
                 lastTAS = unit.speed;
             }
 
@@ -69,13 +69,13 @@ namespace NOBlackBox
 
             if (num != lastAOA)
             {
-                baseProps.Add("AOA", num.ToString());
+                baseProps.Add("AOA", num.ToString("0.##"));
                 lastAOA = num;
             }
 
             if (unit.radarAlt != lastAGL)
             {
-                baseProps.Add("AGL", Mathf.Max(0, MathF.Round(unit.radarAlt, 2)).ToString());
+                baseProps.Add("AGL", Mathf.Max(0, unit.radarAlt).ToString("0.##"));
                 lastAGL = unit.radarAlt;
             }
 
@@ -107,13 +107,13 @@ namespace NOBlackBox
                     if (!Mathf.Approximately(newRot.x, lastHead.x))
                     {
                         float adjusted_pitch = newRot.x > 180.0f ? 360 - newRot.x : -newRot.x;
-                        baseProps.Add("PilotHeadPitch", adjusted_pitch.ToString());
+                        baseProps.Add("PilotHeadPitch", adjusted_pitch.ToString("0.##"));
                     }
 
                     if (!Mathf.Approximately(newRot.y, lastHead.y))
                     {
                         float adjusted_yaw = newRot.y;
-                        baseProps.Add("PilotHeadYaw", adjusted_yaw.ToString());
+                        baseProps.Add("PilotHeadYaw", adjusted_yaw.ToString("0.##"));
                     }
 
                     lastHead = newRot;
