@@ -108,7 +108,7 @@ namespace NOBlackBox
 
         private string StringifyProps(Dictionary<string, string> props)
         {
-            string[] propStrings = props.Select(x => x.Key + "=" + x.Value.Replace(",", "\\,")).ToArray();
+            string[] propStrings = props.Select(x => x.Key + "=" + x.Value/*.Replace(",", "\\,")*/).ToArray();
             return string.Join(",", propStrings);
         }
 
