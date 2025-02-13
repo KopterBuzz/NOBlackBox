@@ -114,7 +114,7 @@ namespace NOBlackBox
 
         internal void WriteLine(string line)
         {
-            if (lastUpdate.TotalSeconds > 10f && (lastUpdate.TotalSeconds % 10f > 0))
+            if (lastUpdate.TotalSeconds > 60f && (lastUpdate.TotalSeconds % 60 > 0))
             {
                 output.Flush();
                 output.Close();
