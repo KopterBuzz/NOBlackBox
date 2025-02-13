@@ -62,7 +62,7 @@ Default value: %LocalAppData%Low/Shockfront/NuclearOption/Replays/
 
 ### AutoSaveInterval
 
-Time interval for automatically updating the Tacview file. Min value: 60
+Time interval (in seconds) for automatically updating the Tacview file. Min value: 60
 
 Default value: 60
 
