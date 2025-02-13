@@ -18,7 +18,7 @@ The mod works with the following loaders:
 1. Download and install the latest release of [BepInEx 5](https://github.com/BepInEx/BepInEx/releases/latest) for Nuclear Option.
 2. After BepInEx has been installed, change this setting in BepInEx.cfg:
 ```
-[Caching]
+[Chainloader]
 HideManagerGameObject = true
 ```
 3. Copy the NOBlackBox.dll file to the game's BepInEx plugins folder.
