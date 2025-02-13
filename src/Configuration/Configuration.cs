@@ -41,7 +41,7 @@ namespace NOBlackBox
             }
 
             AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {AutoSaveInterval.Value}");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {AutoSaveInterval.Value}");
 
             if (AutoSaveInterval.Value < 60)
             {
