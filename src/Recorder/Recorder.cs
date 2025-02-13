@@ -28,10 +28,12 @@ namespace NOBlackBox
             curTime = startDate;
 
             writer = new ACMIWriter(startDate);
+            Plugin.Logger.LogInfo("[NOBlackBox]: RECORDING STARTED");
         }
 
         ~Recorder()
         {
+            Plugin.Logger.LogInfo("[NOBlackBox]: RECORDING ENDED");
             Close();
         }
 
@@ -52,14 +54,14 @@ namespace NOBlackBox
                     flares.Remove(acmi);
                     writer.RemoveObject(acmi, curTime);
                 }
-
+            /*
             foreach (var acmi in tracers.Values.ToList())
                 if (acmi.bullet.tracer == null || !acmi.bullet.tracer.activeSelf) // Apparently we can lose references? wtf?
                 {
                     tracers.Remove(acmi.bullet);
                     writer.RemoveObject(acmi, curTime);
                 }
-
+            */
             Unit[] units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
 
             foreach (var unit in units)
@@ -126,9 +128,9 @@ namespace NOBlackBox
 
             flares.AddRange(newFlare);
             newFlare.Clear();
-
+            /*
             var bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-
+            
             foreach (var bulletSim in bulletSims)
             {
                 List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
@@ -141,7 +143,7 @@ namespace NOBlackBox
                     }
                 }
             }
-
+            
             foreach (ACMITracer tracer in tracers.Values)
                 writer.UpdateObject(tracer, curTime, tracer.Update());
 
@@ -154,7 +156,7 @@ namespace NOBlackBox
             }
 
             newTracers.Clear();
-
+            */
             writer.Flush();
         }
 

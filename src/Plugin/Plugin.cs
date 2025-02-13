@@ -41,7 +41,7 @@ namespace NOBlackBox
             timer += Time.deltaTime;
             if (recorder != null && timer >= waitTime)
             {
-                recorder?.Update(timer);
+                recorder.Update(timer);
                 timer = 0f;
             }
         }
