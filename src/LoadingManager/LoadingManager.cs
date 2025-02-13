@@ -43,7 +43,7 @@ namespace NOBlackBox
 
         private static void MainMenuPostfix()
         {
-            Plugin.Logger.LogDebug("Reached GameLoaded");
+            Plugin.Logger.LogInfo("Reached GameLoaded");
             GameLoaded?.Invoke();
             
             MethodBase original = harmony.GetPatchedMethods().Where(a => a.DeclaringType == typeof(MainMenu)).First();
@@ -55,13 +55,13 @@ namespace NOBlackBox
             NetworkManagerNuclearOption.i.Client.Connected.AddListener(ClientConnectCallback);
             NetworkManagerNuclearOption.i.Client.Disconnected.AddListener(ClientDisconectCallback);
 
-            Plugin.Logger.LogDebug("Reached NetworkReady");
+            Plugin.Logger.LogInfo("Reached NetworkReady");
             NetworkReady?.Invoke();
         }
 
         private static void MissionLoadCallback()
         {
-            Plugin.Logger.LogDebug("Reached MissionLoaded");
+            Plugin.Logger.LogInfo("Reached MissionLoaded");
             MissionLoaded?.Invoke();
         }
 
@@ -78,7 +78,7 @@ namespace NOBlackBox
 
         private static void ClientDisconectCallback(ClientStoppedReason reason)
         {
-            Plugin.Logger.LogDebug("Reached MissionUnloaded");
+            Plugin.Logger.LogInfo("Reached MissionUnloaded");
             MissionUnloaded?.Invoke();
         }
     }
