@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using UnityEngine;
 
@@ -48,9 +49,9 @@ namespace NOBlackBox
         }
         private string UpdatePosition(Vector3 newPos)
         {
-            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##");
-            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##");
-            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##");
+            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##", CultureInfo.InvariantCulture);
+            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##", CultureInfo.InvariantCulture);
+            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##", CultureInfo.InvariantCulture);
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 

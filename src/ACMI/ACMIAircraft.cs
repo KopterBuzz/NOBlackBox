@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -60,7 +61,7 @@ namespace NOBlackBox
             if (unit.speed != lastTAS)
             {
                 baseProps.Add("TAS", unit.speed.ToString("0.##"));
-                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###"));
+                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###", CultureInfo.InvariantCulture));
                 lastTAS = unit.speed;
             }
 
@@ -75,7 +76,7 @@ namespace NOBlackBox
 
             if (unit.radarAlt != lastAGL)
             {
-                baseProps.Add("AGL", Mathf.Max(0, unit.radarAlt).ToString("0.##"));
+                baseProps.Add("AGL", Mathf.Max(0, unit.radarAlt).ToString("0.##", CultureInfo.InvariantCulture));
                 lastAGL = unit.radarAlt;
             }
 
@@ -107,13 +108,13 @@ namespace NOBlackBox
                     if (!Mathf.Approximately(newRot.x, lastHead.x))
                     {
                         float adjusted_pitch = newRot.x > 180.0f ? 360 - newRot.x : -newRot.x;
-                        baseProps.Add("PilotHeadPitch", adjusted_pitch.ToString("0.##"));
+                        baseProps.Add("PilotHeadPitch", adjusted_pitch.ToString("0.##", CultureInfo.InvariantCulture));
                     }
 
                     if (!Mathf.Approximately(newRot.y, lastHead.y))
                     {
                         float adjusted_yaw = newRot.y;
-                        baseProps.Add("PilotHeadYaw", adjusted_yaw.ToString("0.##"));
+                        baseProps.Add("PilotHeadYaw", adjusted_yaw.ToString("0.##", CultureInfo.InvariantCulture));
                     }
 
                     lastHead = newRot;

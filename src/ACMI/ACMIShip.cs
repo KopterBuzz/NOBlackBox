@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace NOBlackBox
 {
@@ -41,7 +42,7 @@ namespace NOBlackBox
             props.Add("Type", TYPES.GetValueOrDefault(unit.definition.code, "Sea+Watercraft"));
 
             if (RANGES.TryGetValue(unit.definition.code, out int range))
-                props.Add("EngagementRange", range.ToString());
+                props.Add("EngagementRange", range.ToString(CultureInfo.InvariantCulture));
 
             return props;
         }

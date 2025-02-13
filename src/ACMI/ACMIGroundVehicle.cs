@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace NOBlackBox
 {
@@ -63,7 +64,7 @@ namespace NOBlackBox
             props.Add("Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Ground"));
 
             if (RANGE.TryGetValue(unit.definition.unitName, out int range))
-                props.Add("EngagementRange", range.ToString());
+                props.Add("EngagementRange", range.ToString(CultureInfo.InvariantCulture));
 
             return props;
         }
@@ -81,7 +82,7 @@ namespace NOBlackBox
                 {
                     if (target != null)
                     {
-                        props["LockedTarget"] = target.persistentID.ToString();
+                        props["LockedTarget"] = target.persistentID.ToString(CultureInfo.InvariantCulture);
 
                         if (lastTarget == null)
                             props["LockedTargetMode"] = "1";
