@@ -14,7 +14,7 @@ namespace NOBlackBox
         private TimeSpan lastUpdate;
         internal ACMIWriter(DateTime reference)
         {
-            string dir = Application.persistentDataPath + "/Replays/";
+            string dir = Configuration.OutputPath.Value;
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
