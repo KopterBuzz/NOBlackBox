@@ -48,7 +48,9 @@ namespace NOBlackBox
 
         private async Task<bool> WaitForLocalPlayer()
         {
-            while(GameManager.LocalPlayer == null)
+            Logger?.LogInfo("[NOBlackBox]: TRYING TO GET PLAYERNAME...");
+            Logger?.LogInfo($"[NOBlackBox]: {GameManager.LocalPlayer.PlayerName}");
+            while (GameManager.LocalPlayer.PlayerName == null)
             {
                 Logger?.LogInfo("[NOBlackBox]: Waiting for LocalPlayer...");
                 await Task.Delay(100);
