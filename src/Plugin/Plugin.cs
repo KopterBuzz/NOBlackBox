@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using UnityEngine;
 using NuclearOption.SavedMission;
 using System;
+using System.Threading.Tasks;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -44,8 +45,20 @@ namespace NOBlackBox
                 timer = 0f;
             }
         }
-        private void OnMissionLoad()
+
+        private async Task<bool> WaitForLocalPlayer()
         {
+            while(GameManager.LocalPlayer == null)
+            {
+                Logger?.LogInfo("[NOBlackBox]: Waiting for LocalPlayer...");
+                await Task.Delay(100);
+            }
+            return true;
+        }
+
+        private async void OnMissionLoad()
+        {
+            await WaitForLocalPlayer();
             Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
             recorder = new Recorder(MissionManager.CurrentMission);
         }
