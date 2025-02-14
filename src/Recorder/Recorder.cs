@@ -28,12 +28,12 @@ namespace NOBlackBox
             curTime = startDate;
 
             writer = new ACMIWriter(startDate);
-            Plugin.Logger.LogInfo("[NOBlackBox]: RECORDING STARTED");
+            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING STARTED");
         }
 
         ~Recorder()
         {
-            Plugin.Logger.LogInfo("[NOBlackBox]: RECORDING ENDED");
+            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING ENDED");
             Close();
         }
 
@@ -54,19 +54,19 @@ namespace NOBlackBox
                     flares.Remove(acmi);
                     writer.RemoveObject(acmi, curTime);
                 }
-            /*
+
             foreach (var acmi in tracers.Values.ToList())
                 if (acmi.bullet.tracer == null || !acmi.bullet.tracer.activeSelf) // Apparently we can lose references? wtf?
                 {
                     tracers.Remove(acmi.bullet);
                     writer.RemoveObject(acmi, curTime);
                 }
-            */
+
             Unit[] units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
 
             foreach (var unit in units)
             {
-                if (!unit.networked || unit.disabled)
+                if (!unit.networked || unit.disabled || unit.persistentID == 0)
                     continue;
 
                 bool isNew = false;
@@ -111,7 +111,7 @@ namespace NOBlackBox
                     props = props.Concat(acmi.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                 if (unit.IsLocalPlayer)
-                    Plugin.Logger.LogInfo(props["T"]);
+                    Plugin.Logger?.LogInfo(props["T"]);
 
                 writer.UpdateObject(acmi, curTime, props);
             }
@@ -128,7 +128,7 @@ namespace NOBlackBox
 
             flares.AddRange(newFlare);
             newFlare.Clear();
-            /*
+
             var bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
             
             foreach (var bulletSim in bulletSims)
@@ -156,7 +156,7 @@ namespace NOBlackBox
             }
 
             newTracers.Clear();
-            */
+
             writer.Flush();
         }
 

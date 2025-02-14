@@ -49,9 +49,9 @@ namespace NOBlackBox
         }
         private string UpdatePosition(Vector3 newPos)
         {
-            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##", CultureInfo.InvariantCulture);
-            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##", CultureInfo.InvariantCulture);
-            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##", CultureInfo.InvariantCulture);
+            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString(CultureInfo.InvariantCulture);
+            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString(CultureInfo.InvariantCulture);
+            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString(CultureInfo.InvariantCulture);
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 

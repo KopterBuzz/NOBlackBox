@@ -15,9 +15,8 @@ namespace NOBlackBox
     [BepInProcess("NuclearOption.exe")]
     internal class Plugin : BaseUnityPlugin
     {
-        internal static new ManualLogSource Logger;
+        internal static new ManualLogSource ?Logger;
         private Recorder? recorder;
-        private int ticker = 0;
         private float waitTime = 0.2f;
         private float timer = 0f;
 
@@ -25,13 +24,13 @@ namespace NOBlackBox
         {
             Logger = base.Logger;
 
-            MissionManager.onMissionStart += OnMissionLoad;
+            LoadingManager.MissionLoaded += OnMissionLoad;
             LoadingManager.MissionUnloaded += OnMissionUnload;
         }
         private void Awake()
         {
             Configuration.InitSettings(Config);
-            Logger.LogInfo("[NOBlackBox]: LOADED.");
+            Logger?.LogInfo("[NOBlackBox]: LOADED.");
 
             waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
@@ -45,14 +44,14 @@ namespace NOBlackBox
                 timer = 0f;
             }
         }
-        private void OnMissionLoad(Mission mission)
+        private void OnMissionLoad()
         {
-            Logger.LogInfo("[NOBlackBox]: MISSION LOADED.");
-            recorder = new Recorder(mission);
+            Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
+            recorder = new Recorder(MissionManager.CurrentMission);
         }
         private void OnMissionUnload()
         {
-            Logger.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
+            Logger?.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
             recorder?.Close();
             recorder = null;
         }
