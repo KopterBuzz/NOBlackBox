@@ -55,7 +55,7 @@ namespace NOBlackBox
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 
-            return $"{(newPos.x != lastPos.x ? longitude : string.Empty)}|{(newPos.z != lastPos.z ? latitude : string.Empty)}|{y}|{x}|{z}";
+            return $"{(newPos.x != lastPos.x ? longitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{(newPos.z != lastPos.z ? latitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{y}|{x}|{z}";
         }
     }
 }

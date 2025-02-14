@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Mirage;
+using NOBlackBox;
 using NuclearOption.Networking;
 using System;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace NOBlackBox
             Type netManager = typeof(NetworkManagerNuclearOption);
             harmony.Patch(
                 netManager.GetMethod("Awake"),
-                null, 
+                null,
                 HookMethod(NetworkManagerPostfix)
             );
 
@@ -43,9 +44,9 @@ namespace NOBlackBox
 
         private static void MainMenuPostfix()
         {
-            Plugin.Logger.LogDebug("Reached GameLoaded");
+            Plugin.Logger?.LogDebug("Reached GameLoaded");
             GameLoaded?.Invoke();
-            
+
             MethodBase original = harmony.GetPatchedMethods().Where(a => a.DeclaringType == typeof(MainMenu)).First();
             harmony.Unpatch(original, HookMethod(MainMenuPostfix).method);
         }
@@ -55,13 +56,13 @@ namespace NOBlackBox
             NetworkManagerNuclearOption.i.Client.Connected.AddListener(ClientConnectCallback);
             NetworkManagerNuclearOption.i.Client.Disconnected.AddListener(ClientDisconectCallback);
 
-            Plugin.Logger.LogDebug("Reached NetworkReady");
+            Plugin.Logger?.LogDebug("Reached NetworkReady");
             NetworkReady?.Invoke();
         }
 
         private static void MissionLoadCallback()
         {
-            Plugin.Logger.LogDebug("Reached MissionLoaded");
+            Plugin.Logger?.LogDebug("Reached MissionLoaded");
             MissionLoaded?.Invoke();
         }
 
@@ -72,13 +73,13 @@ namespace NOBlackBox
 
         private static void ClientConnectCallback(INetworkPlayer player)
         {
-            if (GameManager.gameState == GameManager.GameState.Singleplayer || GameManager.gameState == GameManager.GameState.Multiplayer)
+            if (MissionManager.CurrentMission != null)
                 player.OnIdentityChanged += OnIdentity;
         }
 
         private static void ClientDisconectCallback(ClientStoppedReason reason)
         {
-            Plugin.Logger.LogDebug("Reached MissionUnloaded");
+            Plugin.Logger?.LogDebug("Reached MissionUnloaded");
             MissionUnloaded?.Invoke();
         }
     }
