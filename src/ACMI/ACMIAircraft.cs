@@ -60,7 +60,7 @@ namespace NOBlackBox
 
             if (unit.speed != lastTAS)
             {
-                baseProps.Add("TAS", unit.speed.ToString("0.##"));
+                baseProps.Add("TAS", unit.speed.ToString("0.##", CultureInfo.InvariantCulture));
                 baseProps.Add("Mach", (unit.speed / 340).ToString("0.###", CultureInfo.InvariantCulture));
                 lastTAS = unit.speed;
             }
