@@ -42,7 +42,7 @@ namespace NOBlackBox
 
             if (newPos != lastPos || newRot != lastRot)
             {
-                props.Add("T", UpdatePosition(newPos, newRot));
+                props.Add("T", UpdatePosition(newPos, newRot).ToString(CultureInfo.InvariantCulture));
 
                 lastPos = newPos;
                 lastRot = newRot;
@@ -67,6 +67,7 @@ namespace NOBlackBox
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 
             return $"{(newPos.x != lastPos.x ? longitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{(newPos.z != lastPos.z ? latitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{y}|{roll}|{pitch}|{yaw}|{x}|{z}|{yaw}";
+
         }
     }
 }
