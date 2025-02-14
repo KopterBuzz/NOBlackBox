@@ -65,7 +65,7 @@ namespace NOBlackBox
             bool isDetonated = (bool)typeof(Missile).GetField("detonated", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(unit);
             if (!Detonated && isDetonated)
             {
-                Plugin.Logger.LogDebug("Detonated");
+                Plugin.Logger?.LogDebug("Detonated");
                 Detonated = true;
                 FireEvent("LeftArea", [unit.persistentID], string.Empty);
             }

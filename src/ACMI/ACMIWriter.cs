@@ -39,18 +39,21 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox" },
+                { "DataRecorder", $"NOBlackBox 0.2.2" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
                 { "RecordingTime", DateTime.Today.ToString("s") + "Z" },
             };
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
-
-            string briefing = mission.missionSettings.description.Replace(",", "\\,");
-            if (briefing != "")
-                initProps.Add("Briefing", briefing);
-
+            /*
+            if (mission.missionSettings.description != null)
+            {
+                string briefing = mission.missionSettings.description.Replace(",", "\\,");
+                if (briefing != "")
+                    initProps.Add("Briefing", briefing);
+            }
+            */
             output.WriteLine($"0,{StringifyProps(initProps)}");
             output.Flush();
         }
