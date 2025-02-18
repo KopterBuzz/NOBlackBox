@@ -33,8 +33,10 @@ namespace NOBlackBox
             Configuration.InitSettings(Config);
             Logger?.LogInfo("[NOBlackBox]: LOADED.");
 
-            waitTime = 1f / Configuration.UpdateRate.Value;
+            waitTime = Configuration.UpdateRate.Value != 0 ? 1f / Configuration.UpdateRate.Value : 0f;
+            //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
+            Logger?.LogInfo($"[NOBlackBox]: Wait Time = {waitTime}");
         }
         private void Update()
         {
