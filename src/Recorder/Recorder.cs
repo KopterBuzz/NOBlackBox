@@ -1,4 +1,4 @@
-﻿using NuclearOption.SavedMission;
+using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,8 @@ namespace NOBlackBox
         
         private readonly List<ACMITracer> newTracers = [];
         private readonly Dictionary<BulletSim.Bullet, ACMITracer> tracers = [];
+
+        private readonly Dictionary<Shockwave, ACMIShockwave> waves = [];
 
         internal Recorder(Mission mission)
         {
@@ -53,9 +55,16 @@ namespace NOBlackBox
                 }
 
             foreach (var acmi in tracers.Values.ToList())
-                if (acmi.bullet.tracer == null || !acmi.bullet.tracer.activeSelf) // Apparently we can lose references? wtf?
+                if (!acmi.bullet.active)
                 {
                     tracers.Remove(acmi.bullet);
+                    writer.RemoveObject(acmi, curTime);
+                }
+
+            foreach (var acmi in waves.Values.ToList())
+                if (acmi.shockwave == null || acmi.shockwave.enabled == false)
+                {
+                    waves.Remove(acmi.shockwave);
                     writer.RemoveObject(acmi, curTime);
                 }
 
@@ -149,6 +158,25 @@ namespace NOBlackBox
             }
 
             newTracers.Clear();
+
+            foreach (ACMIShockwave wave in waves.Values)
+                writer.UpdateObject(wave, curTime, wave.Update());
+
+            Shockwave[] shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
+
+            foreach (Shockwave wave in shockwaves)
+            {
+                if (waves.ContainsKey(wave))
+                    continue;
+
+                ACMIShockwave acmi = new(wave);
+                Dictionary<string, string> initProps = acmi.Init();
+                Dictionary<string, string> updateProps = acmi.Update();
+
+                writer.UpdateObject(acmi, curTime, initProps.Concat(updateProps).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+
+                waves.Add(wave, acmi);
+            }
 
             writer.Flush();
         }
