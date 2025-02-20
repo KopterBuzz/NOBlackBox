@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading;
 using UnityEngine;
 
-namespace NOBlackBox.src.ACMI
+namespace NOBlackBox
 {
     internal class ACMIShockwave: ACMIObject
     {
