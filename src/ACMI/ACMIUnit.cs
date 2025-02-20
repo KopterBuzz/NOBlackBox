@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace NOBlackBox
 {
-    using ACMITransform = (double, double);
-
     public class ACMIUnit(Unit unit): ACMIObject(unit.persistentID)
     {
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);

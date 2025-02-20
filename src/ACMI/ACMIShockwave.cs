@@ -1,22 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Threading;
 using UnityEngine;
 
 namespace NOBlackBox
 {
-    internal class ACMIShockwave: ACMIObject
+    internal class ACMIShockwave(Shockwave shockwave) : ACMINotUnit
     {
-        private static int SHOCKWAVEID = 0;
         private static readonly FieldInfo propagation = typeof(Shockwave).GetField("blastPropagation", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        public readonly Shockwave shockwave;
-
-        public ACMIShockwave(Shockwave shockwave): base((long)(Interlocked.Increment(ref SHOCKWAVEID) - 1) | (1L << 34))
-        {
-            this.shockwave = shockwave;
-        }
+        public readonly Shockwave shockwave = shockwave;
 
         override public Dictionary<string, string> Init()
         {
