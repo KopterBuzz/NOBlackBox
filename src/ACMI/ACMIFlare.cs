@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using UnityEngine;
 
@@ -41,7 +42,7 @@ namespace NOBlackBox
 
             if (newPos != lastPos)
             {
-                props.Add("T", UpdatePosition(newPos));
+                props.Add("T", UpdatePosition(newPos).ToString(CultureInfo.InvariantCulture));
 
                 lastPos = newPos;
             }
@@ -50,13 +51,13 @@ namespace NOBlackBox
         }
         private string UpdatePosition(Vector3 newPos)
         {
-            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##");
-            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##");
-            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##");
+            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString(CultureInfo.InvariantCulture);
+            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString(CultureInfo.InvariantCulture);
+            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString(CultureInfo.InvariantCulture);
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 
-            return $"{(newPos.x != lastPos.x ? longitude : string.Empty)}|{(newPos.z != lastPos.z ? latitude : string.Empty)}|{y}|{x}|{z}";
+            return $"{(newPos.x != lastPos.x ? longitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{(newPos.z != lastPos.z ? latitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{y}|{x}|{z}";
         }
     }
 }

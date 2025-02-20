@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -41,7 +42,7 @@ namespace NOBlackBox
 
             if (newPos != lastPos || newRot != lastRot)
             {
-                props.Add("T", UpdatePosition(newPos, newRot));
+                props.Add("T", UpdatePosition(newPos, newRot).ToString(CultureInfo.InvariantCulture));
 
                 lastPos = newPos;
                 lastRot = newRot;
@@ -51,21 +52,22 @@ namespace NOBlackBox
         }
         private string UpdatePosition(Vector3 newPos, Vector3 newRot)
         {
-            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString("0.##");
-            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString("0.##");
-            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString("0.##");
+            string x = Mathf.Approximately(newPos.x, lastPos.x) ? "" : newPos.x.ToString(CultureInfo.InvariantCulture);
+            string y = Mathf.Approximately(newPos.y, lastPos.y) ? "" : newPos.y.ToString(CultureInfo.InvariantCulture);
+            string z = Mathf.Approximately(newPos.z, lastPos.z) ? "" : newPos.z.ToString(CultureInfo.InvariantCulture);
 
             float adjusted_roll = newRot.z > 180.0f ? 360 - newRot.z : -newRot.z;
             float adjusted_pitch = newRot.x > 180.0f ? 360 - newRot.x : -newRot.x;
             float adjusted_yaw = newRot.y;
 
-            string roll = Mathf.Approximately(newRot.z, lastRot.z) ? "" : adjusted_roll.ToString("0.##");
-            string pitch = Mathf.Approximately(newRot.x, lastRot.x) ? "" : adjusted_pitch.ToString("0.##");
-            string yaw = Mathf.Approximately(newRot.y, lastRot.y) ? "" : adjusted_yaw.ToString("0.##");
+            string roll = Mathf.Approximately(newRot.z, lastRot.z) ? "" : adjusted_roll.ToString(CultureInfo.InvariantCulture);
+            string pitch = Mathf.Approximately(newRot.x, lastRot.x) ? "" : adjusted_pitch.ToString(CultureInfo.InvariantCulture);
+            string yaw = Mathf.Approximately(newRot.y, lastRot.y) ? "" : adjusted_yaw.ToString(CultureInfo.InvariantCulture);
 
             (float latitude, float longitude) = CartesianToGeodetic(newPos.x, newPos.z);
 
-            return $"{(newPos.x != lastPos.x ? longitude : string.Empty)}|{(newPos.z != lastPos.z ? latitude : string.Empty)}|{y}|{roll}|{pitch}|{yaw}|{x}|{z}|{yaw}";
+            return $"{(newPos.x != lastPos.x ? longitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{(newPos.z != lastPos.z ? latitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{y}|{roll}|{pitch}|{yaw}|{x}|{z}|{yaw}";
+
         }
     }
 }

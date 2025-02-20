@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ namespace NOBlackBox
             Dictionary<string, string> baseProps = base.Init();
             baseProps["Name"] = unit.definition.unitName;
             baseProps.Add("Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Weapon"));
-            baseProps.Add("Parent", unit.ownerID.ToString("X"));
+            baseProps.Add("Parent", unit.ownerID.ToString("X",CultureInfo.InvariantCulture));
 
             return baseProps;
         }
@@ -64,15 +65,15 @@ namespace NOBlackBox
             bool isDetonated = (bool)typeof(Missile).GetField("detonated", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(unit);
             if (!Detonated && isDetonated)
             {
-                Plugin.Logger.LogDebug("Detonated");
+                Plugin.Logger?.LogDebug("Detonated");
                 Detonated = true;
                 FireEvent("LeftArea", [unit.persistentID], string.Empty);
             }
 
             if (unit.speed != lastTAS)
             {
-                baseProps.Add("TAS", unit.speed.ToString("0.##"));
-                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###"));
+                baseProps.Add("TAS", unit.speed.ToString("0.##",CultureInfo.InvariantCulture));
+                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###",CultureInfo.InvariantCulture));
                 lastTAS = unit.speed;
             }
 
@@ -81,13 +82,13 @@ namespace NOBlackBox
 
             if (num != lastAOA)
             {
-                baseProps.Add("AOA", num.ToString("0.##"));
+                baseProps.Add("AOA", num.ToString("0.##",CultureInfo.InvariantCulture));
                 lastAOA = num;
             }
 
             if (unit.radarAlt != lastAGL)
             {
-                baseProps.Add("AGL", unit.radarAlt.ToString("0.##"));
+                baseProps.Add("AGL", unit.radarAlt.ToString("0.##",CultureInfo.InvariantCulture));
                 lastAGL = unit.radarAlt;
             }
 
@@ -95,7 +96,7 @@ namespace NOBlackBox
             {
                 if (unit.targetID != -1)
                 {
-                    baseProps.Add("LockedTarget", unit.targetID.ToString("X"));
+                    baseProps.Add("LockedTarget", unit.targetID.ToString("X",CultureInfo.InvariantCulture));
 
                     if (lastTarget == -1)
                         baseProps.Add("LockedTargetMode", "1");

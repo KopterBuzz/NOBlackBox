@@ -29,10 +29,12 @@ namespace NOBlackBox
             curTime = startDate;
 
             writer = new ACMIWriter(startDate);
+            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING STARTED");
         }
 
         ~Recorder()
         {
+            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING ENDED");
             Close();
         }
 
@@ -72,7 +74,7 @@ namespace NOBlackBox
 
             foreach (var unit in units)
             {
-                if (!unit.networked || unit.disabled)
+                if (!unit.networked || unit.disabled || unit.persistentID == 0)
                     continue;
 
                 bool isNew = false;
@@ -117,7 +119,7 @@ namespace NOBlackBox
                     props = props.Concat(acmi.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                 if (unit.IsLocalPlayer)
-                    Plugin.Logger.LogInfo(props["T"]);
+                    Plugin.Logger?.LogInfo(props["T"]);
 
                 writer.UpdateObject(acmi, curTime, props);
             }
@@ -136,7 +138,7 @@ namespace NOBlackBox
             newFlare.Clear();
 
             var bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-
+            
             foreach (var bulletSim in bulletSims)
             {
                 List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
@@ -145,7 +147,7 @@ namespace NOBlackBox
                     if (!tracers.ContainsKey(bullet))
                         newTracers.Add(new ACMITracer(bulletSim, bullet));
             }
-
+            
             foreach (ACMITracer tracer in tracers.Values)
                 writer.UpdateObject(tracer, curTime, tracer.Update());
 
