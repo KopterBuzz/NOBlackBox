@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Threading;
 
 namespace NOBlackBox
 {
     abstract public class ACMIObject(long id)
     {
-        public readonly long id = id;
+        private static long COMPRESSED_ID = 0;
+
+        public readonly long id = Configuration.CompressIDs ? Interlocked.Increment(ref COMPRESSED_ID) - 1 : id;
 
         public event Action<string, long[], string>? OnEvent;
 

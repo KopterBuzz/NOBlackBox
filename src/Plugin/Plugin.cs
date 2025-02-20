@@ -1,7 +1,6 @@
 using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
-using NuclearOption.SavedMission;
 using System;
 using System.Threading.Tasks;
 
@@ -33,19 +32,27 @@ namespace NOBlackBox
             Configuration.InitSettings(Config);
             Logger?.LogInfo("[NOBlackBox]: LOADED.");
 
-            waitTime = Configuration.UpdateRate.Value != 0 ? 1f / Configuration.UpdateRate.Value : 0f;
+            waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
             //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
             Logger?.LogInfo($"[NOBlackBox]: Wait Time = {waitTime}");
         }
         private void Update()
         {
-            timer += Time.deltaTime;
-            if (recorder != null && timer >= waitTime)
+            if (recorder == null)
+                return;
+
+            if (waitTime > 0)
             {
-                recorder.Update(timer);
+                timer += Time.deltaTime;
+
+                if (timer < waitTime)
+                    return;
+
                 timer = 0f;
             }
+
+            recorder.Update(timer);
         }
 
         private async Task<bool> WaitForLocalPlayer()
