@@ -46,14 +46,17 @@ namespace NOBlackBox
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
-            /*
+
             if (mission.missionSettings.description != null)
             {
-                string briefing = mission.missionSettings.description.Replace(",", "\\,");
+                string briefing = mission.missionSettings.description
+                    .Replace(",", "\\,")
+                    .Replace("\n", "\\n");
+
                 if (briefing != "")
                     initProps.Add("Briefing", briefing);
             }
-            */
+
             output.WriteLine($"0,{StringifyProps(initProps)}");
             output.Flush();
         }

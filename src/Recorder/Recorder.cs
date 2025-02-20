@@ -74,7 +74,7 @@ namespace NOBlackBox
 
             foreach (var unit in units)
             {
-                if (!unit.networked || unit.disabled || unit.persistentID == 0)
+                if (!unit.networked || unit.disabled)
                     continue;
 
                 bool isNew = false;

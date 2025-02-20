@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NOBlackBox
 {
-    public class ACMIUnit(Unit unit): ACMIObject(unit.persistentID)
+    public class ACMIUnit(Unit unit): ACMIObject(unit.persistentID != 0 ? unit.persistentID : int.MaxValue)
     {
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
         private Vector3 lastRot = new(float.NaN, float.NaN, float.NaN);
