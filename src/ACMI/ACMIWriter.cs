@@ -66,8 +66,30 @@ namespace NOBlackBox
             Close();
         }
 
-        internal void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
+        internal void InitObject(ACMIObject aObject, DateTime curTime)
         {
+            Dictionary<string, string> props = aObject
+                .Update()
+                .Concat(aObject.Init())
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            if (props.Count == 0)
+                return;
+
+            TimeSpan diff = curTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+        }
+
+        internal void UpdateObject(ACMIObject aObject, DateTime updateTime)
+        {
+            Dictionary<string, string> props = aObject.Update();
+
             if (props.Count == 0)
                 return;
 
@@ -75,13 +97,10 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
             WriteLine($"{aObject.id:X},{StringifyProps(props)}");
-            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
         internal void RemoveObject(ACMIObject aObject, DateTime updateTime)
@@ -90,11 +109,9 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"-{aObject.id:X}");
             WriteLine($"-{aObject.id:X}");
         }
 
@@ -104,11 +121,9 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
             WriteLine($"0,Event={name}|{string.Join("|", items)}");
         }
 

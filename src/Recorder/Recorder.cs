@@ -14,11 +14,12 @@ namespace NOBlackBox
         private readonly DateTime startDate;
         private DateTime curTime;
         private readonly ACMIWriter writer;
+
         private readonly Dictionary<long, ACMIUnit> objects = [];
+
         private readonly List<ACMIFlare> flares = [];
         private readonly List<ACMIFlare> newFlare = [];
         
-        private readonly List<ACMITracer> newTracers = [];
         private readonly Dictionary<BulletSim.Bullet, ACMITracer> tracers = [];
 
         private readonly Dictionary<Shockwave, ACMIShockwave> waves = [];
@@ -30,6 +31,14 @@ namespace NOBlackBox
 
             writer = new ACMIWriter(startDate);
             Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING STARTED");
+
+            var HQs = FactionRegistry.GetAllHQs();
+            foreach (FactionHQ hq in HQs)
+                hq.onRegisterUnit += OnUnit;
+
+            List<Unit> units = UnitRegistry.allUnits;
+            foreach (Unit unit in units)
+                OnUnit(unit);
         }
 
         ~Recorder()
@@ -41,13 +50,6 @@ namespace NOBlackBox
         internal void Update(float delta)
         {
             curTime += TimeSpan.FromSeconds(delta);
-
-            foreach (var acmi in objects.Values.ToList())
-                if (acmi.unit.disabled)
-                {
-                    objects.Remove(acmi.id);
-                    writer.RemoveObject(acmi, curTime);
-                }
 
             foreach (var acmi in flares.ToList())
                 if (acmi.flare == null || !acmi.flare.enabled) // Apparently we can lose references? wtf?
@@ -70,99 +72,33 @@ namespace NOBlackBox
                     writer.RemoveObject(acmi, curTime);
                 }
 
-            Unit[] units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
-
-            foreach (var unit in units)
-            {
-                if (!unit.networked || unit.disabled)
-                    continue;
-
-                bool isNew = false;
-                if (!objects.TryGetValue(unit.persistentID, out ACMIUnit acmi))
-                {
-                    switch (unit)
-                    {
-                        case Aircraft aircraft:
-                            acmi = new ACMIAircraft(aircraft);
-
-                            aircraft.onAddIRSource += (IRSource source) =>
-                            {
-                                if (source.flare)
-                                    newFlare.Add(new(source));
-                            };
-
-                            break;
-                        case Missile:
-                            acmi = new ACMIMissile((Missile)unit);
-                            break;
-                        case GroundVehicle:
-                            acmi = new ACMIGroundVehicle((GroundVehicle)unit);
-                            break;
-                        case Building:
-                            acmi = new ACMIBuilding((Building)unit);
-                            break;
-                        case Ship:
-                            acmi = new ACMIShip((Ship)unit);
-                            break;
-                        default:
-                            continue;
-                    }
-
-                    objects.Add(unit.persistentID, acmi);
-                    isNew = true;
-
-                    acmi.OnEvent += WriteEvent;
-                }
-
-                Dictionary<string, string> props = acmi.Update();
-                if (isNew)
-                    props = props.Concat(acmi.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-                if (unit.IsLocalPlayer)
-                    Plugin.Logger?.LogInfo(props["T"]);
-
-                writer.UpdateObject(acmi, curTime, props);
-            }
-
-            foreach (ACMIFlare flare in newFlare)
-            {
-                Dictionary<string, string> props = flare.Update();
-                props = props.Concat(flare.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                writer.UpdateObject(flare, curTime, props);
-            }
-
             foreach (ACMIFlare flare in flares)
-                writer.UpdateObject(flare, curTime, flare.Update());
+                writer.UpdateObject(flare, curTime);
 
             flares.AddRange(newFlare);
             newFlare.Clear();
 
             var bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-            
+
+            foreach (ACMITracer tracer in tracers.Values)
+                writer.UpdateObject(tracer, curTime);
+
             foreach (var bulletSim in bulletSims)
             {
                 List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
 
                 foreach (var bullet in bullets)
                     if (!tracers.ContainsKey(bullet))
-                        newTracers.Add(new ACMITracer(bulletSim, bullet));
-            }
-            
-            foreach (ACMITracer tracer in tracers.Values)
-                writer.UpdateObject(tracer, curTime, tracer.Update());
+                    {
+                        ACMITracer aBullet = new(bulletSim, bullet);
 
-            foreach (ACMITracer tracer in newTracers)
-            {
-                Dictionary<string, string> props = tracer.Update();
-                props = props.Concat(tracer.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                writer.UpdateObject(tracer, curTime, props);
-                tracers.Add(tracer.bullet, tracer);
+                        tracers.Add(bullet, aBullet);
+                        writer.InitObject(aBullet, curTime);
+                    }
             }
-
-            newTracers.Clear();
 
             foreach (ACMIShockwave wave in waves.Values)
-                writer.UpdateObject(wave, curTime, wave.Update());
+                writer.UpdateObject(wave, curTime);
 
             Shockwave[] shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
 
@@ -172,10 +108,7 @@ namespace NOBlackBox
                     continue;
 
                 ACMIShockwave acmi = new(wave);
-                Dictionary<string, string> initProps = acmi.Init();
-                Dictionary<string, string> updateProps = acmi.Update();
-
-                writer.UpdateObject(acmi, curTime, initProps.Concat(updateProps).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+                writer.UpdateObject(acmi, curTime);
 
                 waves.Add(wave, acmi);
             }
@@ -192,6 +125,64 @@ namespace NOBlackBox
         internal void Close()
         {
             writer?.Close();
+        }
+
+        private void OnUnit(Unit unit)
+        {
+            if (!unit.networked || unit.disabled)
+                return;
+
+            ACMIUnit acmi;
+            switch (unit)
+            {
+                case Aircraft aircraft:
+                    acmi = new ACMIAircraft(aircraft);
+
+                    aircraft.onAddIRSource += (IRSource source) =>
+                    {
+                        if (source.flare)
+                        {
+                            ACMIFlare acmi = new(source);
+                            newFlare.Add(acmi);
+                            writer.InitObject(acmi, curTime);
+                        }
+                    };
+
+                    break;
+                case Missile:
+                    acmi = new ACMIMissile((Missile)unit);
+                    break;
+                case GroundVehicle:
+                    acmi = new ACMIGroundVehicle((GroundVehicle)unit);
+                    break;
+                case Building:
+                    acmi = new ACMIBuilding((Building)unit);
+                    break;
+                case Ship:
+                    acmi = new ACMIShip((Ship)unit);
+                    break;
+                default:
+                    Plugin.Logger?.LogWarning("Unrecognized unit type");
+                    return;
+            }
+
+            objects.Add(unit.persistentID, acmi);
+            acmi.OnEvent += WriteEvent;
+            writer.InitObject(acmi, curTime);
+
+            unit.onDisableUnit += OnDisable;
+
+            writer.Flush();
+        }
+
+        private void OnDisable(Unit unit)
+        {
+            ACMIUnit acmi = objects[unit.persistentID];
+
+            objects.Remove(unit.persistentID);
+            writer.RemoveObject(acmi, curTime);
+
+            writer.Flush();
         }
     }
 }
