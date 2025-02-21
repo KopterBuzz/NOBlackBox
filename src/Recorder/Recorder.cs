@@ -14,6 +14,7 @@ namespace NOBlackBox
         private static readonly FieldInfo bSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo effects = typeof(Missile).GetField("detonationEffects", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo ir = typeof(IRFlare).GetField("IR", BindingFlags.NonPublic | BindingFlags.Instance);
 
         private readonly DateTime startDate;
         private DateTime curTime;
@@ -44,6 +45,37 @@ namespace NOBlackBox
 
             foreach (Unit unit in UnitRegistry.allUnits)
                 OnUnit(unit);
+
+            Shockwave[] shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
+
+            foreach (Shockwave wave in shockwaves)
+            {
+                ACMIShockwave acmi = new(wave);
+                writer.InitObject(acmi, curTime);
+                newWaves.Add(wave, acmi);
+            }
+
+            BulletSim[] bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
+            foreach (BulletSim bulletSim in bulletSims)
+            {
+                List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder.bullets.GetValue(bulletSim);
+
+                foreach (var bullet in bullets)
+                {
+                    ACMITracer aBullet = new(bulletSim, bullet);
+
+                    newTracers.Add(bullet, aBullet);
+                    writer.InitObject(aBullet, curTime);
+                }
+            }
+
+            IRFlare[] curFlares = UnityEngine.Object.FindObjectsByType<IRFlare>(FindObjectsSortMode.None);
+            foreach (IRFlare flare in curFlares)
+            {
+                ACMIFlare acmi = new((IRSource)ir.GetValue(flare));
+                newFlare.Add(acmi);
+                writer.InitObject(acmi, curTime);
+            }
         }
 
         ~Recorder()
