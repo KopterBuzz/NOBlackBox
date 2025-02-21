@@ -108,7 +108,7 @@ namespace NOBlackBox
                     continue;
 
                 ACMIShockwave acmi = new(wave);
-                writer.UpdateObject(acmi, curTime);
+                writer.InitObject(acmi, curTime);
 
                 waves.Add(wave, acmi);
             }
