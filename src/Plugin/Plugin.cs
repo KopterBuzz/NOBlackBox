@@ -42,17 +42,13 @@ namespace NOBlackBox
             if (recorder == null)
                 return;
 
-            if (waitTime > 0)
-            {
-                timer += Time.deltaTime;
+            timer += Time.deltaTime;
 
-                if (timer < waitTime)
-                    return;
-
-                timer = 0f;
-            }
+            if (timer < waitTime)
+                return;
 
             recorder.Update(timer);
+            timer = 0f;
         }
 
         private async Task<bool> WaitForLocalPlayer()
