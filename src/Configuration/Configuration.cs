@@ -70,26 +70,26 @@ namespace NOBlackBox
             UseMissionTime = config.Bind(GeneralSettings, "UseMissionTime", DefaultUseMissionTime, "Use Mission (true) or Server Time (false) for the clock in the recording.");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: UseMissionTime = {UseMissionTime.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordTAS", DefaultRecordTAS, "Toggle recording True Airspeed. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordTAS = {RecordTAS.Value}");
+            RecordTAS = config.Bind(GeneralSettings, "RecordTAS", DefaultRecordTAS, "Toggle recording True Airspeed. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordTAS = {RecordTAS?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordTAS", DefaultRecordMach, "Toggle recording Mach number. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordMach = {RecordMach.Value}");
+            RecordMach = config.Bind(GeneralSettings, "RecordTAS", DefaultRecordMach, "Toggle recording Mach number. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordMach = {RecordMach?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordAOA", DefaultRecordAOA, "Toggle recording Angle of Attack. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAOA = {RecordAOA.Value}");
+            RecordAOA = config.Bind(GeneralSettings, "RecordAOA", DefaultRecordAOA, "Toggle recording Angle of Attack. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAOA = {RecordAOA?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordAGL", DefaultRecordAGL, "Toggle recording height above ground level. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAGL = {RecordAGL.Value}");
+            RecordAGL = config.Bind(GeneralSettings, "RecordAGL", DefaultRecordAGL, "Toggle recording height above ground level. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAGL = {RecordAGL?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordRadarMode", DefaultRecordRadarMode, "Toggle recording radar mode changes. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordRadarMode = {RecordRadarMode.Value}");
+            RecordRadarMode = config.Bind(GeneralSettings, "RecordRadarMode", DefaultRecordRadarMode, "Toggle recording radar mode changes. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordRadarMode = {RecordRadarMode?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordLandingGear", DefaultRecordLandingGear, "Toggle recording landing gear changes. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordLandingGear = {RecordLandingGear.Value}");
+            RecordLandingGear = config.Bind(GeneralSettings, "RecordLandingGear", DefaultRecordLandingGear, "Toggle recording landing gear changes. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordLandingGear = {RecordLandingGear?.Value}");
 
-            UseMissionTime = config.Bind(GeneralSettings, "RecordPilotHead", DefaultRecordPilotHead, "Toggle recording pilot head movement. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordPilotHead = {RecordPilotHead.Value}");
+            RecordPilotHead = config.Bind(GeneralSettings, "RecordPilotHead", DefaultRecordPilotHead, "Toggle recording pilot head movement. Default: true");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordPilotHead = {RecordPilotHead?.Value}");
         }
     }
 }
