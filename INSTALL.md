@@ -66,3 +66,30 @@ Time interval (in seconds) for automatically updating the Tacview file. Min valu
 
 Default value: 60
 
+### UseMissionTime
+
+Toggles between using Server clock and Mission clock for recordings.
+
+### RecordSpeed
+
+Toggles recording True Airspeed and Mach number.
+
+### RecordAOA
+
+Toggles recording Angle of Attack.
+
+### RecordAGL
+
+Toggles recording AGL.
+
+### RecordRadarMode
+
+Toggles recording radar mode changes.
+
+### RecordLandingGear
+
+Toggles recording Landing Gear changes.
+
+### RecordPilotHead
+
+Toggles recording pilot head movement.

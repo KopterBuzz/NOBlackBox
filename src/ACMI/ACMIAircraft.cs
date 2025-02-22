@@ -58,7 +58,7 @@ namespace NOBlackBox
         {
             Dictionary<string, string> baseProps = base.Update();
 
-            if (unit.speed != lastTAS && Configuration.RecordTAS?.Value == true)
+            if (unit.speed != lastTAS && Configuration.RecordSpeed?.Value == true)
             {
                 baseProps.Add("TAS", unit.speed.ToString("0.##", CultureInfo.InvariantCulture));
                 baseProps.Add("Mach", (unit.speed / 340).ToString("0.###", CultureInfo.InvariantCulture));

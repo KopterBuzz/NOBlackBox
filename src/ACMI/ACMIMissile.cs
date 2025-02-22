@@ -70,7 +70,7 @@ namespace NOBlackBox
                 FireEvent("LeftArea", [unit.persistentID], string.Empty);
             }
 
-            if (unit.speed != lastTAS)
+            if (unit.speed != lastTAS && Configuration.RecordSpeed?.Value == true)
             {
                 baseProps.Add("TAS", unit.speed.ToString("0.##",CultureInfo.InvariantCulture));
                 baseProps.Add("Mach", (unit.speed / 340).ToString("0.###",CultureInfo.InvariantCulture));
@@ -80,13 +80,13 @@ namespace NOBlackBox
             Vector3 vector3 = unit.transform.InverseTransformDirection(unit.rb.velocity);
             float num = Mathf.Atan2(vector3.y, vector3.z) * -57.29578f;
 
-            if (num != lastAOA)
+            if (num != lastAOA && Configuration.RecordAOA?.Value == true)
             {
                 baseProps.Add("AOA", num.ToString("0.##",CultureInfo.InvariantCulture));
                 lastAOA = num;
             }
 
-            if (unit.radarAlt != lastAGL)
+            if (unit.radarAlt != lastAGL && Configuration.RecordAGL?.Value == true)
             {
                 baseProps.Add("AGL", unit.radarAlt.ToString("0.##",CultureInfo.InvariantCulture));
                 lastAGL = unit.radarAlt;
