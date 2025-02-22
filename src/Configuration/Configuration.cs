@@ -13,9 +13,12 @@ namespace NOBlackBox
 
         internal const int DefaultAutoSaveInterval = 60;
 
+        internal const bool DefaultUseMissionTime = true;
+
         internal static ConfigEntry<int>? UpdateRate;
         internal static ConfigEntry<string>? OutputPath;
         internal static ConfigEntry<int>? AutoSaveInterval;
+        internal static ConfigEntry<bool>? UseMissionTime;
 
         internal static void InitSettings(ConfigFile config)
         {
@@ -48,6 +51,9 @@ namespace NOBlackBox
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid AutoSaveInterval! Setting default value {DefaultAutoSaveInterval}!");
                 AutoSaveInterval.Value = DefaultAutoSaveInterval;
             }
+
+            UseMissionTime = config.Bind(GeneralSettings, "UseMissionTime", DefaultUseMissionTime, "Use Mission (true) or Server Time (false) for the clock in the recording.");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: UseMissionTime = {UseMissionTime.Value}");
         }
     }
 }
