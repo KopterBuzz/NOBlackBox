@@ -166,6 +166,11 @@ namespace NOBlackBox
                 case Ship:
                     acmi = new ACMIShip((Ship)unit);
                     break;
+                case PilotDismounted pilot:
+                    acmi = new ACMIPilot(pilot);
+                    break;
+                case Observer:
+                    return;
                 default:
                     Plugin.Logger?.LogWarning("Unrecognized unit type");
                     return;
