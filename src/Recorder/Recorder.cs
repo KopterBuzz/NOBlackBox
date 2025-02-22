@@ -30,7 +30,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogInfo("[NOBlackBox]: USING MISSION CLOCK");
             } else
             {
-                startDate = DateTime.Today;
+                startDate = DateTime.Now;
                 Plugin.Logger?.LogInfo("[NOBlackBox]: USING SERVER CLOCK");
             }
             
