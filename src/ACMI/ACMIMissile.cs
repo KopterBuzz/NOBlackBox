@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using UnityEngine;
@@ -35,6 +36,7 @@ namespace NOBlackBox
             get; private set;
         }
 
+        public event Action<ACMIMissile>? OnDetonate;
         public ACMIMissile(Missile missile): base(missile)
         {
             unit = missile;
@@ -42,7 +44,10 @@ namespace NOBlackBox
             missile.onDisableUnit += (Unit _) =>
             {
                 if (Detonated)
+                {
                     FireEvent("LeftArea", [id], "");
+                    OnDetonate?.Invoke(this);
+                }
                 else
                     FireEvent("Destroyed", [id], "");
             };

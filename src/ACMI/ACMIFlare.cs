@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using UnityEngine;
 
 namespace NOBlackBox
 { 
-    internal class ACMIFlare: ACMIObject
+    internal class ACMIFlare: ACMINotUnit
     {
-        private static int FLAREID = 0;
-
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
 
         public readonly IRFlare flare;
 
-        public ACMIFlare(IRSource source) : base((long)(Interlocked.Increment(ref FLAREID) - 1) | (1L << 32))
+        public ACMIFlare(IRSource source)
         {
             if (source.flare == false)
                 throw new ArgumentException("IRSource is not flare");

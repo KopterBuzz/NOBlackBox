@@ -1,7 +1,6 @@
 using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
-using NuclearOption.SavedMission;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.2.3")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     [BepInProcess("NuclearOption.exe")]
     internal class Plugin : BaseUnityPlugin
     {
@@ -33,15 +32,18 @@ namespace NOBlackBox
             Configuration.InitSettings(Config);
             Logger?.LogInfo("[NOBlackBox]: LOADED.");
 
-            waitTime = Configuration.UpdateRate.Value != 0 ? 1f / Configuration.UpdateRate.Value : 0f;
-            //waitTime = 1f / Configuration.UpdateRate.Value;
+            waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
             waitTime = MathF.Round(waitTime, 3);
             Logger?.LogInfo($"[NOBlackBox]: Wait Time = {waitTime}");
         }
         private void Update()
         {
+            if (recorder == null)
+                return;
+
             timer += Time.deltaTime;
-            if (recorder != null && timer >= waitTime)
+
+            if (timer >= waitTime)
             {
                 recorder.Update(timer);
                 timer = 0f;
@@ -65,6 +67,7 @@ namespace NOBlackBox
             await WaitForLocalPlayer();
             Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
             recorder = new Recorder(MissionManager.CurrentMission);
+            recorder.Update(0);
         }
         private void OnMissionUnload()
         {

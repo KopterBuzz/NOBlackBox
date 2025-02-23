@@ -15,7 +15,7 @@ namespace NOBlackBox
         internal string filename;
         internal ACMIWriter(DateTime reference)
         {
-            string dir = Configuration.OutputPath.Value;
+            string dir = Configuration.OutputPath;
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -39,21 +39,24 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.2.3" },
+                { "DataRecorder", $"{MyPluginInfo.PLUGIN_NAME} {MyPluginInfo.PLUGIN_VERSION}" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
                 { "RecordingTime", DateTime.Today.ToString("s") + "Z" },
             };
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
-            /*
+
             if (mission.missionSettings.description != null)
             {
-                string briefing = mission.missionSettings.description.Replace(",", "\\,");
+                string briefing = mission.missionSettings.description
+                    .Replace(",", "\\,")
+                    .Replace("\n", "\\n");
+
                 if (briefing != "")
                     initProps.Add("Briefing", briefing);
             }
-            */
+
             output.WriteLine($"0,{StringifyProps(initProps)}");
             output.Flush();
         }
@@ -63,8 +66,30 @@ namespace NOBlackBox
             Close();
         }
 
-        internal void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
+        internal void InitObject(ACMIObject aObject, DateTime curTime)
         {
+            Dictionary<string, string> props = aObject
+                .Update()
+                .Concat(aObject.Init())
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            if (props.Count == 0)
+                return;
+
+            TimeSpan diff = curTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+        }
+
+        internal void UpdateObject(ACMIObject aObject, DateTime updateTime)
+        {
+            Dictionary<string, string> props = aObject.Update();
+
             if (props.Count == 0)
                 return;
 
@@ -72,13 +97,10 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
             WriteLine($"{aObject.id:X},{StringifyProps(props)}");
-            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
         internal void RemoveObject(ACMIObject aObject, DateTime updateTime)
@@ -87,11 +109,9 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"-{aObject.id:X}");
             WriteLine($"-{aObject.id:X}");
         }
 
@@ -101,11 +121,9 @@ namespace NOBlackBox
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
-                //output.WriteLine("#" + diff.TotalSeconds);
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
             WriteLine($"0,Event={name}|{string.Join("|", items)}");
         }
 
@@ -117,7 +135,7 @@ namespace NOBlackBox
 
         internal void WriteLine(string line)
         {
-            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval.Value && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval.Value < 1))
+            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval < 1))
             {
                 output.Flush();
                 output.Close();
