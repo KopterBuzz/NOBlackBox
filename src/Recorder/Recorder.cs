@@ -33,7 +33,16 @@ namespace NOBlackBox
 
         internal Recorder(Mission mission)
         {
-            startDate = DateTime.Today + TimeSpan.FromHours(mission.environment.timeOfDay);
+            if (Configuration.UseMissionTime?.Value == true)
+            {
+                startDate = DateTime.Today + TimeSpan.FromHours(mission.environment.timeOfDay);
+                Plugin.Logger?.LogInfo("[NOBlackBox]: USING MISSION CLOCK");
+            } else
+            {
+                startDate = DateTime.Now;
+                Plugin.Logger?.LogInfo("[NOBlackBox]: USING SERVER CLOCK");
+            }
+            
             curTime = startDate;
 
             writer = new ACMIWriter(startDate);

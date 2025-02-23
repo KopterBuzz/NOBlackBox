@@ -49,6 +49,7 @@ namespace NOBlackBox
             if (unit.Player != null)
             {
                 props.Add("Pilot", unit.Player.PlayerName);
+                props.Add("CallSign", unit.Player.PlayerName);
             }
 
             return props;
@@ -58,7 +59,7 @@ namespace NOBlackBox
         {
             Dictionary<string, string> baseProps = base.Update();
 
-            if (unit.speed != lastTAS)
+            if (unit.speed != lastTAS && Configuration.RecordSpeed?.Value == true)
             {
                 baseProps.Add("TAS", unit.speed.ToString("0.##", CultureInfo.InvariantCulture));
                 baseProps.Add("Mach", (unit.speed / 340).ToString("0.###", CultureInfo.InvariantCulture));
@@ -68,31 +69,31 @@ namespace NOBlackBox
             Vector3 vector3 = unit.cockpit.transform.InverseTransformDirection(unit.cockpit.rb.velocity);
             float num = MathF.Round(Mathf.Atan2(vector3.y, vector3.z) * -57.29578f, 2);
 
-            if (num != lastAOA)
+            if (num != lastAOA && Configuration.RecordAOA?.Value == true)
             {
                 baseProps.Add("AOA", num.ToString("0.##"));
                 lastAOA = num;
             }
 
-            if (unit.radarAlt != lastAGL)
+            if (unit.radarAlt != lastAGL && Configuration.RecordAGL?.Value == true)
             {
                 baseProps.Add("AGL", Mathf.Max(0, unit.radarAlt).ToString("0.##", CultureInfo.InvariantCulture));
                 lastAGL = unit.radarAlt;
             }
 
-            if (unit.gearDeployed != lastGear)
+            if (unit.gearDeployed != lastGear && Configuration.RecordLandingGear?.Value == true)
             {
                 baseProps.Add("LandingGear", unit.gearDeployed ? "1" : "0");
                 lastGear = unit.gearDeployed;
             }
 
-            if (unit.radar != lastRadar)
+            if (unit.radar != lastRadar && Configuration.RecordRadarMode?.Value == true)
             {
                 baseProps.Add("RadarMode", unit.radar.activated ? "1" : "0");
                 lastRadar = unit.radar;
             }
 
-            if (unit.Player == GameManager.LocalPlayer && CameraStateManager.cameraMode == CameraMode.cockpit)
+            if (unit.Player == GameManager.LocalPlayer && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead?.Value == true)
             {
 
                 Camera camera = Camera.main;
