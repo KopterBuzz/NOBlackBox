@@ -94,6 +94,8 @@ namespace NOBlackBox
                     flares.Remove(acmi);
                     writer.RemoveObject(acmi, curTime);
                 }
+                else
+                    writer.UpdateObject(acmi, curTime);
 
             foreach (var acmi in tracers.Values.ToList())
                 if (!acmi.bullet.active)
@@ -101,6 +103,8 @@ namespace NOBlackBox
                     tracers.Remove(acmi.bullet);
                     writer.RemoveObject(acmi, curTime);
                 }
+                else
+                    writer.UpdateObject(acmi, curTime);
 
             foreach (var acmi in waves.Values.ToList())
                 if (acmi.shockwave == null || acmi.shockwave.enabled == false)
@@ -108,15 +112,8 @@ namespace NOBlackBox
                     waves.Remove(acmi.shockwave);
                     writer.RemoveObject(acmi, curTime);
                 }
-
-            foreach (ACMIFlare flare in flares)
-                writer.UpdateObject(flare, curTime);
-
-            foreach (ACMITracer tracer in tracers.Values)
-                writer.UpdateObject(tracer, curTime);
-
-            foreach (ACMIShockwave wave in waves.Values)
-                writer.UpdateObject(wave, curTime);
+                else
+                    writer.UpdateObject(acmi, curTime);
 
             flares.AddRange(newFlare);
             newFlare.Clear();
@@ -126,6 +123,17 @@ namespace NOBlackBox
 
             waves.AddRange(newWaves);
             newWaves.Clear();
+
+            foreach (ACMIUnit unit in objects.Values.ToList())
+            {
+                if (unit.unit == null || unit.unit.disabled)
+                {
+                    objects.Remove(unit.id);
+                    writer.RemoveObject(unit, curTime);
+                }
+                else
+                    writer.UpdateObject(unit, curTime);
+            }
 
             writer.Flush();
         }

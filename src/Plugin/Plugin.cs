@@ -33,7 +33,6 @@ namespace NOBlackBox
             Logger?.LogInfo("[NOBlackBox]: LOADED.");
 
             waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
-            //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
             Logger?.LogInfo($"[NOBlackBox]: Wait Time = {waitTime}");
         }
@@ -44,11 +43,11 @@ namespace NOBlackBox
 
             timer += Time.deltaTime;
 
-            if (timer < waitTime)
-                return;
-
-            recorder.Update(timer);
-            timer = 0f;
+            if (timer >= waitTime)
+            {
+                recorder.Update(timer);
+                timer = 0f;
+            }
         }
 
         private async Task<bool> WaitForLocalPlayer()
@@ -68,6 +67,7 @@ namespace NOBlackBox
             await WaitForLocalPlayer();
             Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
             recorder = new Recorder(MissionManager.CurrentMission);
+            recorder.Update(0);
         }
         private void OnMissionUnload()
         {
