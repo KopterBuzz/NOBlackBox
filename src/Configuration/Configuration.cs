@@ -22,48 +22,84 @@ namespace NOBlackBox
         internal const bool DefaultRecordRadarMode = true;
         internal const bool DefaultRecordLandingGear = true;
         internal const bool DefaultRecordPilotHead = true;
+        internal const bool DefaultCompressIDs = false;
 
-        internal static ConfigEntry<int>? UpdateRate;
-        internal static ConfigEntry<string>? OutputPath;
-        internal static ConfigEntry<int>? AutoSaveInterval;
-        internal static ConfigEntry<bool>? UseMissionTime;
-        internal static ConfigEntry<bool>? RecordSpeed;
-        internal static ConfigEntry<bool>? RecordAOA;
-        internal static ConfigEntry<bool>? RecordAGL;
-        internal static ConfigEntry<bool>? RecordRadarMode;
-        internal static ConfigEntry<bool>? RecordLandingGear;
-        internal static ConfigEntry<bool>? RecordPilotHead;
+#pragma warning disable CS8618
+        private static ConfigEntry<int> _UpdateRate;
+        private static ConfigEntry<string> _OutputPath;
+        private static ConfigEntry<int> _AutoSaveInterval;
+        private static ConfigEntry<bool> _CompressIDs;
+        internal static ConfigEntry<bool> UseMissionTime;
+        internal static ConfigEntry<bool> RecordSpeed;
+        internal static ConfigEntry<bool> RecordAOA;
+        internal static ConfigEntry<bool> RecordAGL;
+        internal static ConfigEntry<bool> RecordRadarMode;
+        internal static ConfigEntry<bool> RecordLandingGear;
+        internal static ConfigEntry<bool> RecordPilotHead;
+#pragma warning restore
+
+        internal static int UpdateRate
+        {
+            get
+            {
+                return _UpdateRate.Value;
+            }
+        }
+
+        internal static string OutputPath
+        {
+            get
+            {
+                return _OutputPath.Value;
+            }
+        }
+
+        internal static int AutoSaveInterval
+        {
+            get
+            {
+                return _AutoSaveInterval.Value;
+            }
+        }
+
+        internal static bool CompressIDs
+        {
+            get
+            {
+                return _CompressIDs.Value;
+            }
+        }
 
         internal static void InitSettings(ConfigFile config)
         {
             Plugin.Logger?.LogInfo("[NOBlackBox]: Loading Settings.");
 
-            UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {UpdateRate.Value}");
-            if (!Enumerable.Range(0,1001).Contains(UpdateRate.Value))
+            _UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {_UpdateRate.Value}");
+            if (!Enumerable.Range(0,1001).Contains(_UpdateRate.Value))
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: UpdateRate out of range! Setting default value {DefaultUpdateRate}!");
-                UpdateRate.Value = DefaultUpdateRate;
+                _UpdateRate.Value = DefaultUpdateRate;
             }
             
             string DefaultOutputPath = Application.persistentDataPath + "/Replays/";
-            OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: OutputPath = {OutputPath.Value}");
+            _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: OutputPath = {_OutputPath.Value}");
 
-            (bool isFolder, bool success) = Helpers.IsFileOrFolder(OutputPath.Value);
+            (bool isFolder, bool success) = Helpers.IsFileOrFolder(_OutputPath.Value);
             if (!isFolder || !success)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid OutputPath! Setting default value {DefaultOutputPath}!");
-                OutputPath.Value = DefaultOutputPath;
+                _OutputPath.Value = DefaultOutputPath;
             }
 
-            AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {AutoSaveInterval.Value}");
+            _AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {_AutoSaveInterval.Value}");
 
-            if (AutoSaveInterval.Value < 60)
+            if (_AutoSaveInterval.Value < 60)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid AutoSaveInterval! Setting default value {DefaultAutoSaveInterval}!");
-                AutoSaveInterval.Value = DefaultAutoSaveInterval;
+                _AutoSaveInterval.Value = DefaultAutoSaveInterval;
             }
 
             UseMissionTime = config.Bind(OptionalDataSettings, "UseMissionTime", DefaultUseMissionTime, "Use Mission (true) or Server Time (false) for the clock in the recording.");
@@ -86,6 +122,9 @@ namespace NOBlackBox
 
             RecordPilotHead = config.Bind(OptionalDataSettings, "RecordPilotHead", DefaultRecordPilotHead, "Toggle recording pilot head movement. Default: true");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordPilotHead = {RecordPilotHead?.Value}");
+
+            _CompressIDs = config.Bind(OptionalDataSettings, "CompressIDs", DefaultCompressIDs, "Compress IDs to reduce filesize with less determinism.");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: CompressIDs = {_CompressIDs.Value}");
         }
     }
 }
