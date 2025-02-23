@@ -5,7 +5,7 @@ using System;
 
 namespace NOBlackBox
 {
-    public static class Configuration
+    internal static class Configuration
     {
         internal const string GeneralSettings = "General Settings";
 
@@ -13,41 +13,78 @@ namespace NOBlackBox
 
         internal const int DefaultAutoSaveInterval = 60;
 
-        internal static ConfigEntry<int>? UpdateRate;
-        internal static ConfigEntry<string>? OutputPath;
-        internal static ConfigEntry<int>? AutoSaveInterval;
+#pragma warning disable CS8618
+        private static ConfigEntry<int> _UpdateRate;
+        private static ConfigEntry<string> _OutputPath;
+        private static ConfigEntry<int> _AutoSaveInterval;
+        private static ConfigEntry<bool> _CompressIDs;
+#pragma warning restore
+
+        internal static int UpdateRate
+        {
+            get
+            {
+                return _UpdateRate.Value;
+            }
+        }
+
+        internal static string OutputPath
+        {
+            get
+            {
+                return _OutputPath.Value;
+            }
+        }
+
+        internal static int AutoSaveInterval
+        {
+            get
+            {
+                return _AutoSaveInterval.Value;
+            }
+        }
+        
+        internal static bool CompressIDs
+        {
+            get
+            {
+                return _CompressIDs.Value;
+            }
+        }
 
         internal static void InitSettings(ConfigFile config)
         {
             Plugin.Logger?.LogInfo("[NOBlackBox]: Loading Settings.");
 
-            UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {UpdateRate.Value}");
-            if (!Enumerable.Range(0,1001).Contains(UpdateRate.Value))
+            _UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {UpdateRate}");
+            if (!Enumerable.Range(0,1001).Contains(UpdateRate))
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: UpdateRate out of range! Setting default value {DefaultUpdateRate}!");
-                UpdateRate.Value = DefaultUpdateRate;
+                _UpdateRate.Value = DefaultUpdateRate;
             }
             
             string DefaultOutputPath = Application.persistentDataPath + "/Replays/";
-            OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: OutputPath = {OutputPath.Value}");
+            _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: OutputPath = {OutputPath}");
 
-            (bool isFolder, bool success) = Helpers.IsFileOrFolder(OutputPath.Value);
+            (bool isFolder, bool success) = Helpers.IsFileOrFolder(OutputPath);
             if (!isFolder || !success)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid OutputPath! Setting default value {DefaultOutputPath}!");
-                OutputPath.Value = DefaultOutputPath;
+                _OutputPath.Value = DefaultOutputPath;
             }
 
-            AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {AutoSaveInterval.Value}");
+            _AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {AutoSaveInterval}");
 
-            if (AutoSaveInterval.Value < 60)
+            if (AutoSaveInterval < 60)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid AutoSaveInterval! Setting default value {DefaultAutoSaveInterval}!");
-                AutoSaveInterval.Value = DefaultAutoSaveInterval;
+                _AutoSaveInterval.Value = DefaultAutoSaveInterval;
             }
+
+            _CompressIDs = config.Bind(GeneralSettings, "CompressIDs", false, "Compress IDs to reduce filesize with less determinism.");
         }
     }
 }

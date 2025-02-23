@@ -1,17 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
 namespace NOBlackBox
 {
-    using ACMITransform = (double, double);
-
-    public class ACMIUnit(Unit unit): ACMIObject(unit.persistentID)
+    public class ACMIUnit: ACMIObject
     {
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
         private Vector3 lastRot = new(float.NaN, float.NaN, float.NaN);
-        public readonly Unit unit = unit;
+        public readonly Unit unit;
+
+        public event Action<ACMIUnit, List<Weapon>>? OnGunFired;
+
+        public ACMIUnit(Unit unit): base(unit.persistentID != 0 ? unit.persistentID : int.MaxValue)
+        {
+            this.unit = unit;
+
+            foreach (WeaponStation station in unit.weaponStations)
+                if (station.weaponInfo.gun)
+                    station.onUpdated += () => {
+                        if (station.lastFiredTime == Time.timeSinceLevelLoad)
+                            OnGunFired?.Invoke(this, station.weapons);
+                    };
+        }
 
         public override Dictionary<string, string> Init()
         {

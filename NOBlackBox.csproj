@@ -5,7 +5,7 @@
     <AssemblyName>NOBlackBox</AssemblyName>
     <Product>NOBlackbox</Product>
     <Description>Tacview recording for Nuclear Option</Description>
-    <Version>1.0.0</Version>
+    <Version>0.2.3</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -21,14 +21,22 @@
     <Configurations>Debug-Bep6;Release-Bep6;Debug-Bep5;Release-Bep5</Configurations>
   </PropertyGroup>
 
+  <!-- Debug -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug-Bep5' Or '$(Configuration)'=='Debug-Bep6'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
+  <!-- Release -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release-Bep5' Or '$(Configuration)'=='Release-Bep6'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- BEP6 -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug-Bep6' Or '$(Configuration)'=='Release-Bep6'">
     <DefineConstants>BEP6</DefineConstants>
   </PropertyGroup>
 
+  <!-- BEP 5-->
   <PropertyGroup Condition="'$(Configuration)'=='Debug-Bep5' Or '$(Configuration)'=='Release-Bep5'">
     <DefineConstants>BEP5</DefineConstants>
   </PropertyGroup>
