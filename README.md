@@ -21,3 +21,5 @@ If you wish to contribute, please fork this repository, implement your change in
 - RehabRocket: Programming, Tacview customisation
 
 - TYKUHN2: Programming
+
+- CircuitButKerbin: Tacview customisation
