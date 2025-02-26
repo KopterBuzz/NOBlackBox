@@ -15,7 +15,7 @@ namespace NOBlackBox
         internal string filename;
         internal ACMIWriter(DateTime reference)
         {
-            string dir = Configuration.OutputPath.Value;
+            string dir = Configuration.OutputPath;
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -117,7 +117,7 @@ namespace NOBlackBox
 
         internal void WriteLine(string line)
         {
-            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval.Value && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval.Value < 1))
+            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval < 1))
             {
                 output.Flush();
                 output.Close();
