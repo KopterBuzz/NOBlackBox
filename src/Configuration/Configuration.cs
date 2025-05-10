@@ -23,6 +23,8 @@ namespace NOBlackBox
         internal const bool DefaultRecordLandingGear = true;
         internal const bool DefaultRecordPilotHead = true;
         internal const bool DefaultCompressIDs = false;
+        
+        internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
@@ -36,6 +38,7 @@ namespace NOBlackBox
         internal static ConfigEntry<bool> RecordRadarMode;
         internal static ConfigEntry<bool> RecordLandingGear;
         internal static ConfigEntry<bool> RecordPilotHead;
+        internal static ConfigEntry<KeyboardShortcut> _GenerateHeightMapKey;
 #pragma warning restore
 
         internal static int UpdateRate
@@ -67,6 +70,14 @@ namespace NOBlackBox
             get
             {
                 return _CompressIDs.Value;
+            }
+        }
+
+        internal static bool GenerateHeightMapKey
+        {
+            get
+            {
+                return _GenerateHeightMapKey.Value.IsDown();
             }
         }
 
@@ -125,6 +136,10 @@ namespace NOBlackBox
 
             _CompressIDs = config.Bind(OptionalDataSettings, "CompressIDs", DefaultCompressIDs, "Compress IDs to reduce filesize with less determinism.");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: CompressIDs = {_CompressIDs.Value}");
+
+            _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
+
         }
     }
 }
