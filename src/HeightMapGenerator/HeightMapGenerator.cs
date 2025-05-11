@@ -10,6 +10,9 @@ namespace NOBlackBox
 {
     internal static class HeightMapGenerator
     {
+        private static AssetBundle noBlackBoxBundle = AssetBundle.LoadFromFile(BepInEx.Paths.PluginPath + "/NOBlackBox/noblackbox");
+        private static Shader vertexYToColorShader = noBlackBoxBundle.LoadAsset<Shader>("NOBlackBox_VertexYToColor");
+        private static Material vertexYToColorShaderMat = new Material(vertexYToColorShader);
         private static int patchSize = 0;
         private static float terrainSize = 0;
         private static int raysPerKilometer;
@@ -41,15 +44,15 @@ namespace NOBlackBox
                     return;
                 }
                 patchSize = 8192;
-                terrainSize = terrainSize + (patchSize * 2);
                 tileCount = (int)(terrainSize / patchSize);
-                tileSize = (int)(MathF.Round((8192 / tileCount), 0, 0));
+                //tileSize = (int)(MathF.Round((8192 / tileCount), 0, 0));
+                tileSize = 512;
                 Plugin.Logger?.LogInfo($"terrainSize: {terrainSize.ToString()}");
                 Plugin.Logger?.LogInfo($"patchSize: {patchSize.ToString()}");
                 Plugin.Logger?.LogInfo($"tileSize: {tileSize.ToString()}");
                 //call Heightmap generator
                 //RayCastHeightmap();
-                GetGameSceneTest();
+                GenerateHeightMapWithShader();
             }
             catch (Exception ex)
             {
@@ -87,10 +90,10 @@ namespace NOBlackBox
         //resizes a tecxture
         private static Texture2D ResizeTexture(Texture2D texture2D, int targetX, int targetY)
         {
-            RenderTexture rt = new RenderTexture(targetX, targetY, 24);
+            RenderTexture rt = new RenderTexture(targetX, targetY, 16);
             RenderTexture.active = rt;
             UnityEngine.Graphics.Blit(texture2D, rt);
-            Texture2D result = new Texture2D(targetX, targetY, TextureFormat.RHalf, false);
+            Texture2D result = new Texture2D(targetX, targetY, TextureFormat.RGBA32, false);
             result.filterMode = UnityEngine.FilterMode.Trilinear;
             result.anisoLevel = 16;
             result.ReadPixels(new Rect(0, 0, targetX, targetY), 0, 0);
@@ -100,7 +103,7 @@ namespace NOBlackBox
         //convert raw height array to Texture2D
         private static Texture2D GenerateTextureSegment(float[,] heights)
         {
-            Texture2D tex = new Texture2D(patchSize, patchSize, TextureFormat.RHalf, false);
+            Texture2D tex = new Texture2D(patchSize, patchSize, TextureFormat.RGBA32, false);
             Texture2D texOut;
             tex.filterMode = UnityEngine.FilterMode.Trilinear;
             tex.anisoLevel = 16;
@@ -136,11 +139,11 @@ namespace NOBlackBox
         private static void RayCastHeightmap()
         {
             
-            Texture2D finalHeightmap = new Texture2D((tileSize * tileCount), (tileSize * tileCount), TextureFormat.RHalf, false);
+            Texture2D finalHeightmap = new Texture2D((tileSize * tileCount), (tileSize * tileCount), TextureFormat.RGBA32, false);
             finalHeightmap.filterMode = UnityEngine.FilterMode.Trilinear;
             finalHeightmap.anisoLevel = 16;
 
-            string outputDir = Path.Combine(Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
+            string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
             Directory.CreateDirectory(outputDir);
             for (int z = (int)(0 - (terrainSize / 2)); z < (terrainSize / 2); z = z + patchSize)
             {
@@ -174,7 +177,57 @@ namespace NOBlackBox
             Plugin.Logger?.LogInfo($"Generating segment...");
         }
 
-        public static void GetGameSceneTest()
+
+
+        private static Mesh scaleMeshXZToInt(Mesh baseMesh)
+        {
+            Mesh outputMesh = new Mesh();
+
+            Vector3[] outputVertices = new Vector3[baseMesh.vertices.Length];
+
+            int sizeXint = (int)(Math.Truncate((double)(baseMesh.bounds.size.x)));
+            int sizeZint = (int)(Math.Truncate((double)(baseMesh.bounds.size.z)));
+            float scaleX = sizeXint / baseMesh.bounds.size.x;
+            float scaleZ = sizeZint / baseMesh.bounds.size.z;
+
+            for (int i = 0; i < outputVertices.Length; i++)
+            {
+                var vertex = baseMesh.vertices[i];
+                vertex.x = (int)(vertex.x * scaleX);
+                vertex.z = (int)(vertex.z * scaleZ);
+                outputVertices[i] = vertex;
+            }
+
+            outputMesh.vertices = outputVertices;
+            outputMesh.RecalculateNormals();
+            outputMesh.RecalculateBounds();
+            return outputMesh;
+        }
+
+        private static Texture2D PaintHeightmapSegmentTextureFromMesh(MeshFilter meshFilter)
+        {
+            RenderTexture rt = new RenderTexture(tileSize, tileSize, 32, RenderTextureFormat.ARGB32);
+            rt.Create();
+
+            Matrix4x4 rot = Matrix4x4.Rotate(Quaternion.Euler(0, 0, 0)); // 90° around Z
+            Matrix4x4 matrix = rot * Matrix4x4.identity;
+
+            UnityEngine.Graphics.SetRenderTarget(rt);
+            GL.Clear(true, true, Color.black);
+            vertexYToColorShaderMat.SetPass(0);
+            UnityEngine.Graphics.DrawMeshNow(meshFilter.sharedMesh, matrix);
+            UnityEngine.Graphics.SetRenderTarget(null);
+
+            RenderTexture.active = rt;
+            Texture2D tex = new Texture2D(tileSize, tileSize, TextureFormat.RGBA32, false);
+            tex.ReadPixels(new Rect(0, 0, tileSize, tileSize), 0, 0);
+            tex.Apply();
+            RenderTexture.active = null;
+            Texture2D texOut = ResizeTexture(tex,tileSize,tileSize);
+            return texOut;
+        }
+
+        public static void GenerateHeightMapWithShader()
         {
             GameObject[] objs;
             Scene scn = SceneManager.GetActiveScene();
@@ -200,20 +253,37 @@ namespace NOBlackBox
                             Plugin.Logger?.LogInfo($"FOUND TERRAIN {child.name}");
                             foundTerrain = true;
                             Plugin.Logger?.LogInfo($"BEGIN LISTING TERRAIN COMPONENTS...");
-                            Component[] terrainChildren = child.GetComponentsInChildren<MeshCollider>();
+                            Component[] terrainChildren = child.GetComponentsInChildren<MeshFilter>();
                             foreach (Component terrainChild in terrainChildren)
-                            {
-                                
-                                Plugin.Logger?.LogInfo($"Child Name: {terrainChild.name}, Child Type: {terrainChild.GetType().Name}, Parent Name: {child.name}, Parent Type: {child.GetType().Name}");
+                            { 
                                 try
                                 {
-                                    Plugin.Logger?.LogInfo($"Child MeshCollider sizeX: {terrainChild.GetComponent<MeshCollider>().sharedMesh.bounds.size.x}, sizeZ: {terrainChild.GetComponent<MeshCollider>().sharedMesh.bounds.size.z}, PosX: {terrainChild.transform.GlobalPosition().x}, PosY: {terrainChild.transform.GlobalPosition().z}");
+                                    //name,sizeX,sizeZ,posX,posZ
+                                    Plugin.Logger?.LogInfo($"TERRAIN_DATA"+
+                                                           $"{terrainChild.name}," +
+                                                           $"{terrainChild.GetComponent<MeshFilter>().sharedMesh.bounds.size.x}," +
+                                                           $"{terrainChild.GetComponent<MeshFilter>().sharedMesh.bounds.size.z}," +
+                                                           $"{terrainChild.transform.GlobalPosition().x}," +
+                                                           $"{terrainChild.transform.GlobalPosition().z}");
+                                    if (terrainChild.name.Contains("terrain"))
+                                    {
+                                        Texture2D currentTex = PaintHeightmapSegmentTextureFromMesh(terrainChild.GetComponent<MeshFilter>());
+                                        currentTex.Apply();
+                                        if (currentTex != null)
+                                        {
+                                            string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_SHADER_HeightmapExports");
+                                            string filename = $"NOBlackBox_{terrainChild.name}_Z-{terrainChild.transform.GlobalPosition().z}_X-{terrainChild.transform.GlobalPosition().z}_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.png";
+                                            string outputPath = Path.Combine(outputDir, filename);
+                                            byte[] bytes = currentTex.EncodeToPNG();
+                                            File.WriteAllBytes(outputPath, bytes);
+                                            Plugin.Logger?.LogInfo($"Heightmap Tile PNG exported to: {outputPath}");
+                                        }
+                                    }
                                 }
-                                catch
+                                catch (Exception e)
                                 {
-                                    Plugin.Logger?.LogInfo($"{terrainChild.name} has no collision mesh...");
-                                }
-                                
+                                    Plugin.Logger?.LogInfo(e);
+                                }  
                             }
                             Plugin.Logger?.LogInfo($"FINISHED LISTING TERRAIN COMPONENTS.");
                             break;
