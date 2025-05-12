@@ -49,7 +49,7 @@ namespace NOBlackBox
             }
             if (Configuration._GenerateHeightMapKey.Value.IsDown())
             {
-                HeightMapGenerator.ExportCustomTerrainHeightmap();
+                RaycastHeightmapGenerator.Generate();
             }
         }
 
