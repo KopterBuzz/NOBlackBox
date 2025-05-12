@@ -13,7 +13,7 @@ namespace NOBlackBox
     {
         private static int textureSize = 4096;
         private static float terrainSize = 0;
-        private static int metersPerRay = 30;
+        private static int metersPerRay = 4;
         private static float minHeight = 0;
         private static float maxHeight = 0;
         private static float terrainScale = 0;
@@ -147,12 +147,14 @@ namespace NOBlackBox
                 for (int x = 0; x < textureSize; x++)
                 {
                     Color col = new Color(heights[x, z], heights[x, z], heights[x, z]);
-                    tex.SetPixel(x, textureSize - z - 1, col);
+                    tex.SetPixel(x, z, col);
+                    //tex.SetPixel(x, textureSize - z - 1, col);
                     //tex.SetPixel(textureSize - x - 1, z, col);
                 }
             }
+            
             tex.Apply();
-            texOut = rotateTexture(tex, false);
+            texOut = rotateTexture(tex, true);
             texOut.Apply();
             return texOut;
         }
@@ -169,12 +171,13 @@ namespace NOBlackBox
 
             Plugin.Logger?.LogInfo($"minHeight: {minHeight.ToString()}, maxHeight: {maxHeight.ToString()}");
 
+            /*
             string filename = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.png";
             string outputPath = Path.Combine(outputDir, filename);
             byte[] bytes = heightMap.EncodeToPNG();
             File.WriteAllBytes(outputPath, bytes);
             Plugin.Logger?.LogInfo($"Heightmap PNG exported to: {outputPath}");
-
+            */
             
             string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
             string outputPathRaw = Path.Combine(outputDir, filenameRaw);
