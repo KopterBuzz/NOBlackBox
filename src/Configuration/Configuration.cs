@@ -25,6 +25,8 @@ namespace NOBlackBox
         internal const bool DefaultCompressIDs = false;
         
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
+        internal const int DefaultMetersPerRay = 4;
+        internal const int DefaultHeightMapResolution = 4096;
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
