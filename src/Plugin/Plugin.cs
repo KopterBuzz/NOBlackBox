@@ -1,11 +1,16 @@
 using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
-using NuclearOption.SavedMission;
 using System;
 using System.Threading.Tasks;
 using NuclearOption.SceneLoading;
 using System.Linq;
+using NOBlackBox.src.HeightMapGenerator;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
+using System.Buffers.Binary;
+
+
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -49,7 +54,40 @@ namespace NOBlackBox
             }
             if (Configuration._GenerateHeightMapKey.Value.IsDown())
             {
-                RaycastHeightmapGenerator.Generate();
+                //RaycastHeightmapGenerator.Generate();
+
+                /*Raycaster instance = Raycaster.ScanMap();
+
+                instance.OnFinished += tex =>
+                {
+                    string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
+                    Directory.CreateDirectory(outputDir);
+
+                    string filename = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.png";
+                    string outputPath = Path.Combine(outputDir, filename);
+                    byte[] bytes = tex.EncodeToPNG();
+                    File.WriteAllBytes(outputPath, bytes);
+                    Plugin.Logger?.LogInfo($"Heightmap PNG exported to: {outputPath}");
+
+                    string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
+                    string outputPathRaw = Path.Combine(outputDir, filenameRaw);
+                    byte[] rawBytes = tex.GetRawTextureData();
+                    File.WriteAllBytes(outputPathRaw, rawBytes);
+                    Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {outputPathRaw}");
+                };*/
+
+                RaycasterV2 instance = RaycasterV2.ScanMap();
+
+                instance.OnFinished += map =>
+                {
+                    string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
+                    Directory.CreateDirectory(outputDir);
+
+                    string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
+                    string outputPathRaw = Path.Combine(outputDir, filenameRaw);
+                    File.WriteAllBytes(outputPathRaw, map);
+                    Logger?.LogInfo($"Heightmap RAW exported to: {outputPathRaw}");
+                };
             }
         }
 

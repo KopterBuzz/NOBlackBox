@@ -3,6 +3,11 @@ using System.Linq;
 using UnityEngine;
 using System;
 
+
+#if BEP6
+using BepInEx.Unity.Mono.Configuration;
+#endif
+
 namespace NOBlackBox
 {
     public static class Configuration

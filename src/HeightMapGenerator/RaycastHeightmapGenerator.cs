@@ -1,27 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using BepInEx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TextCore.Text;
 
 namespace NOBlackBox
 {
     internal static class RaycastHeightmapGenerator
     {
-        private static int textureSize = 4096;
+        private readonly static int textureSize = 4096;
         private static float terrainSize = 0;
-        private static int metersPerRay = 4;
+        private readonly static int metersPerRay = 4;
         private static float minHeight = 0;
         private static float maxHeight = 0;
         private static float terrainScale = 0;
         private static float terrainHalf = 0;
-        private static float terrainSizeX = 0;
-        private static float terrainSizey = 0;
         private static Vector3 terrainCenter,playerPosition;
-
 
         public static void Generate()
         {
@@ -33,6 +25,7 @@ namespace NOBlackBox
             try
             {
                 Plugin.Logger?.LogInfo("Attempting to export custom terrain heightmap");
+
                 // Get terrain dimensions from the static TerrainGrid class
                 terrainCenter = Datum.originPosition;
                 playerPosition = GameManager.LocalPlayer.transform.GlobalPosition().ToLocalPosition();
@@ -65,6 +58,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogError($"Error exporting heightmap: {ex.Message}\n{ex.StackTrace}");
             }
         }
+
         //casts 1 Physics.Raycast per meter, returns a 2d array of y coordinates per each RaycastHit
         private static float[,] RayCastTerrain()
         {
@@ -82,36 +76,38 @@ namespace NOBlackBox
                     int posZ = (int)((z + (terrainHalf)) * terrainScale );
                     if (posZ > textureSize - 1) { posZ = textureSize - 1; }
 
-                    Vector3 rayStart = new Vector3(x + terrainCenter.x, 5000f, z + terrainCenter.z);
-                    RaycastHit hit;
-                    if (Physics.Raycast(rayStart, Vector3.down, out hit, 10000f, 1 << 6))
+                    Vector3 rayStart = new(x + terrainCenter.x, 5000f, z + terrainCenter.z);
+                    if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 10000f, 1 << 6))
                     {
                         heights[posZ, posX] = 0.1f + (hit.point.y / 10000);
                         if (heights[posZ, posX] < minHeight) { minHeight = heights[posZ, posX];}
                         if (heights[posZ, posX] > maxHeight) { maxHeight = heights[posZ, posX];}
                     } else
                     {
-                        heights[posZ, posX] = Int16.MinValue;
+                        heights[posZ, posX] = short.MinValue;
                     }
                 }
             }
             return heights;
         }
+
         //resizes a tecxture
         private static Texture2D ResizeTexture(Texture2D texture2D, int targetX, int targetY)
         {
-            RenderTexture rt = new RenderTexture(targetX, targetY, 16);
+            RenderTexture rt = new(targetX, targetY, 16);
             RenderTexture.active = rt;
             UnityEngine.Graphics.Blit(texture2D, rt);
-            Texture2D result = new Texture2D(targetX, targetY, TextureFormat.RHalf, false);
-            result.filterMode = UnityEngine.FilterMode.Trilinear;
-            result.anisoLevel = 16;
+            Texture2D result = new(targetX, targetY, TextureFormat.RHalf, false)
+            {
+                filterMode = UnityEngine.FilterMode.Trilinear,
+                anisoLevel = 16
+            };
             result.ReadPixels(new Rect(0, 0, targetX, targetY), 0, 0);
             result.Apply();
             return result;
         }
 
-        private static Texture2D rotateTexture(Texture2D originalTexture, bool clockwise)
+        internal static Texture2D rotateTexture(Texture2D originalTexture, bool clockwise)
         {
             Color[] original = originalTexture.GetPixels();
             Color[] rotated = new Color[original.Length];
@@ -130,23 +126,24 @@ namespace NOBlackBox
                 }
             }
 
-            Texture2D rotatedTexture = new Texture2D(h, w,TextureFormat.RHalf, false);
+            Texture2D rotatedTexture = new(h, w,TextureFormat.RHalf, false);
             rotatedTexture.SetPixels(rotated);
             rotatedTexture.Apply();
             return rotatedTexture;
         }
+
         //convert raw height array to Texture2D
-        private static Texture2D GenerateHeightmapTexture(float[,] heights)
+        internal static Texture2D GenerateHeightmapTexture(float[,] heights)
         {
-            Texture2D tex = new Texture2D(textureSize, textureSize, TextureFormat.RHalf, false);
+            Texture2D tex = new(textureSize, textureSize, TextureFormat.RHalf, false);
             Texture2D texOut;
-            tex.filterMode = UnityEngine.FilterMode.Trilinear;
+            tex.filterMode = FilterMode.Trilinear;
             tex.anisoLevel = 16;
             for (int z = 0; z < textureSize; z++)
             {
                 for (int x = 0; x < textureSize; x++)
                 {
-                    Color col = new Color(heights[x, z], heights[x, z], heights[x, z]);
+                    Color col = new(heights[x, z], heights[x, z], heights[x, z]);
                     tex.SetPixel(x, z, col);
                     //tex.SetPixel(x, textureSize - z - 1, col);
                     //tex.SetPixel(textureSize - x - 1, z, col);
@@ -158,6 +155,7 @@ namespace NOBlackBox
             texOut.Apply();
             return texOut;
         }
+
         // main function to trace the game world and output  assembled Heightmap
         //VERY SLOW AND HUNGERS FOR RAM
         private static void GenerateRayCastHeightmap()
@@ -170,22 +168,12 @@ namespace NOBlackBox
             heightMap.Apply();
 
             Plugin.Logger?.LogInfo($"minHeight: {minHeight.ToString()}, maxHeight: {maxHeight.ToString()}");
-
-            /*
-            string filename = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.png";
-            string outputPath = Path.Combine(outputDir, filename);
-            byte[] bytes = heightMap.EncodeToPNG();
-            File.WriteAllBytes(outputPath, bytes);
-            Plugin.Logger?.LogInfo($"Heightmap PNG exported to: {outputPath}");
-            */
             
             string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
             string outputPathRaw = Path.Combine(outputDir, filenameRaw);
             byte[] rawBytes = heightMap.GetRawTextureData();
             File.WriteAllBytes(outputPathRaw, rawBytes);
             Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {outputPathRaw}");
-            
         }
-
     }
 }
