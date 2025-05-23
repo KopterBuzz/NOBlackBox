@@ -113,20 +113,15 @@ namespace NOBlackBox
                     if (posZ > textureSize - 1) { posZ = textureSize - 1; }
 
                     Vector3 target = new GlobalPosition(x, maxHeight + 1, z).ToLocalPosition();
-                    //Vector3 rayStart = new Vector3(x + terrainCenter.x, 5000f, z + terrainCenter.z);
                     RaycastHit hit;
                     if (oldPosX != posX && oldPosZ != posZ) {
                         if (Physics.Raycast(target, Vector3.down, out hit, maxHeight + 2, 1 << STATICS))
                         {
-                            //heights[posZ, posX] = 0.1f + (hit.point.y / 10000);
-                            //float scaled = ((hit.point.GlobalY() - minHeight) / (maxHeight - minHeight));
-                            //short scaled = (short)(((2f * (hit.point.GlobalY() - short.MinValue) / (short.MaxValue - short.MinValue) - 1) * short.MaxValue) * short.MaxValue);
-                            short scaled = (short)(hit.point.GlobalY());
-                            heights[textureSize - posZ -1,posX] = scaled;
+                            heights[textureSize - posZ -1,posX] = (short)(hit.point.GlobalY());
                         }
                         else
                         {
-                            heights[textureSize - posZ - 1,posX] = short.MinValue;
+                            heights[textureSize - posZ - 1,posX] = (short)(minHeight);
                         }
                     }
                     oldPosX = posX;
