@@ -9,6 +9,7 @@ namespace NOBlackBox
     {
         internal const string GeneralSettings = "General Settings";
         internal const string OptionalDataSettings = "Optional Data Settings";
+        internal const string HeightMapGeneratorSettings = "Heightmap Generator Settings";
 
         internal const int DefaultUpdateRate = 5;
 
@@ -25,7 +26,7 @@ namespace NOBlackBox
         internal const bool DefaultCompressIDs = false;
         
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
-        internal const int DefaultMetersPerRay = 4;
+        internal const int DefaultMetersPerScan = 4;
         internal const int DefaultHeightMapResolution = 4096;
 
 #pragma warning disable CS8618
@@ -40,6 +41,8 @@ namespace NOBlackBox
         internal static ConfigEntry<bool> RecordRadarMode;
         internal static ConfigEntry<bool> RecordLandingGear;
         internal static ConfigEntry<bool> RecordPilotHead;
+        internal static ConfigEntry<int> HeightMapResolution;
+        internal static ConfigEntry<int> MetersPerScan;
         internal static ConfigEntry<KeyboardShortcut> _GenerateHeightMapKey;
 #pragma warning restore
 
@@ -138,6 +141,22 @@ namespace NOBlackBox
 
             _CompressIDs = config.Bind(OptionalDataSettings, "CompressIDs", DefaultCompressIDs, "Compress IDs to reduce filesize with less determinism.");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: CompressIDs = {_CompressIDs.Value}");
+
+            MetersPerScan = config.Bind(HeightMapGeneratorSettings, "MetersPerScan", DefaultMetersPerScan, "Sample rate of the Heightmap generator. Does a scan per X meter. Default: 4");
+            if (MetersPerScan.Value < 1)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid MetersPerScan! Setting default value {DefaultMetersPerScan}!");
+                MetersPerScan.Value = DefaultMetersPerScan;
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: HeightMapResolution = {MetersPerScan.Value}");
+
+            HeightMapResolution = config.Bind(HeightMapGeneratorSettings, "HeightMapResolution", DefaultHeightMapResolution, "Resolution of the Heightmap. Must be divisible by 4. Default: 4096");
+            if ((HeightMapResolution.Value % 4) != 0)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: HeightMapResolution must be divisible by 4! Setting default value {DefaultHeightMapResolution}!");
+                HeightMapResolution.Value = DefaultHeightMapResolution;
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: HeightMapResolution = {HeightMapResolution.Value}");
 
             _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
             Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");

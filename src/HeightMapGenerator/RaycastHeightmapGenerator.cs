@@ -11,24 +11,15 @@ namespace NOBlackBox
 {
     internal static class RaycastHeightmapGenerator
     {
-        private static int textureSize = 4096;
+        private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
-        private static int metersPerRay = 4;
+        private static int metersPerRay = Configuration.MetersPerScan.Value;
         private static float minHeight = 0;
         private static float maxHeight = 0;
-        private static float postMinHeight = 0;
-        private static float postMaxHeight = 0;
         private static float terrainScale = 0;
         private static float terrainHalf = 0;
-        private static float terrainSizeX = 0;
-        private static float terrainSizey = 0;
-        private static Vector3 terrainCenter;
         private static readonly int STATICS = LayerMask.NameToLayer("Statics");
-        private static float SCALE = 0f;
-        private static float terrainSeaLevel;
         
-
-
         public static void Generate()
         {
             //do checks
@@ -42,6 +33,9 @@ namespace NOBlackBox
                 FieldInfo MapInScene = typeof(MapSettingsManager).GetField("mapInScene", BindingFlags.Instance | BindingFlags.NonPublic);
                 MapSettings map = (MapSettings)MapInScene.GetValue(MapSettingsManager.i);
                 GameObject mapHost = map.gameObject;
+
+                // find minimum and maximum terrain height. shoutout to TYKUHN2 ^^
+                // this is not necessary for the current method, but useful for debugging
                 maxHeight =
                     mapHost.GetComponentsInChildren<MeshCollider>()
                     .Where(collider => collider.gameObject.layer == STATICS && collider.gameObject.GetComponents<Component>().Length == 4)
@@ -55,12 +49,6 @@ namespace NOBlackBox
 
                 Plugin.Logger?.LogInfo("Attempting to export custom terrain heightmap");
                 // Get terrain dimensions from the static TerrainGrid class
-                terrainCenter = Datum.originPosition;
-                terrainSeaLevel = Datum.LocalSeaY;
-                //naval: terrainSeaLevel: -265.3623
-                //heartland: terrainSeaLevel: -530.8
-                Plugin.Logger?.LogInfo($"Datum.originPosition IS AT: {terrainCenter.x},{terrainCenter.y}");
-                
                 if (TerrainGrid.terrainSize.y >= TerrainGrid.terrainSize.x)
                 {
                     terrainSize = TerrainGrid.terrainSize.y;
@@ -73,17 +61,15 @@ namespace NOBlackBox
                 {
                     return;
                 }
-                //terrainSize = terrainSize * 2;
+                // Initialize variables required for scaling world coordinates to "texture" coordinates.
                 terrainHalf = terrainSize / 2;
                 terrainScale = textureSize / terrainSize;
-                SCALE = 32767;
                 Plugin.Logger?.LogInfo($"terrainSize: {terrainSize.ToString()}");
                 Plugin.Logger?.LogInfo($"textureSize: {textureSize.ToString()}");
                 Plugin.Logger?.LogInfo($"terrainScale: {terrainScale.ToString()}");
-                Plugin.Logger?.LogInfo($"terrainSeaLevel: {terrainSeaLevel.ToString()}");
                 Plugin.Logger?.LogInfo($"maxHeight: {maxHeight.ToString()}");
                 Plugin.Logger?.LogInfo($"minHeight: {minHeight.ToString()}");
-                //call Heightmap generator
+                // call Heightmap generator
                 GenerateRayCastHeightmap();
             }
             catch (Exception ex)
@@ -91,7 +77,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogError($"Error exporting heightmap: {ex.Message}\n{ex.StackTrace}");
             }
         }
-        //RayCasts over the entire terrain. sample rate controlled by metersPerRay, output size is controlled by textureSize
+        // RayCasts over the entire terrain. sample rate controlled by metersPerRay, output size is controlled by textureSize
         private static short[,] RayCastTerrain()
         {
             short[,] heights = new short[textureSize, textureSize];
@@ -100,6 +86,9 @@ namespace NOBlackBox
             int posX = -1;
             int posZ  = -1;
             Plugin.Logger?.LogInfo($"Generating Heightmap...");
+
+            // iterate over both axis, scale the world position to heightmap position using terrainScale.
+            // any raycast where the hit would land on a heightmap position that's already been populated is skipped, massive time save
             for (int z = (int)(-1 * terrainHalf); z < terrainHalf; z += metersPerRay)
             {
                 Plugin.Logger?.LogInfo($"{((z + terrainHalf) / terrainSize) * 100}%");
@@ -145,6 +134,7 @@ namespace NOBlackBox
             SaveHeightMapAsRAW(heightMapTile, outputPathRaw); 
         }
 
+        // helper function to dump heightmap to disk
         static void SaveHeightMapAsRAW(short[,] array, string filePath)
         {
             int rows = array.GetLength(0);
