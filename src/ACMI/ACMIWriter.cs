@@ -15,7 +15,7 @@ namespace NOBlackBox
     {
         private StreamWriter output;
         private readonly DateTime reference;
-        public static TimeSpan lastUpdate;
+        public TimeSpan lastUpdate;
         internal string filename;
         internal MapKey currentMapKey;
         internal ACMIWriter(DateTime reference)
@@ -47,7 +47,7 @@ namespace NOBlackBox
                 { "DataSource", $"Nuclear Option {Application.version}" },
                 { "DataRecorder", $"NOBlackBox 0.2.3" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
-                { "RecordingTime", DateTime.Today.ToString("s") + "Z" },
+                { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
             };
 
             Mission mission = MissionManager.CurrentMission;
