@@ -20,8 +20,12 @@ namespace NOBlackBox
     {
         internal static new ManualLogSource ?Logger;
         private Recorder? recorder;
+        internal static bool isRecording = false;
+        internal static GameObject ?autoSaveCountDown;
         private float waitTime = 0.2f;
         private float timer = 0f;
+        internal static int recordedScreenWidth, recordedScreenHeight;
+        internal static float guiAnchorLeft, guiAnchorRight;
 
         public Plugin()
         {
@@ -51,6 +55,15 @@ namespace NOBlackBox
             {
                 RaycastHeightmapGenerator.Generate();
             }
+            UpdateGuiAnchors();
+        }
+
+        private static void UpdateGuiAnchors()
+        {
+            recordedScreenWidth = Screen.width;
+            recordedScreenHeight = Screen.height;
+            guiAnchorLeft = (int)Math.Round(0.03 * recordedScreenWidth);
+            guiAnchorRight = (int)Math.Round(0.7 * recordedScreenWidth);
         }
 
         private async Task<bool> WaitForLocalPlayer()
@@ -78,12 +91,19 @@ namespace NOBlackBox
                 Logger?.LogInfo($"Map Prefab: {name}");
             }
             recorder = new Recorder(MissionManager.CurrentMission);
+            isRecording = true;
+            autoSaveCountDown = new GameObject();
+            autoSaveCountDown.AddComponent<AutoSaveCountDown>();
+            autoSaveCountDown.GetComponent<AutoSaveCountDown>().enabled = true;
+
         }
         private void OnMissionUnload()
         {
             Logger?.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
             recorder?.Close();
             recorder = null;
+            isRecording = false;
+            GameObject.Destroy(autoSaveCountDown);
         }
 
     }

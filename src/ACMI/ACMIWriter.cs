@@ -15,7 +15,7 @@ namespace NOBlackBox
     {
         private StreamWriter output;
         private readonly DateTime reference;
-        private TimeSpan lastUpdate;
+        public static TimeSpan lastUpdate;
         internal string filename;
         internal MapKey currentMapKey;
         internal ACMIWriter(DateTime reference)

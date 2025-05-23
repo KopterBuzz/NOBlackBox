@@ -10,6 +10,7 @@ namespace NOBlackBox
         internal const string GeneralSettings = "General Settings";
         internal const string OptionalDataSettings = "Optional Data Settings";
         internal const string HeightMapGeneratorSettings = "Heightmap Generator Settings";
+        internal const string VisualSettings = "Visual Settings";
 
         internal const int DefaultUpdateRate = 5;
 
@@ -29,6 +30,15 @@ namespace NOBlackBox
         internal const int DefaultMetersPerScan = 4;
         internal const int DefaultHeightMapResolution = 4096;
 
+        internal const float DefaultTextColorR = 1.0f;
+        internal const float DefaultTextColorG = 1.0f;
+        internal const float DefaultTextColorB = 1.0f;
+        internal const float DefaultTextColorA = 1.0f;
+
+        internal const bool DefaultEnableAutoSaveCountDown = false;
+        internal const float DefaultAutoSaveCountDownX = 0.1f;
+        internal const float DefaultAutoSaveCountDownY = 0.1f;
+
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
         private static ConfigEntry<string> _OutputPath;
@@ -41,9 +51,19 @@ namespace NOBlackBox
         internal static ConfigEntry<bool> RecordRadarMode;
         internal static ConfigEntry<bool> RecordLandingGear;
         internal static ConfigEntry<bool> RecordPilotHead;
+
         internal static ConfigEntry<int> HeightMapResolution;
         internal static ConfigEntry<int> MetersPerScan;
         internal static ConfigEntry<KeyboardShortcut> _GenerateHeightMapKey;
+
+        internal static ConfigEntry<float> TextColorR;
+        internal static ConfigEntry<float> TextColorG;
+        internal static ConfigEntry<float> TextColorB;
+        internal static ConfigEntry<float> TextColorA;
+
+        internal static ConfigEntry<bool> EnableAutoSaveCountDown;
+        internal static ConfigEntry<float> AutoSaveCountDownX;
+        internal static ConfigEntry<float> AutoSaveCountDownY;
 #pragma warning restore
 
         internal static int UpdateRate
@@ -148,7 +168,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid MetersPerScan! Setting default value {DefaultMetersPerScan}!");
                 MetersPerScan.Value = DefaultMetersPerScan;
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: HeightMapResolution = {MetersPerScan.Value}");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: MetersPerScan = {MetersPerScan.Value}");
 
             HeightMapResolution = config.Bind(HeightMapGeneratorSettings, "HeightMapResolution", DefaultHeightMapResolution, "Resolution of the Heightmap. Must be divisible by 4. Default: 4096");
             if ((HeightMapResolution.Value % 4) != 0)
@@ -160,6 +180,53 @@ namespace NOBlackBox
 
             _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
             Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
+
+            EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
+
+            AutoSaveCountDownX = config.Bind(VisualSettings, "AutoSaveCountDownX", DefaultAutoSaveCountDownX, "X coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
+            if (AutoSaveCountDownX.Value < 0f || AutoSaveCountDownX.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: AutoSaveCountDownX must be within 0.0 - 1.0 range! Setting default value {DefaultAutoSaveCountDownX}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownX.Value}");
+
+            AutoSaveCountDownY = config.Bind(VisualSettings, "AutoSaveCountDownY", DefaultAutoSaveCountDownY, "Y coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
+            if (AutoSaveCountDownY.Value < 0f || AutoSaveCountDownY.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: AutoSaveCountDownX must be within 0.0 - 1.0 range! Setting default value {DefaultAutoSaveCountDownX}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownY.Value}");
+
+            TextColorR = config.Bind(VisualSettings, "TextColorR", DefaultTextColorR, "Red color value for GUI Text. Value range: 0.0 - 1.0");
+            if (TextColorR.Value < 0f || TextColorR.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorR must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorR}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorR = {TextColorR.Value}");
+
+            TextColorG = config.Bind(VisualSettings, "TextColorG", DefaultTextColorG, "Green color value for GUI Text. Value range: 0.0 - 1.0");
+            if (TextColorG.Value < 0f || TextColorG.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorG must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorG}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorG = {TextColorG.Value}");
+
+            TextColorB = config.Bind(VisualSettings, "TextColorB", DefaultTextColorB, "Blue color value for GUI Text. Value range: 0.0 - 1.0");
+            if (TextColorB.Value < 0f || TextColorB.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorB must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorB}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorB = {TextColorB.Value}");
+
+            TextColorA = config.Bind(VisualSettings, "TextColorA", DefaultTextColorA, "Transparency value for GUI Text. Value range: 0.0 - 1.0");
+            if (TextColorA.Value < 0f || TextColorA.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorA must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorA}!");
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorA = {TextColorA.Value}");
+
+
 
         }
     }
