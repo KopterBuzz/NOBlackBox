@@ -25,8 +25,8 @@ HideManagerGameObject = true
 4. Enjoy :)
 
 ## The Tacview assets
-1. [Install TacView](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
-2. Unzip the TacViewAssets Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
+1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
+2. Unzip the TacviewAssets Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
 3. Copy all content to %ProgramData%\Tacview\Data
 	
 - Windows might ask you if you want to merge the folders. Let it happen.
@@ -38,7 +38,7 @@ Flight recording automatically starts when a mission is loaded, and automaticall
 
 The recording will be saved to disk when you go back to the main menu.
 
-You will find the TacView recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
+You will find the Tacview recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
 
 ## Configuring NOBlackBox
 The Following parameters are configurable in BepInEx/config/xzy.KopteBuzz.NOBlackBox.cfg. You have to load the mod at least once for the config file to exist.

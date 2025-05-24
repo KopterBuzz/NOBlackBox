@@ -39,6 +39,7 @@ namespace NOBlackBox
 
             writer = new ACMIWriter(startDate);
             Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING STARTED");
+
         }
 
         ~Recorder()

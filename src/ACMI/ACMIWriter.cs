@@ -1,9 +1,13 @@
+using BepInEx.Logging;
 using NuclearOption.SavedMission;
+using NuclearOption.SceneLoading;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NOBlackBox
 {
@@ -11,8 +15,9 @@ namespace NOBlackBox
     {
         private StreamWriter output;
         private readonly DateTime reference;
-        private TimeSpan lastUpdate;
+        public static TimeSpan lastUpdate;
         internal string filename;
+        internal MapKey currentMapKey;
         internal ACMIWriter(DateTime reference)
         {
             string dir = Configuration.OutputPath;
@@ -31,8 +36,9 @@ namespace NOBlackBox
             output = File.CreateText(filename);
             //sb = new StringBuilder();
             this.reference = reference;
+            currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
 
-            output.WriteLine("FileType=text/acmi/tacview");
+            Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
             output.WriteLine("FileVersion=2.2");
 
             Dictionary<string, string> initProps = new()
@@ -41,11 +47,12 @@ namespace NOBlackBox
                 { "DataSource", $"Nuclear Option {Application.version}" },
                 { "DataRecorder", $"NOBlackBox 0.2.3" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
-                { "RecordingTime", DateTime.Today.ToString("s") + "Z" },
+                { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
             };
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
+            
             /*
             if (mission.missionSettings.description != null)
             {
