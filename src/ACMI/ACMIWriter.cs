@@ -27,7 +27,7 @@ namespace NOBlackBox
             }
 
             string basename = dir + DateTime.Now.ToString("s").Replace(":", "-");
-            basename += " " + MissionManager.CurrentMission.Name;
+            basename += "_" + MissionManager.CurrentMission.Name + "_" + MapSettingsManager.i.MapLoader.CurrentMap.Path;
             filename = basename + ".acmi";
             int postfix = 0;
             while (File.Exists(filename))
