@@ -29,6 +29,8 @@ namespace NOBlackBox
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
         internal const int DefaultMetersPerScan = 4;
         internal const int DefaultHeightMapResolution = 4096;
+        internal const bool DefaultEnableHeightmapGenerator = false;
+        //internal const float DefaultOrtoGraphicSize = 5f;
 
         internal const float DefaultTextColorR = 1.0f;
         internal const float DefaultTextColorG = 1.0f;
@@ -55,6 +57,8 @@ namespace NOBlackBox
         internal static ConfigEntry<int> HeightMapResolution;
         internal static ConfigEntry<int> MetersPerScan;
         internal static ConfigEntry<KeyboardShortcut> _GenerateHeightMapKey;
+        internal static ConfigEntry<bool> EnableHeightmapGenerator;
+        //internal static ConfigEntry<float> OrtoGraphicSize;
 
         internal static ConfigEntry<float> TextColorR;
         internal static ConfigEntry<float> TextColorG;
@@ -177,9 +181,20 @@ namespace NOBlackBox
                 HeightMapResolution.Value = DefaultHeightMapResolution;
             }
             Plugin.Logger?.LogInfo($"[NOBlackBox]: HeightMapResolution = {HeightMapResolution.Value}");
-
+            /*
+            OrtoGraphicSize = config.Bind(HeightMapGeneratorSettings, "OrtographicSize", DefaultOrtoGraphicSize, "Size of Ortographic Camera for Texture Generation. Must be bigger than 0f.");
+            if (OrtoGraphicSize.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"[NOBlackBox]: OrtographicSize must be divisible by 4! Setting default value {DefaultOrtoGraphicSize}!");
+                OrtoGraphicSize.Value = DefaultOrtoGraphicSize;
+            }
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: OrtographicSize = {OrtoGraphicSize.Value}");
+            */
             _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
             Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
+
+            RecordRadarMode = config.Bind(HeightMapGeneratorSettings, "EnableHeightmapGenerator", DefaultEnableHeightmapGenerator, "Enable/Disable Heightmap Generator. Default: false");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableHeightmapGenerator = {EnableHeightmapGenerator.Value}");
 
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
