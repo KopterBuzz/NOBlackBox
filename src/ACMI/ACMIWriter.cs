@@ -39,6 +39,7 @@ namespace NOBlackBox
             currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
 
             Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
+            output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
 
             Dictionary<string, string> initProps = new()
