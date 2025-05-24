@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using UnityEngine;
 
 using static MapSettingsManager;
@@ -11,6 +12,8 @@ namespace NOBlackBox
 {
     internal static class RaycastHeightmapGenerator
     {
+        private static string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
+        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
         private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
         private static int metersPerRay = Configuration.MetersPerScan.Value;
@@ -18,6 +21,7 @@ namespace NOBlackBox
         private static float maxHeight = 0;
         private static float terrainScale = 0;
         private static float terrainHalf = 0;
+        private static float terrainHalfInDegrees = 0;
         private static readonly int STATICS = LayerMask.NameToLayer("Statics");
         
         public static void Generate()
@@ -64,6 +68,15 @@ namespace NOBlackBox
                 // Initialize variables required for scaling world coordinates to "texture" coordinates.
                 terrainHalf = terrainSize / 2;
                 terrainScale = textureSize / terrainSize;
+
+                /*
+                 * needed for Tacview xml
+                    1 degree° = 60 arc minutes '
+                    1 arc minute ' = 60 arc seconds ''
+                    1 arc second '' at equatorial sea level = 1852m/60 = 30.86666667m
+                    https://www.opendem.info/arc2meters.html
+                 */
+                terrainHalfInDegrees = ((terrainHalf / 30.86666667f) / 60f) / 60f;
                 Plugin.Logger?.LogInfo($"terrainSize: {terrainSize.ToString()}");
                 Plugin.Logger?.LogInfo($"textureSize: {textureSize.ToString()}");
                 Plugin.Logger?.LogInfo($"terrainScale: {terrainScale.ToString()}");
@@ -126,12 +139,12 @@ namespace NOBlackBox
         private static void GenerateRayCastHeightmap()
         {
           
-            string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
+            //string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
             Directory.CreateDirectory(outputDir);
             short[,] heightMapTile = RayCastTerrain();           
-            string filenameRaw = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
             string outputPathRaw = Path.Combine(outputDir, filenameRaw);
-            SaveHeightMapAsRAW(heightMapTile, outputPathRaw); 
+            SaveHeightMapAsRAW(heightMapTile, outputPathRaw);
+            SaveHeightmapXML();
         }
 
         // helper function to dump heightmap to disk
@@ -152,6 +165,40 @@ namespace NOBlackBox
                 }
             }
             Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {filePath}");
+        }
+
+        static void SaveHeightmapXML()
+        {
+            XDocument doc = new XDocument(
+                new XElement("Resources",
+                    new XElement("CustomHeightmapList",
+                        new XElement("CustomHeightmap",
+                            new XElement("File", filenameRaw),
+                            new XElement("BigEndian", "0"),
+                            new XElement("Width", textureSize.ToString()),
+                            new XElement("Height", textureSize.ToString()),
+                            new XElement("AltitudeFactor", "1.0"),
+                            new XElement("AltitudeOffset", "0"),
+                            new XElement("Projection", "Quad"),
+                            new XElement("BottomLeft",
+                            new XElement("Longitude", -terrainHalfInDegrees),
+                            new XElement("Latitude", -terrainHalfInDegrees)),
+                            new XElement("BottomRight",
+                            new XElement("Longitude", terrainHalfInDegrees),
+                            new XElement("Latitude", -terrainHalfInDegrees)),
+                            new XElement("TopRight",
+                            new XElement("Longitude", terrainHalfInDegrees),
+                            new XElement("Latitude", terrainHalfInDegrees)),
+                            new XElement("TopLeft",
+                            new XElement("Longitude", -terrainHalfInDegrees),
+                            new XElement("Latitude", terrainHalfInDegrees))
+                        )
+                    )
+                )
+            );
+            string XMLPath = Path.Combine(outputDir, $"{MapSettingsManager.i.MapLoader.CurrentMap.Path}_CustomHeightmapList.xml");
+            Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {XMLPath}");
+            doc.Save(XMLPath);
         }
 
     }

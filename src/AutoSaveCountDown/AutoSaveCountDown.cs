@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Profiling;
+﻿using UnityEngine;
+
 
 namespace NOBlackBox
 {
@@ -40,7 +37,11 @@ namespace NOBlackBox
 
             if (Plugin.isRecording && Configuration.EnableAutoSaveCountDown.Value)
             {
-                GUI.Label(new Rect((Configuration.AutoSaveCountDownX.Value * Plugin.recordedScreenWidth), (Configuration.AutoSaveCountDownY.Value * Plugin.recordedScreenHeight), 400, 50), "Next AutoSave: " + countDown, fontSize);
+                GUI.Label(new Rect((Configuration.AutoSaveCountDownX.Value * Plugin.recordedScreenWidth),
+                                   (Configuration.AutoSaveCountDownY.Value * Plugin.recordedScreenHeight),
+                                   400,
+                                   50),
+                                   "Next AutoSave: " + countDown, fontSize);
             }
         }
     }
