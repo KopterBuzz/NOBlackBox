@@ -48,12 +48,26 @@
 			<ShortName>Chicane</ShortName>
 			<LongName>SAH-46 Chicane</LongName>
 			<FullName>SAH-46 Chicane</FullName>
-			<Shape>Chicane.obj</Shape>
+			<Shape>Attackhelo1.obj</Shape>
 		</Properties>
 		
 
 	</DefaultProperties>
 	
+	<DefaultProperties Id="QuadVTOL1" Base="FixedWing.Fighter.TwinProp">
+		<Criteria>
+			<Name>QuadVTOL1</Name>
+			<Name>VL-49</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Tarantula</ShortName>
+			<LongName>VL-49 Tarantula</LongName>
+			<FullName>VL-49 Tarantula</FullName>
+			<Shape>QuadVTOL1.obj</Shape>
+		</Properties>
+
+
+	</DefaultProperties>
 
 	<DefaultProperties Id="Fighter1" Base="FixedWing.Fighter.Jet">
 		<Criteria>
@@ -65,6 +79,19 @@
 			<LongName>FS-12 Revoker</LongName>
 			<FullName>FS-12 Revoker</FullName>
 			<Shape>Revorker.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+	<DefaultProperties Id="Smallfighter1" Base="FixedWing.Fighter.Jet">
+		<Criteria>
+			<Name>Smallfighter1</Name>
+			<Name>FS-20</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Vortex</ShortName>
+			<LongName>FS-20 Vortex</LongName>
+			<FullName>FS-20 Vortex</FullName>
+			<Shape>Smallfighter1.obj</Shape>
 		</Properties>
 	</DefaultProperties>
 
