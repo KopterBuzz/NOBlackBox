@@ -17,7 +17,7 @@ namespace NOBlackBox
         private static string ?textureFileName;
         private static string ?customHeightMapListXMLFileName;
         private static string ?customTextureListXMLFileName;
-        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
+        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\NOBlackBox_RayCast_HeightmapExports");
         private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
         private static int metersPerRay = Configuration.MetersPerScan.Value;

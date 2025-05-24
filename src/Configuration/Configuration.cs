@@ -193,7 +193,7 @@ namespace NOBlackBox
             _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
             Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
 
-            RecordRadarMode = config.Bind(HeightMapGeneratorSettings, "EnableHeightmapGenerator", DefaultEnableHeightmapGenerator, "Enable/Disable Heightmap Generator. Default: false");
+            EnableHeightmapGenerator = config.Bind(HeightMapGeneratorSettings, "EnableHeightmapGenerator", DefaultEnableHeightmapGenerator, "Enable/Disable Heightmap Generator. Default: false");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableHeightmapGenerator = {EnableHeightmapGenerator.Value}");
 
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
