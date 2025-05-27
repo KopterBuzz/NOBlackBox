@@ -82,10 +82,11 @@
 		</Properties>
 	</DefaultProperties>
 
-	<DefaultProperties Id="Smallfighter1" Base="FixedWing.Fighter.Jet">
+	<DefaultProperties Id="SmallFighter1" Base="FixedWing.Fighter.Jet">
 		<Criteria>
-			<Name>Smallfighter1</Name>
+			<Name>SmallFighter1</Name>
 			<Name>FS-20</Name>
+			<Name>FS-20 Vortex</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Vortex</ShortName>

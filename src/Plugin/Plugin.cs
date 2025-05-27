@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using NuclearOption.SceneLoading;
 using System.Linq;
+using NuclearOption.Networking;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -84,12 +85,23 @@ namespace NOBlackBox
             
             await WaitForLocalPlayer();
             Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
-            Logger?.LogInfo("[NOBlackBox]: Terrain Size: " + TerrainGrid.terrainSize.ToString());
+            LevelInfo levelInfo = LevelInfo.i;
+            if (MapSettingsManager.i.Maps[0].Prefab)
+            {
+                Logger?.LogInfo($"[NOBlackBox]: Terrain Size: {MapSettingsManager.i.Maps[0].Prefab.MapSize}");
+            } else
+            {
+                Logger?.LogWarning($"[NOBlackBox]: NO LEVELINFO!!!!");
+
+            }
             
+            
+            /*
             foreach (var name in mapLoader.MapPrefabNames)
             {
                 Logger?.LogInfo($"Map Prefab: {name}");
             }
+            */
             recorder = new Recorder(MissionManager.CurrentMission);
             isRecording = true;
             autoSaveCountDown = new GameObject();

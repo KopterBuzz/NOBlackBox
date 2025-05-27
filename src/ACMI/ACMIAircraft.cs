@@ -16,7 +16,8 @@ namespace NOBlackBox
             { "KR-67", "Air+FixedWing+Medium" },
             { "EW-25", "Air+FixedWing+Heavy" },
             { "SFB-81", "Air+FixedWing+Heavy" },
-            { "VL-49", "Air+Rotorcraft+Heavy" }
+            { "VL-49", "Air+Rotorcraft+Heavy" },
+            { "FS-20", "Air+FixedWing+Light" }
         };
 
         private bool lastGear = false;

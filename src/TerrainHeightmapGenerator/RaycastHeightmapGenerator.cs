@@ -117,13 +117,13 @@ namespace NOBlackBox
 
                 Plugin.Logger?.LogInfo("Attempting to export custom terrain heightmap");
                 // Get terrain dimensions from the static TerrainGrid class
-                if (TerrainGrid.terrainSize.y >= TerrainGrid.terrainSize.x)
+                if (MapSettingsManager.i.Maps[0].Prefab.MapSize.y >= MapSettingsManager.i.Maps[0].Prefab.MapSize.x)
                 {
-                    terrainSize = TerrainGrid.terrainSize.y;
+                    terrainSize = MapSettingsManager.i.Maps[0].Prefab.MapSize.y;
                 }
                 else
                 {
-                    terrainSize = TerrainGrid.terrainSize.x;
+                    terrainSize = MapSettingsManager.i.Maps[0].Prefab.MapSize.x;
                 }
                 if (terrainSize == 0f)
                 {
@@ -133,8 +133,8 @@ namespace NOBlackBox
                 terrainHalf = terrainSize / 2;
                 terrainScale = textureSize / terrainSize;
 
-                terrainXHalf = TerrainGrid.terrainSize.x / 2;
-                terrainYHalf = TerrainGrid.terrainSize.y / 2;
+                terrainXHalf = MapSettingsManager.i.Maps[0].Prefab.MapSize.x / 2;
+                terrainYHalf = MapSettingsManager.i.Maps[0].Prefab.MapSize.y / 2;
 
                 
 
