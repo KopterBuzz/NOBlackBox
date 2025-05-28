@@ -108,6 +108,12 @@ namespace NOBlackBox
                             acmi = new ACMIShip((Ship)unit);
                             break;
                         default:
+                            if(Configuration.EnableUnknownUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo( $"UNKNOWN ACMI UNIT OBJECT: {unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.bogeyName},");
+                            }
                             continue;
                     }
 

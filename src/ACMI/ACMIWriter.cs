@@ -46,7 +46,7 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.1" },
+                { "DataRecorder", $"NOBlackBox 0.3.2" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
             };
