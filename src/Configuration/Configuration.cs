@@ -42,7 +42,7 @@ namespace NOBlackBox
         internal const float DefaultAutoSaveCountDownX = 0.1f;
         internal const float DefaultAutoSaveCountDownY = 0.1f;
 
-        internal const bool DefaultEnableUnknownUnitLogging = false;
+        internal const bool DefaultEnableUnitLogging = false;
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
@@ -72,7 +72,7 @@ namespace NOBlackBox
         internal static ConfigEntry<float> AutoSaveCountDownX;
         internal static ConfigEntry<float> AutoSaveCountDownY;
 
-        internal static ConfigEntry<bool> EnableUnknownUnitLogging;
+        internal static ConfigEntry<bool> EnableUnitLogging;
 #pragma warning restore
 
         internal static int UpdateRate
@@ -246,8 +246,8 @@ namespace NOBlackBox
             }
             Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorA = {TextColorA.Value}");
 
-            EnableUnknownUnitLogging = config.Bind(DeveloperSettings, "EnableUnknownUnitLogging", DefaultEnableUnknownUnitLogging, "Toggle logging Unknown Units that are unknown to ACMI Recorder. Default: false");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableUnknownUnitLogging = {EnableUnknownUnitLogging.Value}");
+            EnableUnitLogging = config.Bind(DeveloperSettings, "EnableUnknownUnitLogging", DefaultEnableUnitLogging, "Toggle logging Unknown Units that are unknown to ACMI Recorder. Default: false");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableUnknownUnitLogging = {EnableUnitLogging.Value}");
 
 
         }

@@ -97,18 +97,42 @@ namespace NOBlackBox
                             break;
                         case Missile:
                             acmi = new ACMIMissile((Missile)unit);
+                            if (Configuration.EnableUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo($"WEAPON: {unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.bogeyName},");
+                            }
                             break;
                         case GroundVehicle:
                             acmi = new ACMIGroundVehicle((GroundVehicle)unit);
+                            if (Configuration.EnableUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo($"GROUND: {unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.bogeyName},");
+                            }
                             break;
                         case Building:
                             acmi = new ACMIBuilding((Building)unit);
+                            if (Configuration.EnableUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo($"BUILDING: {unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.bogeyName},");
+                            }
                             break;
                         case Ship:
                             acmi = new ACMIShip((Ship)unit);
+                            if (Configuration.EnableUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo($"SHIP: {unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.bogeyName},");
+                            }
                             break;
                         default:
-                            if(Configuration.EnableUnknownUnitLogging.Value == true)
+                            if(Configuration.EnableUnitLogging.Value == true)
                             {
                                 Plugin.Logger?.LogInfo( $"UNKNOWN ACMI UNIT OBJECT: {unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
