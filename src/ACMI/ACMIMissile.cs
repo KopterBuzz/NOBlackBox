@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using NuclearOption.SavedMission;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 
 namespace NOBlackBox
 {
-    internal class ACMIMissile: ACMIUnit
+    internal class ACMIMissile : ACMIUnit
     {
         private readonly Dictionary<string, string> TYPES = new()
         {
@@ -26,6 +28,11 @@ namespace NOBlackBox
 
         public readonly new Missile unit;
 
+        private FieldInfo detonatedFieldInfo;
+        private FieldInfo warheadField;
+        private Type warheadType;
+        private object warheadInstance;
+
         private float lastAGL = float.NaN;
         private float lastTAS = float.NaN;
         private float lastAOA = float.NaN;
@@ -35,9 +42,12 @@ namespace NOBlackBox
             get; private set;
         }
 
-        public ACMIMissile(Missile missile): base(missile)
+        public ACMIMissile(Missile missile) : base(missile)
         {
             unit = missile;
+            warheadType = missile.GetType().GetNestedType("Warhead", BindingFlags.NonPublic);
+            warheadField = missile.GetType().GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
+            detonatedFieldInfo = missile.GetType().GetNestedType("Warhead", BindingFlags.Public).GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
 
             missile.onDisableUnit += (Unit _) =>
             {
@@ -53,7 +63,7 @@ namespace NOBlackBox
             Dictionary<string, string> baseProps = base.Init();
             baseProps["Name"] = unit.definition.unitName;
             baseProps.Add("Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Weapon"));
-            baseProps.Add("Parent", unit.ownerID.ToString("X",CultureInfo.InvariantCulture));
+            baseProps.Add("Parent", unit.ownerID.ToString("X", CultureInfo.InvariantCulture));
 
             return baseProps;
         }
@@ -61,8 +71,8 @@ namespace NOBlackBox
         public override Dictionary<string, string> Update()
         {
             Dictionary<string, string> baseProps = base.Update();
-
-            bool isDetonated = (bool)typeof(Missile).GetField("detonated", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(unit);
+            warheadInstance = warheadField.GetValue(unit);
+            bool isDetonated = (bool)detonatedFieldInfo.GetValue(warheadInstance);
             if (!Detonated && isDetonated)
             {
                 Plugin.Logger?.LogDebug("Detonated");
@@ -72,8 +82,8 @@ namespace NOBlackBox
 
             if (unit.speed != lastTAS && Configuration.RecordSpeed.Value == true)
             {
-                baseProps.Add("TAS", unit.speed.ToString("0.##",CultureInfo.InvariantCulture));
-                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###",CultureInfo.InvariantCulture));
+                baseProps.Add("TAS", unit.speed.ToString("0.##", CultureInfo.InvariantCulture));
+                baseProps.Add("Mach", (unit.speed / 340).ToString("0.###", CultureInfo.InvariantCulture));
                 lastTAS = unit.speed;
             }
 
@@ -82,13 +92,13 @@ namespace NOBlackBox
 
             if (num != lastAOA && Configuration.RecordAOA.Value == true)
             {
-                baseProps.Add("AOA", num.ToString("0.##",CultureInfo.InvariantCulture));
+                baseProps.Add("AOA", num.ToString("0.##", CultureInfo.InvariantCulture));
                 lastAOA = num;
             }
 
             if (unit.radarAlt != lastAGL && Configuration.RecordAGL.Value == true)
             {
-                baseProps.Add("AGL", unit.radarAlt.ToString("0.##",CultureInfo.InvariantCulture));
+                baseProps.Add("AGL", unit.radarAlt.ToString("0.##", CultureInfo.InvariantCulture));
                 lastAGL = unit.radarAlt;
             }
 
@@ -96,7 +106,7 @@ namespace NOBlackBox
             {
                 if (unit.targetID != -1)
                 {
-                    baseProps.Add("LockedTarget", unit.targetID.ToString("X",CultureInfo.InvariantCulture));
+                    baseProps.Add("LockedTarget", unit.targetID.ToString("X", CultureInfo.InvariantCulture));
 
                     if (lastTarget == -1)
                         baseProps.Add("LockedTargetMode", "1");
