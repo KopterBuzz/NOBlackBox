@@ -11,19 +11,29 @@ namespace NOBlackBox
     {
         private readonly Dictionary<string, string> TYPES = new()
         {
-            { "IRM-S1", "Weapon+Missile+Light" },
-            { "MMR-S3[IR]", "Weapon+Missile+Light" },
-            { "AAM-29 Scythe [R]", "Weapon+Missile+Medium" },
+            { "IRM-S1", "Weapon+Missile" },
+            { "IRM-S2", "Weapon+Missile" },
+            { "MMR-S3", "Weapon+Missile" },
+            { "AAM-29 Scythe", "Weapon+Missile" },
             { "AGM-48", "Weapon+Missile+Light" },
-            { "Ground-to-ground missile", "Weapon+Missile+Light" },
-            { "AGM-68", "Weapon+Missile+Medium" },
-            { "RAM-45", "Weapon+Missile+Medium" },
-            { "StratoLance R9", "Weapon+Missile+Heavy" },
-            { "AGR-18", "Weapon+Rocket+Light" },
-            { "ARAD-116", "Weapon+Missile+Heavy" },
-            { "ALM-C450", "Weapon+Missile+Heavy" },
-            { "ALND-4 (20kt)", "Weapon+Missile+Heavy" },
-            { "AShM-300", "Weapon+Missile+Heavy" }
+            { "Ground-to-ground missile", "Weapon+Missile" },
+            { "AGM-68", "Weapon+Missile" },
+            { "RAM-45", "Weapon+Missile" },
+            { "StratoLance R9", "Weapon+Missile" },
+            { "AGR-18", "Weapon+Rocket" },
+            { "ARAD-116", "Weapon+Missile" },
+            { "ALM-C450", "Weapon+Missile" },
+            { "ALND-4 (20kt)", "Weapon+Missile" },
+            { "AShM-300", "Weapon+Missile" },
+            { "Tusko-B (HE)", "Weapon+Missile" },
+            { "AGR-24 Kingpin", "Weapon+Missile" }
+        };
+
+        private readonly Dictionary<string, string> TACVIEWTYPES = new()
+        {
+            {"MSL", "Weapon+Missile"},
+            {"BOMB", "Weapon+Bomb"},
+            {"SHL", "Misc+Projectile+Shell" }
         };
 
         public readonly new Missile unit;
@@ -62,7 +72,7 @@ namespace NOBlackBox
         {
             Dictionary<string, string> baseProps = base.Init();
             baseProps["Name"] = unit.definition.unitName;
-            baseProps.Add("Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Weapon"));
+            baseProps.Add("Type", TACVIEWTYPES.GetValueOrDefault(unit.definition.code, "Weapon"));
             baseProps.Add("Parent", unit.ownerID.ToString("X", CultureInfo.InvariantCulture));
 
             return baseProps;
