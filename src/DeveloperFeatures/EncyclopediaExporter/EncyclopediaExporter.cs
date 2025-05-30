@@ -5,32 +5,36 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Xml.Linq;
+using UnityEngine.XR;
 
 namespace NOBlackBox
 {
 
     internal struct UnitTacviewInfo
     {
-        string name;
-        string unitName;
-        string code;
-        string tacviewACMIType;
-        string tacviewXMLBase;
-        string tacviewXMLShape;
+        public string prefabName;
+        public string name;
+        public string unitName;
+        public string code;
+        public string tacviewACMIType;
+        public string tacviewXMLBase;
+        public string tacviewXMLShape;
 
-        public UnitTacviewInfo(string Name,string UnitName, string Code, string TacviewACMIType, string TacviewXMLBase)
+        public UnitTacviewInfo(string PrefabName,string Name,string UnitName, string Code, string TacviewACMIType, string TacviewXMLBase)
         {
+            prefabName = PrefabName;
             name = Name;
             unitName = UnitName;
             code = Code;
             tacviewACMIType = TacviewACMIType;
             tacviewXMLBase = TacviewXMLBase;
-            tacviewXMLShape = $"{Name}.obj";
+            tacviewXMLShape = $"{PrefabName}.obj";
         }
 
         public override string ToString()
         {
-            return $"{name},{unitName},{code},{tacviewACMIType},{tacviewXMLBase},{tacviewXMLShape}";
+            return $"{prefabName},{name},{unitName},{code},{tacviewACMIType},{tacviewXMLBase},{tacviewXMLShape}";
         }
     }
     internal static class EncyclopediaExporter
@@ -57,7 +61,7 @@ namespace NOBlackBox
         private static string KnownUnitsXML = Path.Combine(outputDir, "NuclearOption.xml");
 
 
-        private static string unitCSVHeader = "name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape";
+        private static string unitCSVHeader = "prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape";
         private static Dictionary<string, UnitTacviewInfo> knownUnits = new Dictionary<string, UnitTacviewInfo>();
         private static Dictionary<string, UnitTacviewInfo> unknownUnits = new Dictionary<string, UnitTacviewInfo>();
 
@@ -72,28 +76,22 @@ namespace NOBlackBox
             {
                 string[] splits = line.Split(',');
                 if (splits[0] == "name") { continue; }
-                UnitTacviewInfo knownUnit = new UnitTacviewInfo(splits[0], splits[1], splits[2], splits[3], splits[4]);
+                UnitTacviewInfo knownUnit = new UnitTacviewInfo(splits[0], splits[1], splits[2], splits[3], splits[4], splits[5]);
                 knownUnits.Add(splits[0], knownUnit);
                 Plugin.Logger?.LogInfo(knownUnit.ToString());
             }
         }
 
-        private static string GetInfoFromUnitDefinition(UnitDefinition def)
-        {
-            string info = $"{def.name},{def.unitName},{def.code}";
-            return info;
-        }
-
         private static void CheckUnitInfo(UnitDefinition def)
         {
-            if (!knownUnits.ContainsKey(def.name))
+            if (!knownUnits.ContainsKey(def.unitPrefab.name))
             {
-                UnitTacviewInfo unknownUnit = new UnitTacviewInfo(def.name, def.unitName, def.code, "", "");
-                unknownUnits.Add(def.name, unknownUnit);
+                UnitTacviewInfo unknownUnit = new UnitTacviewInfo(def.unitPrefab.name,def.name, def.unitName, def.code, "", "");
+                unknownUnits.Add(def.unitPrefab.name, unknownUnit);
                 Plugin.Logger?.LogInfo($"Found UNKNOWN Unit: {unknownUnit.ToString()}");
             } else
             {
-                Plugin.Logger?.LogInfo($"Found known Unit: {knownUnits[def.name].ToString()}");
+                Plugin.Logger?.LogInfo($"Found known Unit: {knownUnits[def.unitPrefab.name].ToString()}");
             }
             
         }
@@ -110,7 +108,35 @@ namespace NOBlackBox
             output.Flush();
             output.Close();
         }
-        
+
+        private static void WriteUnitListXML()
+        {
+            XDocument doc = new XDocument();
+            XElement DefaultPropertiesCollection = new XElement("DefaultPropertiesCollection",
+                                                        new XAttribute("LoadingOrder", "1.0"));
+            foreach (UnitTacviewInfo info in knownUnits.Values)
+            {
+                XElement DefaultProperties = new XElement("DefaultProperties",
+                    new XAttribute("Id", info.prefabName),
+                    new XAttribute("Base", info.tacviewXMLBase),
+                        new XElement("Criteria",
+                            new XElement("Name", info.prefabName),
+                            new XElement("Name", info.name),
+                            new XElement("Name", info.unitName)
+                        ),
+                        new XElement("Properties",
+                            new XElement("ShortName",info.code),
+                            new XElement("LongName",info.unitName),
+                            new XElement("FullName",info.unitName),
+                            new XElement("Shape",info.tacviewXMLShape)
+                        )
+                    );
+                DefaultPropertiesCollection.Add(DefaultProperties);
+            }
+            doc.Add(DefaultPropertiesCollection);
+            Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {KnownUnitsXML}");
+            doc.Save(KnownUnitsXML);
+        }
         public static void ExportEncyclopediaCSV()
         {
             fetchKnownUnitsCSV();
@@ -141,6 +167,7 @@ namespace NOBlackBox
 
             WriteUnitListCSV(unknownUnits,UnknownUnitsCSV);
             WriteUnitListCSV(knownUnits, KnownUnitsCSV);
+            WriteUnitListXML();
         }
     }
 }
