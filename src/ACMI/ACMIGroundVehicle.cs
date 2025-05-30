@@ -62,10 +62,12 @@ namespace NOBlackBox
             Dictionary<string, string> props = base.Init();
 
             props.Add("Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Ground"));
-
+            
+            
             if (RANGE.TryGetValue(unit.definition.unitName, out int range))
+                
                 props.Add("EngagementRange", range.ToString(CultureInfo.InvariantCulture));
-
+            
             return props;
         }
 

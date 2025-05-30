@@ -9,15 +9,15 @@ namespace NOBlackBox
     {
         private readonly static Dictionary<string, string> TYPES = new()
         {
-            { "CI-22", "Air+FixedWing+Light" },
-            { "T/A-30", "Air+FixedWing+Light" },
-            { "SAH-46", "Air+Rotorcraft+Medium" },
-            { "FS-12", "Air+FixedWing+Medium" },
-            { "KR-67", "Air+FixedWing+Medium" },
-            { "EW-25", "Air+FixedWing+Heavy" },
-            { "SFB-81", "Air+FixedWing+Heavy" },
-            { "VL-49", "Air+Rotorcraft+Heavy" },
-            { "FS-20", "Air+FixedWing+Light" }
+            { "CI-22", "Air+FixedWing" },
+            { "T/A-30", "Air+FixedWingt" },
+            { "SAH-46", "Air+Rotorcraft" },
+            { "FS-12", "Air+FixedWing" },
+            { "KR-67", "Air+FixedWing" },
+            { "EW-25", "Air+FixedWing" },
+            { "SFB-81", "Air+FixedWing" },
+            { "VL-49", "Air+Rotorcraft" },
+            { "FS-20", "Air+FixedWing" }
         };
 
         private bool lastGear = false;

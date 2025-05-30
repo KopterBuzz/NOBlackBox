@@ -33,7 +33,7 @@ namespace NOBlackBox
         {
             {"MSL", "Weapon+Missile"},
             {"BOMB", "Weapon+Bomb"},
-            {"SHL", "Misc+Projectile+Shell" }
+            {"SHL", "Projectile+Shell" }
         };
 
         public readonly new Missile unit;

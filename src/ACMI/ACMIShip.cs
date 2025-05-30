@@ -10,7 +10,9 @@ namespace NOBlackBox
         {
             { "Shard Class Corvette", "Sea+Watercraft+Medium+Warship" },
             { "Dynamo Class Destroyer", "Sea+Watercraft+Medium+Warship" },
-            { "Hyperion Class Carrier", "Sea+Watercraft+Heavy+AircraftCarrier" }
+            { "Hyperion Class Carrier", "Sea+Watercraft+Heavy+AircraftCarrier" },
+            { "Annex Class Carrier", "Sea+Watercraft+Heavy+AircraftCarrier" },
+            { "OTB-31 landing craft", "Sea+Watercraft" }
         };
 
         private static readonly Dictionary<string, int> RANGES = new()

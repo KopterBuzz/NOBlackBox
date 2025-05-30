@@ -56,6 +56,10 @@ namespace NOBlackBox
             {
                 RaycastHeightmapGenerator.Generate();
             }
+            if (Configuration.EncyclopediaExporterKey.Value.IsDown())
+            {
+                EncyclopediaExporter.ExportEncyclopediaCSV();
+            }
             UpdateGuiAnchors();
         }
 

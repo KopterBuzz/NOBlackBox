@@ -17,7 +17,7 @@ namespace NOBlackBox
         private static string ?textureFileName;
         private static string ?customHeightMapListXMLFileName;
         private static string ?customTextureListXMLFileName;
-        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\NOBlackBox_RayCast_HeightmapExports");
+        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\Developer\\NOBlackBox_RayCast_HeightmapExports");
         private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
         private static int metersPerRay = Configuration.MetersPerScan.Value;
@@ -260,6 +260,7 @@ namespace NOBlackBox
                     new XElement("CustomHeightmapList",
                         new XElement("CustomHeightmap",
                         new XAttribute("Layer", "Falcon 4"),
+                        new XAttribute("Id", MapSettingsManager.i.MapLoader.CurrentMap.Path),
                             new XElement("File", heightmapFileName),
                             new XElement("BigEndian", "0"),
                             new XElement("Width", textureSize.ToString()),

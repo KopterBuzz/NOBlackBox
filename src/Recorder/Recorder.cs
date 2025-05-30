@@ -137,14 +137,14 @@ namespace NOBlackBox
                             }
                             break;
                         default:
-                            /*
+                            
                             if(Configuration.EnableUnitLogging.Value == true)
                             {
                                 Plugin.Logger?.LogInfo( $"NOBLACKBOX_UNKNOWN: {unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code},");
                             }
-                            */
+                            
                             continue;
                     }
 

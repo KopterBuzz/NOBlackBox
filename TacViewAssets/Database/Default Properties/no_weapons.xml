@@ -38,7 +38,33 @@
 			<Shape>aam1_simple.obj</Shape>
 		</Properties>
 	</DefaultProperties>
-	
+
+	<DefaultProperties Id="AAM3" Base="Core.Missile">
+		<Criteria>
+			<Name>AAM3</Name>
+			<Name>IRM-S2</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>IRM-S2</ShortName>
+			<LongName>IRM-S2</LongName>
+			<FullName>IRM-S2</FullName>
+			<Shape>aam1_simple.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+	<DefaultProperties Id="AAM4" Base="Core.Missile">
+		<Criteria>
+			<Name>AAM4</Name>
+			<Name>AAM-36 Scimitar</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>AAM-36</ShortName>
+			<LongName>Scimitar</LongName>
+			<FullName>AAM-36 Scimitar</FullName>
+			<Shape>aam1_simple.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
 	<DefaultProperties Id="bomb_250_1" Base="Bomb.Glider">
 		<Criteria>
 			<Name>bomb_250_1</Name>
@@ -167,7 +193,7 @@
             <ShortName>76mm Shell</ShortName>
             <LongName>76mm Shell</LongName>
             <FullName>76mm Shell</FullName>
-            <Shape>FixedWing.F-15.obj</Shape>
+            <Shape>gtg_missile_1.obj</Shape>
         </Properties>
         
     </DefaultProperties>
@@ -186,9 +212,9 @@
         
     </DefaultProperties>
 
-    <DefaultProperties Id="nuclearBomb1" Base="Core.Missile">
+    <DefaultProperties Id="NuclearBomb1" Base="Core.Missile">
         <Criteria>
-            <Name>nuclearBomb1</Name>
+            <Name>NuclearBomb1</Name>
 			<Name>GPO-N [1.5kt]</Name>
         </Criteria>
         <Properties>
@@ -200,9 +226,9 @@
         
     </DefaultProperties>
     
-	<DefaultProperties Id="nuclearBomb1_strategic" Base="Core.Missile">
+	<DefaultProperties Id="NuclearBomb1_strategic" Base="Core.Missile">
         <Criteria>
-            <Name>nuclearBomb1_strategic</Name>
+            <Name>NuclearBomb1_strategic</Name>
 			<Name>GPO-N [250kt]</Name>
         </Criteria>
         <Properties>
@@ -242,9 +268,9 @@
         
     </DefaultProperties>
 	
-    <DefaultProperties Id="bomb_penetrator" Base="Core.Missile">
+    <DefaultProperties Id="Bomb_penetrator1" Base="Core.Missile">
         <Criteria>
-            <Name>bomb_penetrator</Name>
+            <Name>Bomb_penetrator1</Name>
 			<Name>GPO-2P Auger</Name>
         </Criteria>
         <Properties>
@@ -268,8 +294,63 @@
             <Shape>gtg_missile_1.obj</Shape>
         </Properties>
         
-    </DefaultProperties>	
-	
+    </DefaultProperties>
+
+	<DefaultProperties Id="Bomb500" Base="Core.Missile">
+		<Criteria>
+			<Name>Bomb500</Name>
+			<Name>GPO-500</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>GPO-500</ShortName>
+			<LongName>GPO-500</LongName>
+			<FullName>GPO-500</FullName>
+			<Shape>bomb_penetrator_1_simple.obj</Shape>
+		</Properties>
+
+	</DefaultProperties>
+
+	<DefaultProperties Id="Bomb_125_1" Base="Core.Missile">
+		<Criteria>
+			<Name>PAB-125</Name>
+			<Name>PAB-125</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>PAB-125</ShortName>
+			<LongName>PAB-125</LongName>
+			<FullName>PAB-125</FullName>
+			<Shape>bomb_penetrator_1_simple.obj</Shape>
+		</Properties>
+
+	</DefaultProperties>
+
+	<DefaultProperties Id="Bomb_250_1" Base="Core.Missile">
+		<Criteria>
+			<Name>PAB-250</Name>
+			<Name>PAB-250</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>PAB-250</ShortName>
+			<LongName>PAB-250</LongName>
+			<FullName>PAB-250</FullName>
+			<Shape>bomb_penetrator_1_simple.obj</Shape>
+		</Properties>
+
+	</DefaultProperties>
+
+	<DefaultProperties Id="Bomb_demolition" Base="Core.Missile">
+		<Criteria>
+			<Name>Demolition Bomb</Name>
+			<Name>Demolition Bomb</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Demolition Bomb</ShortName>
+			<LongName>Demolition Bomb</LongName>
+			<FullName>Demolition Bomb</FullName>
+			<Shape>bomb_penetrator_1_simple.obj</Shape>
+		</Properties>
+
+	</DefaultProperties>
 
 <!-- 	<DefaultProperties Id="FixedWing.GAV-25" Base="FixedWing.Fighter.Jet">
 		<Criteria>

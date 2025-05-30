@@ -39,10 +39,36 @@
 			<Name>Hyperion Class Carrier</Name>
 		</Criteria>
 		<Properties>
-			<ShortName>Carrier</ShortName>
+			<ShortName>Hyperion</ShortName>
 			<LongName>Hyperion Carrier</LongName>
 			<FullName>Hyperion Class Carrier</FullName>
 			<Shape>carrier.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+	<DefaultProperties Id="AssaultCarrier1" Base="Watercraft.Military">
+		<Criteria>
+			<Name>AssaultCarrier1</Name>
+			<Name>Annex Class Carrier</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>Annex</ShortName>
+			<LongName>Annex Carrier</LongName>
+			<FullName>Annex Class Carrier</FullName>
+			<Shape>AssaultCarrier1.obj</Shape>
+		</Properties>
+	</DefaultProperties>
+
+	<DefaultProperties Id="LandingCraft1" Base="Watercraft.Military">
+		<Criteria>
+			<Name>LandingCraft1</Name>
+			<Name>OTB-31 landing craft</Name>
+		</Criteria>
+		<Properties>
+			<ShortName>OTB-31 landing craft</ShortName>
+			<LongName>OTB-31 landing craft</LongName>
+			<FullName>OTB-31 landing craft</FullName>
+			<Shape>LandingCraft1.obj</Shape>
 		</Properties>
 	</DefaultProperties>
 

@@ -43,6 +43,7 @@
 		<Criteria>
 			<Name>AttackHelo1</Name>
 			<Name>SAH-46</Name>
+			<Name>SAH-46 Chicane</Name>
 		</Criteria>
 		<Properties>
 			<ShortName>Chicane</ShortName>
@@ -121,17 +122,5 @@
 			<Shape>Ifrit.obj</Shape>
 		</Properties>
 	</DefaultProperties>
-
-<!-- 	<DefaultProperties Id="FixedWing.GAV-25" Base="FixedWing.Fighter.Jet">
-		<Criteria>
-			<Name></Name>
-		</Criteria>
-		<Properties>
-			<ShortName></ShortName>
-			<LongName></LongName>
-			<FullName></FullName>
-			<Shape>.obj</Shape>
-		</Properties>
-	</DefaultProperties> -->
 
 </DefaultPropertiesCollection>

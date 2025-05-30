@@ -1,0 +1,81 @@
+name,unitName,code,TacviewACMIType,TacviewXMLBase
+6x6_1_AA,AFV6 AA,AA,Ground + AntiAircraft + Vehicle,Vehicle.Military.APC
+6x6_1_APC,AFV6 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
+AFV8_APC,AFV8 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
+LinebreakerAPC,Linebreaker APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
+6x6_1_AT,AFV6 AT,AT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
+EnrichmentPlant1,Enrichment Plant,BLD,Ground + Static + Building,Core.Default
+PlatformFlat,Flat Platform,BLD,Ground + Static + Building,Core.Default
+PlatformLarge,Large Platform,BLD,Ground + Static + Building,Core.Default
+PlatformSlope,Sloped Platform,BLD,Ground + Static + Building,Core.Default
+PlatformSmall,Small Platform,BLD,Ground + Static + Building,Core.Default
+Refinery,Refinery Structure,BLD,Ground + Static + Building,Core.Default
+StorageTank,Storage Tank,BLD,Ground + Static + Building,Core.Default
+VehicleDepot1,Vehicle Depot,BLD,Ground + Static + Building,Core.Default
+Pillbox,Pillbox,BNKR,Ground + Static + Building,Core.Default
+Bomb_125_1,PAB-125,BOMB,Weapon + Bomb,Bomb.Glider
+Bomb_250_1,PAB-250,BOMB,Weapon + Bomb,Bomb.Glider
+Bomb_demolition,Demolition Bomb,BOMB,Weapon + Bomb,Bomb.Glider
+Bomb_glide1,PAB-80LR,BOMB,Weapon + Bomb,Bomb.Glider
+Bomb_penetrator1,GPO-2P Auger,BOMB,Weapon + Bomb,Bomb.Glider
+Bomb500,GPO-500,BOMB,Weapon + Bomb,Bomb.Glider
+NuclearBomb1,GPO-N (1.5kt),BOMB,Weapon + Bomb,Bomb.Glider
+NuclearBomb1_strategic,GPO-N (250kt),BOMB,Weapon + Bomb,Bomb.Glider
+MunitionsContainer1,Munitions Container,CTNR,Misc + Container,Core.Default
+NavalSupplyContainer1,Naval Container,CTNR,Misc + Container,Core.Default
+FactoryLarge,Large Factory,FAC,Ground + Static + Building,Core.Default
+FactoryTall,Vertical Factory,FAC,Ground + Static + Building,Core.Default
+shelter1,Hardened Aircraft Shelter,HGR-H,Ground + Static + Building,Core.Default
+hangar_med,Medium Aircraft Hangar,HGR-M,Ground + Static + Building,Core.Default
+HLT-FT,HLT Fuel Tanker,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
+HLT-L,HLT Flatbed,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
+HLT-M,HLT Munitions Truck,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
+HLT-T,HLT Tractor,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
+helipad1,Helipad,HPAD,Ground + Static + Building,Core.Default
+6x6_1_IFV,AFV6 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
+AFV8_IVF,AFV8 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
+LinebreakerIFV,Linebreaker IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
+LandingCraft1,OTB-31 landing craft,LCAC,Sea + Watercraft,Watercraft.Military
+LightTruck1_AA,LCV25 AA,LCV25,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC
+LightTruck1_AT,LCV25 AT,LCV25,Ground + Medium + Vehicle,Vehicle.Military.APC
+LCV45,LCV45 Recon Truck,LCV45,Ground + Medium + Vehicle,Vehicle.Military.APC
+MBT,Type-12 MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank
+MBT1,Spearhead MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank
+AAM1,MMR-S3,MSL,Weapon + Missile,Core.Missile
+AAM2,AAM-29 Scythe,MSL,Weapon + Missile,Core.Missile
+AAM3,IRM-S2,MSL,Weapon + Missile,Core.Missile
+AAM4,AAM-36 Scimitar,MSL,Weapon + Missile,Core.Missile
+AGM_heavy,AGM-68,MSL,Weapon + Missile,Core.Missile
+AGM1,AGM-48,MSL,Weapon + Missile,Core.Missile
+AGM2,ATP-1,MSL,Weapon + Missile,Core.Missile
+AIR-2_Genie,AIR-2 Genie,MSL,Weapon + Missile,Core.Missile
+ARM1,ARAD-116,MSL,Weapon + Missile,Core.Missile
+AShM1,AShM-300,MSL,Weapon + Missile,Core.Missile
+AShM2,AGM-99,MSL,Weapon + Missile,Core.Missile
+AShM3,Tusko-B (HE),MSL,Weapon + Missile,Core.Missile
+ballisticMissile1,Piledriver TBM (HE),MSL,Weapon + Missile,Core.Missile
+ballisticMissile1_tacNuke,Piledriver TBM (20kt),MSL,Weapon + Missile,Core.Missile
+CruiseMissile1,ALM-C450,MSL,Weapon + Missile,Core.Missile
+CruiseMissile20kt,ALND-4 (20kt),MSL,Weapon + Missile,Core.Missile
+GTG1,Ground-to-ground missile,MSL,Weapon + Missile,Core.Missile
+Rocket1,AGR-18 Lynchpin,MSL,Weapon + Missile,Core.Missile
+Rocket2,AGR-24 Kingpin,MSL,Weapon + Missile,Core.Missile
+SAM_IR1,IRM-S1,MSL,Weapon + Missile,Core.Missile
+SAM_Radar1,RAM-45,MSL,Weapon + Missile,Core.Missile
+SAM_Radar2,StratoLance R9,MSL,Weapon + Missile,Core.Missile
+PilotDismounted,Pilot,PILOT,Ground + Light + Human,Core.Default
+HLT-R,HLT Radar Truck,RDR,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
+RadarStation1,Radar Station,RDR,Ground + Static + Building,Core.Default
+revetment1,Aircraft Revetment,REV,Ground + Static + Building,Core.Default
+AFV8_SAM,AFV8 Mobile Air Defense,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
+LinebreakerSAM,Linebreaker SAM,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
+RadarSam1,T9K41 Boltstrike,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
+SAMTrailer1,StratoLance R9 Launcher,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
+Shell_76mm_guided,76mm Guided Shell,SHL,Projectile + Shell,Core.Missile
+AssaultCarrier1,Annex Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military
+FleetCarrier1,Hyperion Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military
+Corvette1,Shard Class Corvette,SHP,Sea + Watercraft + Warship,Watercraft.Military
+Destroyer1,Dynamo Class Destroyer,SHP,Sea + Watercraft + Warship,Watercraft.Military
+SPAAG1,AeroSentry SPAAG,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck
+SPAAG2,FGA-57 Anvil,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck
+ControlTower1,Control Tower,TWR,Ground + Static + Building,Core.Default
