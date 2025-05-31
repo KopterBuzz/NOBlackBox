@@ -93,51 +93,58 @@ namespace NOBlackBox
                                 if (source.flare)
                                     newFlare.Add(new(source));
                             };
-
+                            if (Configuration.EnableUnitLogging.Value == true)
+                            {
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_AIRCRAFT,{unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.code}");
+                            }
                             break;
                         case Missile:
                             acmi = new ACMIMissile((Missile)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"WEAPON: {unit.definition.name}," +
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_WEAPON,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
-                                                        $"{unit.definition.bogeyName},");
+                                                        $"{unit.definition.code}");
                             }
                             break;
                         case GroundVehicle:
                             acmi = new ACMIGroundVehicle((GroundVehicle)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"GROUND: {unit.definition.name}," +
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_GROUND,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
-                                                        $"{unit.definition.bogeyName},");
+                                                        $"{unit.definition.code}");
                             }
                             break;
                         case Building:
                             acmi = new ACMIBuilding((Building)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"BUILDING: {unit.definition.name}," +
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_BUILDING,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
-                                                        $"{unit.definition.bogeyName},");
+                                                        $"{unit.definition.code}");
                             }
                             break;
                         case Ship:
                             acmi = new ACMIShip((Ship)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"SHIP: {unit.definition.name}," +
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_SHIP,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
-                                                        $"{unit.definition.bogeyName},");
+                                                        $"{unit.definition.code}");
                             }
                             break;
                         default:
+                            
                             if(Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo( $"UNKNOWN ACMI UNIT OBJECT: {unit.definition.name}," +
+                                Plugin.Logger?.LogInfo( $"NOBLACKBOX_UNKNOWN: {unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
-                                                        $"{unit.definition.bogeyName},");
+                                                        $"{unit.definition.code},");
                             }
+                            
                             continue;
                     }
 

@@ -11,7 +11,7 @@ namespace NOBlackBox
         internal const string OptionalDataSettings = "Optional Data Settings";
         internal const string HeightMapGeneratorSettings = "Heightmap Generator Settings";
         internal const string VisualSettings = "Visual Settings";
-        internal const string DeveloperSettings = "Developer Settings";
+        internal const string DeveloperFeatures = "Developer Features";
 
         internal const int DefaultUpdateRate = 5;
 
@@ -43,6 +43,8 @@ namespace NOBlackBox
         internal const float DefaultAutoSaveCountDownY = 0.1f;
 
         internal const bool DefaultEnableUnitLogging = false;
+        internal const bool DefaultEnableEncyclopediaExporter = false;
+        internal const KeyCode DefaultEncyclopediaExporterKey = KeyCode.F11;
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
@@ -73,6 +75,8 @@ namespace NOBlackBox
         internal static ConfigEntry<float> AutoSaveCountDownY;
 
         internal static ConfigEntry<bool> EnableUnitLogging;
+        internal static ConfigEntry<bool> EnableEncyclopediaExporter;
+        internal static ConfigEntry<KeyboardShortcut> EncyclopediaExporterKey;
 #pragma warning restore
 
         internal static int UpdateRate
@@ -114,6 +118,7 @@ namespace NOBlackBox
                 return _GenerateHeightMapKey.Value.IsDown();
             }
         }
+
 
         internal static void InitSettings(ConfigFile config)
         {
@@ -246,9 +251,14 @@ namespace NOBlackBox
             }
             Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorA = {TextColorA.Value}");
 
-            EnableUnitLogging = config.Bind(DeveloperSettings, "EnableUnknownUnitLogging", DefaultEnableUnitLogging, "Toggle logging Unknown Units that are unknown to ACMI Recorder. Default: false");
+            EnableUnitLogging = config.Bind(DeveloperFeatures, "EnableUnknownUnitLogging", DefaultEnableUnitLogging, "Toggle logging Unknown Units that are unknown to ACMI Recorder. Default: false");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableUnknownUnitLogging = {EnableUnitLogging.Value}");
 
+            EnableEncyclopediaExporter = config.Bind(DeveloperFeatures, "EnableEncyclopediaExporter", DefaultEnableEncyclopediaExporter, "Toggle Encyclopedia Exporter. Default: false");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableEncyclopediaExporter = {EnableEncyclopediaExporter.Value}");
+
+            EncyclopediaExporterKey = config.Bind("Hotkeys", "EncyclopediaExporterKey", new KeyboardShortcut(DefaultEncyclopediaExporterKey));
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EncyclopediaExporterKey = {EncyclopediaExporterKey.Value}");
 
         }
     }

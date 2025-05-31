@@ -15,7 +15,7 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.2")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.3")]
     [BepInProcess("NuclearOption.exe")]
     internal class Plugin : BaseUnityPlugin
     {
@@ -55,6 +55,10 @@ namespace NOBlackBox
             if (Configuration._GenerateHeightMapKey.Value.IsDown())
             {
                 RaycastHeightmapGenerator.Generate();
+            }
+            if (Configuration.EncyclopediaExporterKey.Value.IsDown())
+            {
+                EncyclopediaExporter.ExportEncyclopediaCSV();
             }
             UpdateGuiAnchors();
         }
