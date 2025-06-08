@@ -10,7 +10,7 @@ namespace NOBlackBox
         private readonly static Dictionary<string, string> TYPES = new()
         {
             { "CI-22", "Air+FixedWing" },
-            { "T/A-30", "Air+FixedWingt" },
+            { "T/A-30", "Air+FixedWing" },
             { "SAH-46", "Air+Rotorcraft" },
             { "FS-12", "Air+FixedWing" },
             { "KR-67", "Air+FixedWing" },
