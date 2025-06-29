@@ -16,7 +16,7 @@ namespace NOBlackBox
         private MultiThreadedStreamWriter output;
         private readonly DateTime reference;
         public static TimeSpan lastUpdate;
-        private static DateTime lastFlushTime;
+        public static DateTime lastFlushTime;
         internal string filename;
         internal MapKey currentMapKey;
         internal ACMIWriter(DateTime reference)
