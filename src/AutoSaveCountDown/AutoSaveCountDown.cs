@@ -1,30 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 namespace NOBlackBox
 {
     internal class AutoSaveCountDown : MonoBehaviour
     {
-        public float countDown;
+        public double countDown;
         internal float timer;
+        private double secondsSinceLastUpdate;
         void Awake()
         {
-            countDown = (float)Configuration.AutoSaveInterval;
-            timer = 0f;
         }
         void Update()
         {
-            timer += Time.deltaTime;
-            if ( timer >= 1.0 )
-            {
-                countDown -= timer;
-                timer = 0f;
-            }
-            
-            if (ACMIWriter.lastUpdate.TotalSeconds > Configuration.AutoSaveInterval && (ACMIWriter.lastUpdate.TotalSeconds % Configuration.AutoSaveInterval < 1))
-            {
-                countDown = (float)Configuration.AutoSaveInterval;
-            }
+            secondsSinceLastUpdate = (DateTime.Now - ACMIWriter.lastFlushTime).TotalSeconds;
+            countDown = Configuration.AutoSaveInterval - secondsSinceLastUpdate;
         }
         void OnGUI()
         {
@@ -41,7 +32,7 @@ namespace NOBlackBox
                                    (Configuration.AutoSaveCountDownY.Value * Plugin.recordedScreenHeight),
                                    400,
                                    50),
-                                   "Next AutoSave: " + countDown, fontSize);
+                                   $"Next AutoSave: {countDown:N1} sec", fontSize);
             }
         }
     }

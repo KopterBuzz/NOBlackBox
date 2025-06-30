@@ -204,14 +204,11 @@ namespace NOBlackBox
             }
 
             newTracers.Clear();
-
-            writer.Flush();
         }
 
         private void WriteEvent(string name, long[] ids, string text)
         {
             writer.WriteEvent(curTime, name, [.. ids.Select(a => a.ToString("X")), text]);
-            writer.Flush();
         }
 
         internal void Close()

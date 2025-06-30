@@ -13,9 +13,10 @@ namespace NOBlackBox
 {
     internal class ACMIWriter
     {
-        private StreamWriter output;
+        private MultiThreadedStreamWriter output;
         private readonly DateTime reference;
         public static TimeSpan lastUpdate;
+        public static DateTime lastFlushTime;
         internal string filename;
         internal MapKey currentMapKey;
         internal ACMIWriter(DateTime reference)
@@ -33,7 +34,7 @@ namespace NOBlackBox
             while (File.Exists(filename))
                 filename = basename + $" ({++postfix}).acmi";
 
-            output = File.CreateText(filename);
+            output = new MultiThreadedStreamWriter(File.CreateText(filename));
             //sb = new StringBuilder();
             this.reference = reference;
             currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
@@ -64,6 +65,8 @@ namespace NOBlackBox
             */
             output.WriteLine($"0,{StringifyProps(initProps)}");
             output.Flush();
+
+            lastFlushTime = DateTime.Now;
         }
 
         ~ACMIWriter()
@@ -125,11 +128,12 @@ namespace NOBlackBox
 
         internal void WriteLine(string line)
         {
-            if (lastUpdate.TotalSeconds > Configuration.AutoSaveInterval && (lastUpdate.TotalSeconds % Configuration.AutoSaveInterval < 1))
+            if ((DateTime.Now - lastFlushTime).TotalSeconds > Configuration.AutoSaveInterval)
             {
                 output.Flush();
-                output.Close();
-                output = new StreamWriter(filename, append: true);
+                lastFlushTime = DateTime.Now;
+                //output.Close();
+                //output = new StreamWriter(filename, append: true);
             }
             output.WriteLine(line);
         }
