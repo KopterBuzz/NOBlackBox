@@ -116,14 +116,26 @@ namespace NOBlackBox
                     .Min() - Datum.originPosition.GlobalY();
 
                 Plugin.Logger?.LogInfo("Attempting to export custom terrain heightmap");
-                // Get terrain dimensions from the static TerrainGrid class
-                if (MapSettingsManager.i.Maps[0].Prefab.MapSize.y >= MapSettingsManager.i.Maps[0].Prefab.MapSize.x)
+                Map thisMap = null;
+                Plugin.Logger?.LogInfo("Looping through MapSettingsManager.i.Maps..");
+                foreach (Map map_ in MapSettingsManager.i.Maps)
                 {
-                    terrainSize = MapSettingsManager.i.Maps[0].Prefab.MapSize.y;
+                    
+                    Plugin.Logger?.LogInfo($"checking {map_.Prefab.name}");
+                    if (map_.Prefab.name == MapSettingsManager.i.MapLoader.CurrentMap.Path)
+                    {
+                        thisMap = map_;
+                    }
+                }
+                // Get terrain dimensions from the static TerrainGrid class
+
+                if (thisMap?.Prefab.MapSize.y >= thisMap?.Prefab.MapSize.x)
+                {
+                    terrainSize = thisMap.Prefab.MapSize.y;
                 }
                 else
                 {
-                    terrainSize = MapSettingsManager.i.Maps[0].Prefab.MapSize.x;
+                    terrainSize = thisMap.Prefab.MapSize.x;
                 }
                 if (terrainSize == 0f)
                 {
@@ -133,8 +145,8 @@ namespace NOBlackBox
                 terrainHalf = terrainSize / 2;
                 terrainScale = textureSize / terrainSize;
 
-                terrainXHalf = MapSettingsManager.i.Maps[0].Prefab.MapSize.x / 2;
-                terrainYHalf = MapSettingsManager.i.Maps[0].Prefab.MapSize.y / 2;
+                terrainXHalf = thisMap.Prefab.MapSize.x / 2;
+                terrainYHalf = thisMap.Prefab.MapSize.y / 2;
 
                 
 
@@ -259,8 +271,8 @@ namespace NOBlackBox
                 new XElement("Resources",
                     new XElement("CustomHeightmapList",
                         new XElement("CustomHeightmap",
-                        new XAttribute("Layer", "Falcon 4"),
-                        new XAttribute("Id", MapSettingsManager.i.MapLoader.CurrentMap.Path),
+                        new XAttribute("Layer", "Nuclear Option"),
+                        new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
                             new XElement("File", heightmapFileName),
                             new XElement("BigEndian", "0"),
                             new XElement("Width", textureSize.ToString()),
@@ -295,8 +307,8 @@ namespace NOBlackBox
                 new XElement("Resources",
                     new XElement("CustomTextureList",
                         new XElement("CustomTexture",
-                        new XAttribute("Layer", "Falcon 4"),
-                        new XAttribute("Id", MapSettingsManager.i.MapLoader.CurrentMap.Path),
+                        new XAttribute("Layer", "Nuclear Option"),
+                        new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
                             new XElement("File", textureFileName),
                             new XElement("BottomLeft",
                             new XElement("Longitude", -terrainHalfInDegrees),

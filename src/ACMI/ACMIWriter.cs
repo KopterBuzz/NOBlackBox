@@ -42,6 +42,7 @@ namespace NOBlackBox
             Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
             output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
+            output.WriteLine($"MapId=NuclearOption.{currentMapKey.Path}");
 
             Dictionary<string, string> initProps = new()
             {
