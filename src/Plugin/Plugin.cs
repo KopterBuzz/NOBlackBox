@@ -15,7 +15,7 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.4")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.5")]
     [BepInProcess("NuclearOption.exe")]
     internal class Plugin : BaseUnityPlugin
     {
