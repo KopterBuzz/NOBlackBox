@@ -42,7 +42,6 @@ namespace NOBlackBox
             Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
             output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
-            output.WriteLine($"MapId=NuclearOption.{currentMapKey.Path}");
 
             Dictionary<string, string> initProps = new()
             {
@@ -51,6 +50,7 @@ namespace NOBlackBox
                 { "DataRecorder", $"NOBlackBox 0.3.5" },
                 { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
+				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
             };
 
             Mission mission = MissionManager.CurrentMission;
