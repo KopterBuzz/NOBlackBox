@@ -1,18 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DefaultPropertiesCollection LoadingOrder="1.0">
-  <DefaultProperties Id="prefabName" Base="TacviewXMLBase">
-    <Criteria>
-      <Name>prefabName</Name>
-      <Name>name</Name>
-      <Name>unitName</Name>
-    </Criteria>
-    <Properties>
-      <ShortName>code</ShortName>
-      <LongName>unitName</LongName>
-      <FullName>unitName</FullName>
-      <Shape>prefabName.obj</Shape>
-    </Properties>
-  </DefaultProperties>
   <DefaultProperties Id="Shell_76mm_guided" Base="Core.Shell">
     <Criteria>
       <Name>Shell_76mm_guided</Name>
