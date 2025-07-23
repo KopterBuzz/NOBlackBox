@@ -50,7 +50,7 @@ namespace NOBlackBox
             if (unit.Player != null)
             {
                 props.Add("Pilot", unit.Player.PlayerName);
-                props.Add("CallSign", unit.Player.PlayerName);
+                props.Add("CallSign", unit.definition.code);
             }
 
             return props;
