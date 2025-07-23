@@ -18,6 +18,9 @@ namespace NOBlackBox
         private static string ?customHeightMapListXMLFileName;
         private static string ?customTextureListXMLFileName;
         private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\Developer\\NOBlackBox_RayCast_HeightmapExports");
+        private static string CombinedCustomHeightMapListXMLPath = Path.Combine(
+                                                                        BepInEx.Paths.PluginPath,
+                                                                        "NOBlackBox\\Developer\\NOBlackBox_RayCast_HeightmapExports\\NuclearOption_Heightmaps.xml");
         private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
         private static int metersPerRay = Configuration.MetersPerScan.Value;
@@ -229,7 +232,7 @@ namespace NOBlackBox
             SaveHeightMapAsRAW(heightMapTile, outputPathRaw);
             ProbeTextureColors(0, (int)(maxHeight + 2), 0);
             SaveHeightMapCustomTexture();
-            SaveCustomHeightmapListXML();
+            SaveCustomHeightmapListXML_Legacy();
             SaveCustomTextureListXML();
         }
 
@@ -265,7 +268,7 @@ namespace NOBlackBox
             System.GC.Collect();
         }
 
-        static void SaveCustomHeightmapListXML()
+        static void SaveCustomHeightmapListXML_Legacy()
         {
             XDocument doc = new XDocument(
                 new XElement("Resources",
@@ -299,6 +302,93 @@ namespace NOBlackBox
             string XMLPath = Path.Combine(outputDir, customHeightMapListXMLFileName);
             Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {XMLPath}");
             doc.Save(XMLPath);
+        }
+
+        static void SaveCustomHeightmapListXML_New()
+        {
+            XDocument doc = null;
+
+            try
+            {
+                doc = XDocument.Load(CombinedCustomHeightMapListXMLPath);
+
+                XElement newHeightmap = new XElement("CustomHeightmap",
+                    new XAttribute("Layer", "Nuclear Option"),
+                    new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
+                    new XElement("File", heightmapFileName),
+                    new XElement("BigEndian", "0"),
+                    new XElement("Width", textureSize.ToString()),
+                    new XElement("Height", textureSize.ToString()),
+                    new XElement("AltitudeFactor", "1.0"),
+                    new XElement("AltitudeOffset", "0"),
+                    new XElement("Projection", "Quad"),
+                    new XElement("BottomLeft",
+                    new XElement("Longitude", -terrainHalfInDegrees),
+                    new XElement("Latitude", -terrainHalfInDegrees)),
+                    new XElement("BottomRight",
+                    new XElement("Longitude", terrainHalfInDegrees),
+                    new XElement("Latitude", -terrainHalfInDegrees)),
+                    new XElement("TopRight",
+                    new XElement("Longitude", terrainHalfInDegrees),
+                    new XElement("Latitude", terrainHalfInDegrees)),
+                    new XElement("TopLeft",
+                    new XElement("Longitude", -terrainHalfInDegrees),
+                    new XElement("Latitude", terrainHalfInDegrees))
+                );
+
+                XElement root = doc.Element("Resources");
+                XElement heightmapList = root.Element("CustomHeightmapList");
+
+                XElement existing = heightmapList.Elements("CustomHeightmap").FirstOrDefault(e => (string)e.Element("File") == heightmapFileName);
+
+                if (existing != null)
+                {
+                    existing.ReplaceWith(newHeightmap);
+                    Plugin.Logger?.LogInfo($"Updating {heightmapFileName} in {CombinedCustomHeightMapListXMLPath}...");
+                }
+                else
+                {
+                    heightmapList.Add(newHeightmap);
+                    Plugin.Logger?.LogInfo($"Adding {heightmapFileName} to {CombinedCustomHeightMapListXMLPath}...");
+                }
+
+                doc.Save(CombinedCustomHeightMapListXMLPath);
+                Plugin.Logger?.LogInfo($"Saved {CombinedCustomHeightMapListXMLPath} to disk.");
+
+            } catch
+            {
+                doc = new XDocument(
+                    new XElement("Resources",
+                        new XElement("CustomHeightmapList",
+                            new XElement("CustomHeightmap",
+                            new XAttribute("Layer", "Nuclear Option"),
+                            new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
+                                new XElement("File", heightmapFileName),
+                                new XElement("BigEndian", "0"),
+                                new XElement("Width", textureSize.ToString()),
+                                new XElement("Height", textureSize.ToString()),
+                                new XElement("AltitudeFactor", "1.0"),
+                                new XElement("AltitudeOffset", "0"),
+                                new XElement("Projection", "Quad"),
+                                new XElement("BottomLeft",
+                                new XElement("Longitude", -terrainHalfInDegrees),
+                                new XElement("Latitude", -terrainHalfInDegrees)),
+                                new XElement("BottomRight",
+                                new XElement("Longitude", terrainHalfInDegrees),
+                                new XElement("Latitude", -terrainHalfInDegrees)),
+                                new XElement("TopRight",
+                                new XElement("Longitude", terrainHalfInDegrees),
+                                new XElement("Latitude", terrainHalfInDegrees)),
+                                new XElement("TopLeft",
+                                new XElement("Longitude", -terrainHalfInDegrees),
+                                new XElement("Latitude", terrainHalfInDegrees))
+                            )
+                        )
+                    )
+                );
+                Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {CombinedCustomHeightMapListXMLPath}");
+                doc.Save(CombinedCustomHeightMapListXMLPath);
+            }
         }
 
         static void SaveCustomTextureListXML()
