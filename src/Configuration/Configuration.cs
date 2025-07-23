@@ -31,6 +31,7 @@ namespace NOBlackBox
         internal const int DefaultMetersPerScan = 4;
         internal const int DefaultHeightMapResolution = 4096;
         internal const bool DefaultEnableHeightmapGenerator = false;
+        internal const bool DefaultTacviewBetaHeightMapGenerator = true;
         //internal const float DefaultOrtoGraphicSize = 5f;
 
         internal const float DefaultTextColorR = 1.0f;
@@ -63,6 +64,7 @@ namespace NOBlackBox
         internal static ConfigEntry<int> MetersPerScan;
         internal static ConfigEntry<KeyboardShortcut> _GenerateHeightMapKey;
         internal static ConfigEntry<bool> EnableHeightmapGenerator;
+        internal static ConfigEntry <bool> TacviewBetaHeightMapGenerator;
         //internal static ConfigEntry<float> OrtoGraphicSize;
 
         internal static ConfigEntry<float> TextColorR;
@@ -205,6 +207,9 @@ namespace NOBlackBox
 
             EnableHeightmapGenerator = config.Bind(HeightMapGeneratorSettings, "EnableHeightmapGenerator", DefaultEnableHeightmapGenerator, "Enable/Disable Heightmap Generator. Default: false");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableHeightmapGenerator = {EnableHeightmapGenerator.Value}");
+
+            EnableHeightmapGenerator = config.Bind(HeightMapGeneratorSettings, "TacviewBetaHeightMapGenerator", DefaultTacviewBetaHeightMapGenerator, "True: Compatibility set for Tacview 1.9.5 Beta 11, False: Compatibility set for Tacview Stable. Default: True");
+            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableHeightmapGenerator = {TacviewBetaHeightMapGenerator.Value}");
 
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
             Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");

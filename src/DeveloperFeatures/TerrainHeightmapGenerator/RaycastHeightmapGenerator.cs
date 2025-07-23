@@ -232,7 +232,15 @@ namespace NOBlackBox
             SaveHeightMapAsRAW(heightMapTile, outputPathRaw);
             ProbeTextureColors(0, (int)(maxHeight + 2), 0);
             SaveHeightMapCustomTexture();
-            SaveCustomHeightmapListXML_Legacy();
+            if (Configuration.TacviewBetaHeightMapGenerator.Value)
+            {
+                SaveCustomHeightmapListXML_New();
+
+            } else
+            {
+                SaveCustomHeightmapListXML_Legacy();
+            }
+            
             SaveCustomTextureListXML();
         }
 
@@ -275,7 +283,7 @@ namespace NOBlackBox
                     new XElement("CustomHeightmapList",
                         new XElement("CustomHeightmap",
                         new XAttribute("Layer", "Nuclear Option"),
-                        new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
+                        new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
                             new XElement("File", heightmapFileName),
                             new XElement("BigEndian", "0"),
                             new XElement("Width", textureSize.ToString()),
@@ -362,7 +370,7 @@ namespace NOBlackBox
                         new XElement("CustomHeightmapList",
                             new XElement("CustomHeightmap",
                             new XAttribute("Layer", "Nuclear Option"),
-                            new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
+                            new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
                                 new XElement("File", heightmapFileName),
                                 new XElement("BigEndian", "0"),
                                 new XElement("Width", textureSize.ToString()),
