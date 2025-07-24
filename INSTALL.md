@@ -38,6 +38,9 @@ HideManagerGameObject = true
 
 ## Switching between Different Tacview MAPS
 
+### If you have 1.9.5 Beta 11 and use NOBlackBox 0.3.6 or newer to create recordimgs, you no longer need to manually switch maps for Tacview.
+### If you are using Tacview 1.9.4 Stable, or an older Beta, follow the below procedure:
+
 At the moment, Tacview can only load ONE Nuclear Option Terrain at a time.
 To switch between different Terrains do this:
 

@@ -72,6 +72,7 @@ namespace NOBlackBox
         {
             Dictionary<string, string> baseProps = base.Init();
             baseProps["Name"] = unit.definition.unitName;
+            baseProps.Add("CallSign", unit.definition.unitName);
             baseProps.Add("Type", TACVIEWTYPES.GetValueOrDefault(unit.definition.code, "Weapon"));
             baseProps.Add("Parent", unit.ownerID.ToString("X", CultureInfo.InvariantCulture));
 
