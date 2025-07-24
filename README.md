@@ -13,7 +13,7 @@ To report an Issue with the mod, please use GitHub Issues on this repository.
 ### Contributing
 If you wish to contribute, please fork this repository, implement your change in the fork and create a pull request.
 
-### Authors
+### Authors & Contributors
 - 7ep3s: Programming, Tacview customisation
 
 - TunderTunder: Tacview customisation
@@ -23,3 +23,7 @@ If you wish to contribute, please fork this repository, implement your change in
 - TYKUHN2: Programming
 
 - CircuitButKerbin: Tacview customisation
+
+- dv-dt-dino: Programming
+
+- Special thanks to Tacview developers for continuous support and assistance with this project!
