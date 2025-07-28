@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources>
+  <CustomHeightmapList>
+    <CustomHeightmap Layer="Nuclear Option" Id="NuclearOption.Terrain_naval">
+      <File>NuclearOption_heightmap_Terrain_naval.raw</File>
+      <BigEndian>0</BigEndian>
+      <Width>4096</Width>
+      <Height>4096</Height>
+      <AltitudeFactor>1.0</AltitudeFactor>
+      <AltitudeOffset>0</AltitudeOffset>
+      <Projection>Quad</Projection>
+      <BottomLeft>
+        <Longitude>-0.737221</Longitude>
+        <Latitude>-0.737221</Latitude>
+      </BottomLeft>
+      <BottomRight>
+        <Longitude>0.737221</Longitude>
+        <Latitude>-0.737221</Latitude>
+      </BottomRight>
+      <TopRight>
+        <Longitude>0.737221</Longitude>
+        <Latitude>0.737221</Latitude>
+      </TopRight>
+      <TopLeft>
+        <Longitude>-0.737221</Longitude>
+        <Latitude>0.737221</Latitude>
+      </TopLeft>
+    </CustomHeightmap>
+  </CustomHeightmapList>
+</Resources>
