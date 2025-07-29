@@ -136,6 +136,14 @@ namespace NOBlackBox
                                                         $"{unit.definition.code}");
                             }
                             break;
+                        case PilotDismounted:
+                            acmi = new ACMIPilotDismounted((PilotDismounted)unit);
+                            {
+                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_PILOTDISMOUNTED,{unit.definition.name}," +
+                                                        $"{unit.definition.unitName}," +
+                                                        $"{unit.definition.code}");
+                            }
+                            break;
                         default:
                             
                             if(Configuration.EnableUnitLogging.Value == true)
