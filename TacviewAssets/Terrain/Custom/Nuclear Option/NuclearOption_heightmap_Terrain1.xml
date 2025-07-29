@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources>
+  <CustomHeightmapList>
+    <CustomHeightmap Layer="Nuclear Option" Id="NuclearOption.Terrain1">
+      <File>NuclearOption_heightmap_Terrain1.raw</File>
+      <BigEndian>0</BigEndian>
+      <Width>4096</Width>
+      <Height>4096</Height>
+      <AltitudeFactor>1.0</AltitudeFactor>
+      <AltitudeOffset>0</AltitudeOffset>
+      <Projection>Quad</Projection>
+      <BottomLeft>
+        <Longitude>-0.3686105</Longitude>
+        <Latitude>-0.3686105</Latitude>
+      </BottomLeft>
+      <BottomRight>
+        <Longitude>0.3686105</Longitude>
+        <Latitude>-0.3686105</Latitude>
+      </BottomRight>
+      <TopRight>
+        <Longitude>0.3686105</Longitude>
+        <Latitude>0.3686105</Latitude>
+      </TopRight>
+      <TopLeft>
+        <Longitude>-0.3686105</Longitude>
+        <Latitude>0.3686105</Latitude>
+      </TopLeft>
+    </CustomHeightmap>
+  </CustomHeightmapList>
+</Resources>

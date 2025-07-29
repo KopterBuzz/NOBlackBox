@@ -17,10 +17,10 @@ namespace NOBlackBox
         private static string ?textureFileName;
         private static string ?customHeightMapListXMLFileName;
         private static string ?customTextureListXMLFileName;
-        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\Developer\\NOBlackBox_RayCast_HeightmapExports");
+        private static string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox\\Developer");
         private static string CombinedCustomHeightMapListXMLPath = Path.Combine(
                                                                         BepInEx.Paths.PluginPath,
-                                                                        "NOBlackBox\\Developer\\NOBlackBox_RayCast_HeightmapExports\\NuclearOption_Heightmaps.xml");
+                                                                        "NOBlackBox\\Developer\\NuclearOption_Heightmaps.xml");
         private static int textureSize = Configuration.HeightMapResolution.Value;
         private static float terrainSize = 0;
         private static int metersPerRay = Configuration.MetersPerScan.Value;
@@ -63,7 +63,7 @@ namespace NOBlackBox
             renderCam.enabled = true;
             renderCam.farClipPlane = maxHeight + 100;
 
-            texture = new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
+            texture = new Texture2D(textureSize, textureSize, TextureFormat.RGB24, false);
         }
 
         private static void ProbeTextureColors(int X, int Y, int Z)
@@ -96,11 +96,18 @@ namespace NOBlackBox
             try
 
             {
-                heightmapFileName = $"NOBlackBox_heightmap_{MapSettingsManager.i.MapLoader.CurrentMap.Path}.data";
-                textureFileName = $"{MapSettingsManager.i.MapLoader.CurrentMap.Path}.png";
-                customHeightMapListXMLFileName = $"{MapSettingsManager.i.MapLoader.CurrentMap.Path}_CustomHeightmapList.xml";
-                customTextureListXMLFileName = $"{MapSettingsManager.i.MapLoader.CurrentMap.Path}_CustomTextureList.xml";
+				const string BasePath = "TacviewAssets\\Terrain\\";
+				const string HeightmapsBasePath = BasePath + "Custom\\Nuclear Option\\";
+				const string TexturesBasePath = BasePath + "Textures\\Nuclear Option\\";
 
+				string currentMapName = MapSettingsManager.i.MapLoader.CurrentMap.Path;
+
+				heightmapFileName = HeightmapsBasePath + $"NuclearOption_heightmap_{currentMapName}.raw";
+				customHeightMapListXMLFileName = HeightmapsBasePath + $"NuclearOption_heightmap_{currentMapName}.xml";
+
+				textureFileName = TexturesBasePath + $"NuclearOption_texture_{currentMapName}.png";
+				customTextureListXMLFileName = TexturesBasePath + $"NuclearOption_texture_{currentMapName}.xml";
+				
                 FieldInfo MapInScene = typeof(MapSettingsManager).GetField("mapInScene", BindingFlags.Instance | BindingFlags.NonPublic);
                 MapSettings map = (MapSettings)MapInScene.GetValue(MapSettingsManager.i);
                 GameObject mapHost = map.gameObject;
@@ -174,6 +181,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogError($"Error exporting heightmap: {ex.Message}\n{ex.StackTrace}");
             }
         }
+
         // RayCasts over the entire terrain. sample rate controlled by metersPerRay, output size is controlled by textureSize
         private static short[,] RayCastTerrain()
         {
@@ -200,83 +208,100 @@ namespace NOBlackBox
 
                     Vector3 target = new GlobalPosition(x, maxHeight + 1, z).ToLocalPosition();
                     RaycastHit hit;
-                    if (oldPosX != posX && oldPosZ != posZ) {
-                        
-                        if (Physics.Raycast(target, Vector3.down, out hit, maxHeight + 2, 1 << STATICS))
-                        {
-                            //ProbeTextureColors(x, (int)(hit.point.GlobalY() + 10),z);
-                            
-                            heights[textureSize - posZ -1,posX] = (short)(hit.point.GlobalY());
-                        }
-                        else
-                        {
-                            heights[textureSize - posZ - 1,posX] = (short)(minHeight);
-                        }
-                    }
+                    if (oldPosX != posX && oldPosZ != posZ)
+					{
+						if (Physics.Raycast(target, Vector3.down, out hit, maxHeight + 2, 1 << STATICS))
+						{
+							//ProbeTextureColors(x, (int)(hit.point.GlobalY() + 10),z);
+
+							heights[textureSize - posZ - 1, posX] = (short)(hit.point.GlobalY());
+						}
+						else
+						{
+							heights[textureSize - posZ - 1, posX] = (short)(minHeight);
+						}
+					}
                     oldPosX = posX;
                 }
                 oldPosZ = posZ;
             }
+
             return heights;
-           
-        }
-       
-        // main function to trace the game world and output assembled Heightmap
-        private static void GenerateRayCastHeightmap()
-        {
-          
-            //string outputDir = Path.Combine(BepInEx.Paths.PluginPath, "NOBlackBox_RayCast_HeightmapExports");
-            Directory.CreateDirectory(outputDir);
-            short[,] heightMapTile = RayCastTerrain();           
-            string outputPathRaw = Path.Combine(outputDir, heightmapFileName);
-            SaveHeightMapAsRAW(heightMapTile, outputPathRaw);
-            ProbeTextureColors(0, (int)(maxHeight + 2), 0);
-            SaveHeightMapCustomTexture();
-            if (Configuration.TacviewBetaHeightMapGenerator.Value)
-            {
-                SaveCustomHeightmapListXML_New();
-
-            } else
-            {
-                SaveCustomHeightmapListXML_Legacy();
-            }
-            
-            SaveCustomTextureListXML();
         }
 
-        // helper function to dump heightmap to disk
-        static void SaveHeightMapAsRAW(short[,] array, string filePath)
-        {
-            int rows = array.GetLength(0);
-            int cols = array.GetLength(1);
+		// main function to trace the game world and output assembled Heightmap
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            using (BinaryWriter writer = new BinaryWriter(fs))
-            {
-                for (int y = 0; y < rows; y++)
-                {
-                    for (int x = 0; x < cols; x++)
-                    {
-                        writer.Write(array[y, x]);
-                    }
-                }
-            }
-            Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {filePath}");
-        }
+		// Recommended mission settings for best results:
+		// - Disable clouds and fog (to avoid cloud shadows on the map)
+		// - Set time to 16:00 for better lighting (less overexposure and shadows cast to the right)
 
-        static void SaveHeightMapCustomTexture()
-        {
-            byte[] tex = texture.EncodeToPNG();
-            string outputPath = Path.Combine(outputDir, textureFileName);
-            File.WriteAllBytes(outputPath, tex);
-            Plugin.Logger?.LogInfo($"Heightmap Texture exported to: {outputPath}");
-            texture = null;
-            renderCamTexture.Release();
-            tex = null;
-            System.GC.Collect();
-        }
+		private static void GenerateRayCastHeightmap()
+		{
+			// Export Elevation Map
 
-        static void SaveCustomHeightmapListXML_Legacy()
+			short[,] heightMapTile = RayCastTerrain();
+			SaveHeightMapAsRAW(heightMapTile);
+			SaveCustomHeightmapListXML();
+
+			// Export Terrain Texture
+
+			ProbeTextureColors(0, (int)(maxHeight + 2), 0);
+			SaveHeightMapCustomTexture();
+			SaveCustomTextureListXML();
+
+/*
+			if (Configuration.TacviewBetaHeightMapGenerator.Value)
+			{
+				SaveCustomHeightmapListXML_Multiple();
+			}
+			else
+			{
+				SaveCustomHeightmapListXML();
+			}
+*/
+		}
+
+		// helper function to dump heightmap to disk
+		static void SaveHeightMapAsRAW(short[,] array)
+		{
+			string filePath = Path.Combine(outputDir, heightmapFileName);
+			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+			int rows = array.GetLength(0);
+			int cols = array.GetLength(1);
+
+			using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+			using (BinaryWriter writer = new BinaryWriter(fs))
+			{
+				for (int y = 0; y < rows; y++)
+				{
+					for (int x = 0; x < cols; x++)
+					{
+						writer.Write(array[y, x]);
+					}
+				}
+			}
+
+			Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {filePath}");
+		}
+
+		static void SaveHeightMapCustomTexture()
+		{
+			string filePath = Path.Combine(outputDir, textureFileName);
+			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+			byte[] tex = texture.EncodeToPNG();
+
+			string outputPath = Path.Combine(outputDir, textureFileName);
+			File.WriteAllBytes(outputPath, tex);
+			Plugin.Logger?.LogInfo($"Heightmap Texture exported to: {outputPath}");
+			texture = null;
+			renderCamTexture.Release();
+			tex = null;
+			System.GC.Collect();
+		}
+
+        static void SaveCustomHeightmapListXML()
         {
             XDocument doc = new XDocument(
                 new XElement("Resources",
@@ -284,7 +309,7 @@ namespace NOBlackBox
                         new XElement("CustomHeightmap",
                         new XAttribute("Layer", "Nuclear Option"),
                         new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
-                            new XElement("File", heightmapFileName),
+                            new XElement("File", Path.GetFileName(heightmapFileName)),
                             new XElement("BigEndian", "0"),
                             new XElement("Width", textureSize.ToString()),
                             new XElement("Height", textureSize.ToString()),
@@ -312,7 +337,7 @@ namespace NOBlackBox
             doc.Save(XMLPath);
         }
 
-        static void SaveCustomHeightmapListXML_New()
+        static void SaveCustomHeightmapListXML_Multiple()
         {
             XDocument doc = null;
 
@@ -323,7 +348,7 @@ namespace NOBlackBox
                 XElement newHeightmap = new XElement("CustomHeightmap",
                     new XAttribute("Layer", "Nuclear Option"),
                     new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
-                    new XElement("File", heightmapFileName),
+                    new XElement("File", Path.GetFileName(heightmapFileName)),
                     new XElement("BigEndian", "0"),
                     new XElement("Width", textureSize.ToString()),
                     new XElement("Height", textureSize.ToString()),
@@ -371,7 +396,7 @@ namespace NOBlackBox
                             new XElement("CustomHeightmap",
                             new XAttribute("Layer", "Nuclear Option"),
                             new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
-                                new XElement("File", heightmapFileName),
+                                new XElement("File", Path.GetFileName(heightmapFileName)),
                                 new XElement("BigEndian", "0"),
                                 new XElement("Width", textureSize.ToString()),
                                 new XElement("Height", textureSize.ToString()),
@@ -406,8 +431,8 @@ namespace NOBlackBox
                     new XElement("CustomTextureList",
                         new XElement("CustomTexture",
                         new XAttribute("Layer", "Nuclear Option"),
-                        new XAttribute("MapId", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
-                            new XElement("File", textureFileName),
+                        new XAttribute("Id", $"NuclearOption.{MapSettingsManager.i.MapLoader.CurrentMap.Path}"),
+                            new XElement("File", Path.GetFileName(textureFileName)),
                             new XElement("BottomLeft",
                             new XElement("Longitude", -terrainHalfInDegrees),
                             new XElement("Latitude", -terrainHalfInDegrees)),
