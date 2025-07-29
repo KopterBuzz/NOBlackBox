@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources>
+  <CustomTextureList>
+    <CustomTexture Layer="Nuclear Option" Id="NuclearOption.Terrain_naval">
+      <File>NuclearOption_texture_Terrain_naval.png</File>
+      <BottomLeft>
+        <Longitude>-0.737221</Longitude>
+        <Latitude>-0.737221</Latitude>
+      </BottomLeft>
+      <BottomRight>
+        <Longitude>0.737221</Longitude>
+        <Latitude>-0.737221</Latitude>
+      </BottomRight>
+      <TopRight>
+        <Longitude>0.737221</Longitude>
+        <Latitude>0.737221</Latitude>
+      </TopRight>
+      <TopLeft>
+        <Longitude>-0.737221</Longitude>
+        <Latitude>0.737221</Latitude>
+      </TopLeft>
+    </CustomTexture>
+  </CustomTextureList>
+</Resources>

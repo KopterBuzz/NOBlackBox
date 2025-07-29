@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Resources>
+  <CustomTextureList>
+    <CustomTexture Layer="Nuclear Option" Id="NuclearOption.Terrain1">
+      <File>NuclearOption_texture_Terrain1.png</File>
+      <BottomLeft>
+        <Longitude>-0.3686105</Longitude>
+        <Latitude>-0.3686105</Latitude>
+      </BottomLeft>
+      <BottomRight>
+        <Longitude>0.3686105</Longitude>
+        <Latitude>-0.3686105</Latitude>
+      </BottomRight>
+      <TopRight>
+        <Longitude>0.3686105</Longitude>
+        <Latitude>0.3686105</Latitude>
+      </TopRight>
+      <TopLeft>
+        <Longitude>-0.3686105</Longitude>
+        <Latitude>0.3686105</Latitude>
+      </TopLeft>
+    </CustomTexture>
+  </CustomTextureList>
+</Resources>
