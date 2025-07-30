@@ -26,6 +26,7 @@ namespace NOBlackBox
 
         FieldInfo warheadField;
         FieldInfo detonatedField;
+        FieldInfo armedField;
 
         private float lastAGL = float.NaN;
         private float lastTAS = float.NaN;
@@ -79,12 +80,19 @@ namespace NOBlackBox
             object warheadInstance = warheadField.GetValue(unit);
             Type warheadType = warheadInstance.GetType();
             detonatedField = warheadType.GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
+            armedField = warheadType.GetField("Armed", BindingFlags.Public | BindingFlags.Instance);
             bool isDetonated = (bool)detonatedField.GetValue(warheadInstance);
+            bool isArmed = (bool)armedField.GetValue(warheadInstance);
 
             if (!Detonated && isDetonated && base.postDisableAction)
             {
                 Plugin.Logger?.LogInfo($"{unit.persistentID} DETONATED (non-event)");
-                OnDetonate?.Invoke(this);
+                if (isArmed)
+                {
+                    Plugin.Logger?.LogInfo($"{unit.persistentID} EXPLODED");
+                    OnDetonate?.Invoke(this);
+                }
+                
                 Detonated = true;
                 base.postDisableAction = false;
                 FireEvent("LeftArea", [unit.persistentID], string.Empty);
