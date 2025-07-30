@@ -34,7 +34,13 @@ namespace NOBlackBox
 
             if (unit.NetworkHQ?.faction.factionName != coalition)
             {
-                baseProps.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
+                try {
+                    baseProps.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
+                } catch
+                {
+                    baseProps["Coalition"] = unit.NetworkHQ?.faction.factionName ?? "Neutral";
+                }
+                
                 string color = "Green";
                 switch (unit.NetworkHQ?.faction.factionName) {
                     case "Boscali":

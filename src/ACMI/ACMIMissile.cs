@@ -9,26 +9,6 @@ namespace NOBlackBox
 {
     internal class ACMIMissile : ACMIUnit
     {
-        private readonly Dictionary<string, string> TYPES = new()
-        {
-            { "IRM-S1", "Weapon+Missile" },
-            { "IRM-S2", "Weapon+Missile" },
-            { "MMR-S3", "Weapon+Missile" },
-            { "AAM-29 Scythe", "Weapon+Missile" },
-            { "AGM-48", "Weapon+Missile+Light" },
-            { "Ground-to-ground missile", "Weapon+Missile" },
-            { "AGM-68", "Weapon+Missile" },
-            { "RAM-45", "Weapon+Missile" },
-            { "StratoLance R9", "Weapon+Missile" },
-            { "AGR-18", "Weapon+Rocket" },
-            { "ARAD-116", "Weapon+Missile" },
-            { "ALM-C450", "Weapon+Missile" },
-            { "ALND-4 (20kt)", "Weapon+Missile" },
-            { "AShM-300", "Weapon+Missile" },
-            { "Tusko-B (HE)", "Weapon+Missile" },
-            { "AGR-24 Kingpin", "Weapon+Missile" }
-        };
-
         private readonly Dictionary<string, string> TACVIEWTYPES = new()
         {
             {"MSL", "Weapon+Missile"},
@@ -38,10 +18,14 @@ namespace NOBlackBox
 
         public readonly new Missile unit;
 
-        private FieldInfo detonatedFieldInfo;
-        private FieldInfo warheadField;
-        private Type warheadType;
-        private object warheadInstance;
+        public event Action<ACMIMissile>? OnDetonate;
+        //private FieldInfo detonatedFieldInfo;
+        //private FieldInfo warheadField;
+        //private Type warheadType;
+        //private object warheadInstance;
+
+        FieldInfo warheadField;
+        FieldInfo detonatedField;
 
         private float lastAGL = float.NaN;
         private float lastTAS = float.NaN;
@@ -55,16 +39,24 @@ namespace NOBlackBox
         public ACMIMissile(Missile missile) : base(missile)
         {
             unit = missile;
-            warheadType = missile.GetType().GetNestedType("Warhead", BindingFlags.NonPublic);
-            warheadField = missile.GetType().GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
-            detonatedFieldInfo = missile.GetType().GetNestedType("Warhead", BindingFlags.Public).GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
+            //warheadType = missile.GetType().GetNestedType("Warhead", BindingFlags.NonPublic);
+            //warheadField = missile.GetType().GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
+            //detonatedFieldInfo = missile.GetType().GetNestedType("Warhead", BindingFlags.NonPublic | BindingFlags.Public).GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
+            base.postDisableAction = true;
+
 
             missile.onDisableUnit += (Unit _) =>
             {
                 if (Detonated)
+                {
+                    Plugin.Logger?.LogInfo($"{unit.persistentID} DETONATED (onDisableUnit)");
+                    OnDetonate?.Invoke(this);
                     FireEvent("LeftArea", [id], "");
-                else
+                    
+                } else
+                {
                     FireEvent("Destroyed", [id], "");
+                }   
             };
         }
 
@@ -82,15 +74,22 @@ namespace NOBlackBox
         public override Dictionary<string, string> Update()
         {
             Dictionary<string, string> baseProps = base.Update();
-            warheadInstance = warheadField.GetValue(unit);
-            bool isDetonated = (bool)detonatedFieldInfo.GetValue(warheadInstance);
-            if (!Detonated && isDetonated)
+
+            warheadField = typeof(Missile).GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
+            object warheadInstance = warheadField.GetValue(unit);
+            Type warheadType = warheadInstance.GetType();
+            detonatedField = warheadType.GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool isDetonated = (bool)detonatedField.GetValue(warheadInstance);
+
+            if (!Detonated && isDetonated && base.postDisableAction)
             {
-                Plugin.Logger?.LogDebug("Detonated");
+                Plugin.Logger?.LogInfo($"{unit.persistentID} DETONATED (non-event)");
+                OnDetonate?.Invoke(this);
                 Detonated = true;
+                base.postDisableAction = false;
                 FireEvent("LeftArea", [unit.persistentID], string.Empty);
             }
-
+            
             if (unit.speed != lastTAS && Configuration.RecordSpeed.Value == true)
             {
                 baseProps.Add("TAS", unit.speed.ToString("0.##", CultureInfo.InvariantCulture));
