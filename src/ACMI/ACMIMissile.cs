@@ -86,10 +86,8 @@ namespace NOBlackBox
 
             if (!Detonated && isDetonated && base.postDisableAction)
             {
-                Plugin.Logger?.LogInfo($"{unit.persistentID} DETONATED (non-event)");
                 if (isArmed)
                 {
-                    Plugin.Logger?.LogInfo($"{unit.persistentID} EXPLODED");
                     OnDetonate?.Invoke(this);
                 }
                 
