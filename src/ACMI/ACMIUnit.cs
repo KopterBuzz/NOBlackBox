@@ -12,7 +12,7 @@ namespace NOBlackBox
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
         private Vector3 lastRot = new(float.NaN, float.NaN, float.NaN);
         public readonly Unit unit = unit;
-
+        internal bool postDisableAction = false;
         public override Dictionary<string, string> Init()
         {
             Faction? faction = unit.NetworkHQ?.faction;

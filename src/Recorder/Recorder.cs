@@ -1,6 +1,8 @@
-﻿using NuclearOption.SavedMission;
+﻿using MonoMod.Utils;
+using NuclearOption.SavedMission;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -11,6 +13,9 @@ namespace NOBlackBox
     {
         private static readonly FieldInfo bulletSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        private readonly Dictionary<Shockwave, ACMIShockwave> waves = [];
+        private readonly Dictionary<Shockwave, ACMIShockwave> newWaves = [];
 
         private readonly DateTime startDate;
         private DateTime curTime;
@@ -53,7 +58,7 @@ namespace NOBlackBox
             curTime += TimeSpan.FromSeconds(delta);
 
             foreach (var acmi in objects.Values.ToList())
-                if (acmi.unit.disabled)
+                if (acmi.unit.disabled && !acmi.postDisableAction)
                 {
                     objects.Remove(acmi.id);
                     writer.RemoveObject(acmi, curTime);
@@ -77,7 +82,7 @@ namespace NOBlackBox
 
             foreach (var unit in units)
             {
-                if (!unit.networked || unit.disabled || unit.persistentID == 0)
+                if (!unit.networked || unit.persistentID == 0 || (unit.disabled && unit.GetType() != typeof(Missile)))
                     continue;
 
                 bool isNew = false;
@@ -102,6 +107,7 @@ namespace NOBlackBox
                             break;
                         case Missile:
                             acmi = new ACMIMissile((Missile)unit);
+                            ((ACMIMissile)acmi).OnDetonate += OnDetonate;
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
                                 Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_WEAPON,{unit.definition.name}," +
@@ -212,6 +218,26 @@ namespace NOBlackBox
             }
 
             newTracers.Clear();
+
+            if (newWaves.Any())
+            {
+                waves.AddRange(newWaves);
+                newWaves.Clear();
+            }
+
+            foreach (ACMIShockwave wave in waves.Values.ToList())
+            {
+                if (!wave.shockwave || !wave.shockwave.enabled)
+                {
+                    waves.Remove(wave.shockwave);
+                    writer.RemoveObject(wave, curTime);
+                    continue;
+                }
+                Dictionary<string, string> props = wave.Update();
+                writer.UpdateObject(wave, curTime, props);
+            }
+
+
         }
 
         private void WriteEvent(string name, long[] ids, string text)
@@ -222,6 +248,25 @@ namespace NOBlackBox
         internal void Close()
         {
             writer?.Close();
+        }
+
+        private void OnDetonate(ACMIMissile missile)
+        {
+
+            Shockwave[] shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
+
+            foreach (Shockwave wave in shockwaves)
+            {
+                if (waves.ContainsKey(wave) || newWaves.ContainsKey(wave))
+                {
+                    continue;
+                }
+                    
+                ACMIShockwave acmi = new(wave);
+                Dictionary<string, string> props = acmi.Init();
+                writer.UpdateObject(acmi, curTime, props);
+                newWaves.Add(wave, acmi);
+            }
         }
     }
 }
