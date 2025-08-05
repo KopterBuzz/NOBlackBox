@@ -23,9 +23,11 @@ namespace NOBlackBox
             Dictionary<string, string> props = base.Init();
             coalition = props["Coalition"];
 
-            props["Type"] = "Ground+Static+Building" + (unit.definition.code == "RDR" ? "+Sensor" : string.Empty);
-
-            return props;
+            return new()
+            {
+                { "Name", unit.definition.unitName },
+                { "Type", "Ground+Static+Building" + (unit.definition.code == "RDR" ? "+Sensor" : string.Empty) }
+            };
         }
 
         public override Dictionary<string, string> Update()
@@ -34,13 +36,9 @@ namespace NOBlackBox
 
             if (unit.NetworkHQ?.faction.factionName != coalition)
             {
-                try {
-                    baseProps.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
-                } catch
-                {
-                    baseProps["Coalition"] = unit.NetworkHQ?.faction.factionName ?? "Neutral";
-                }
-                
+ 
+                baseProps.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
+
                 string color = "Green";
                 switch (unit.NetworkHQ?.faction.factionName) {
                     case "Boscali":

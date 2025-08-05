@@ -45,7 +45,7 @@ namespace NOBlackBox
             
             return new()
             {
-                { "Radius", ((float)propagation.GetValue(shockwave)).ToString("0.##", CultureInfo.InvariantCulture) }
+                { "Radius", ((float)propagation.GetValue(shockwave) / 10f).ToString("0.##", CultureInfo.InvariantCulture) }
             };
         }
     }
