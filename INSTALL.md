@@ -48,7 +48,7 @@ To switch between different Terrains do this:
 
 Inside [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip), there is a PowersHell Script called TacviewStableMapSwitcher.ps1
 
-This script file can help you switchin the active Custom Heightmap and Texture for Tacview Free/Stable releases.
+This script file can help you switching the active Custom Heightmap and Texture for Tacview Free/Stable releases.
 
 Open PowerShell and run the script to provide you usage instructions:
 
