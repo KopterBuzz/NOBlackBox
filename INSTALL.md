@@ -32,7 +32,7 @@ HideManagerGameObject = true
 ## The Tacview assets
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
 2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
-3. Unzip the downloaded Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
+3. Unzip the downloaded Archive.
 4. There are 2 installer scripts for different scenarios:
 - If you use Tacview Free version or Stable Build of Standard/Advanced, run install_Standard.bat
 - If you use Tacview Beta, run install_Beta.bat. 
