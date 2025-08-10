@@ -26,8 +26,8 @@ The mod works with the following loaders:
 [Chainloader]
 HideManagerGameObject = true
 ```
-3. Copy the NOBlackBox folder file to the game's BepInEx plugins folder.
-4. Enjoy :)
+4. Copy the NOBlackBox folder file to the game's BepInEx plugins folder.
+5. Enjoy :)
 
 ## The Tacview assets
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
