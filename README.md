@@ -26,4 +26,7 @@ If you wish to contribute, please fork this repository, implement your change in
 
 - dv-dt-dino: Programming
 
+- Klawifiantix: Tacview customisation
+
 - Special thanks to Tacview developers for continuous support and assistance with this project!
+- Special thanks to Shockfront Studios for making this amazing game and letting us mod it!
