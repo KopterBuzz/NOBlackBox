@@ -46,50 +46,24 @@ HideManagerGameObject = true
 At the moment, Tacview can only load ONE Nuclear Option Terrain at a time.
 To switch between different Terrains do this:
 
-Check the name of the Replay File. The terrain name is in last segment after the mission name, and before the file type (if you have file types set to visible on your computer).
-	
-Something like these:
+Inside [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip), there is a PowersHell Script called TacviewStableMapSwitcher.ps1
+
+This script file can help you switchin the active Custom Heightmap and Texture for Tacview Free/Stable releases.
+
+Open PowerShell and run the script to provide you usage instructions:
 
 ```
-2025-05-24T18-31-49_Free Flight - Heartland_Terrain1.acmi
-2025-05-24T18-35-07_Terminal Control_Terrain_naval.acmi
+PS C:\code\NOBlackBoxGIT\NOBlackBoxTacviewAssets> .\TacviewStableMapSwitcher.ps1
+The Following Terrains are available:
+NuclearOption.Terrain1
+NuclearOption.Terrain_naval
+Re-Run this tool with -target  Target Terrain ID to switch the default Tacview Terrain!
+Example: .\TacviewStableMapSwitcher.ps1 -target "NuclearOption.Terrain1"
+PS C:\code\NOBlackBoxGIT\NOBlackBoxTacviewAssets>
 ```
+Follow the provided example command line argument with one of the available Terrain IDs and it will swap the active map out for you.
 
-At the moment Nuclear option has Two Terrains: Terrain1 and Terrain_naval.
-
-In the future there might be more built-in Terrains, and also Custom terrains (with future mod support, hopefully ^^).
-	
-If you followed the Installation steps correctly, in %ProgramData%\Tacview\Data folder, you should see a Terrain folder.
-	
-In %ProgramData%\Tacview\Data\Terrain, you should see the Textures and a Custom folders.
-	
-In %ProgramData%\Tacview\Data\Terrain\Textures, there will be a few files that look like this:
-
-```
-Terrain1.png
-Terrain1_CustomTextureList.xml
-Terrain_naval.png
-Terrain_naval_CustomTextureList.xml
-```
-
-Notice how the XML files are named <Terrain_Name>_CustomTextureList.xml
-
-To tell Tacview which Terrain texture to load, rename the desired one to `CustomTextureList.xml` - it is case sensitive (at least for the file type), so please make sure spelling is correct.
-
-Now let's go to %ProgramData%\Tacview\Data\Terrain\Custom to sort out the elevation map.
-
-Similarly, you will see a set of files like this:
-
-```
-NOBlackBox_heightmap_Terrain1.data
-NOBlackBox_heightmap_Terrain_naval.data
-Terrain1_CustomHeightmapList.xml
-Terrain_naval_CustomHeightmapList.xml
-```
-
-To tell Tacview which Terrain Elevation map to load, rename the desired one to `CustomHeightmapList.xml` - it is case sensitive (at least for the file type), so please make sure spelling is correct.
-
-If you did everything right, after restarting Tacview the desired Terrain will be loaded.
+If you are getting ACCESS Denied Errors, try opening PowerShell as Administrator instead.
 
 ## Using NOBlackBox
 The mod will be enabled by default after installation.
