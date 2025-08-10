@@ -53,13 +53,13 @@ This script file can help you switching the active Custom Heightmap and Texture 
 Open PowerShell and run the script to provide you usage instructions:
 
 ```
-PS C:\code\NOBlackBoxGIT\NOBlackBoxTacviewAssets> .\TacviewStableMapSwitcher.ps1
+PS C:\code\NOBlackBoxTacviewAssets-main> .\TacviewStableMapSwitcher.ps1
 The Following Terrains are available:
 NuclearOption.Terrain1
 NuclearOption.Terrain_naval
 Re-Run this tool with -target  Target Terrain ID to switch the default Tacview Terrain!
 Example: .\TacviewStableMapSwitcher.ps1 -target "NuclearOption.Terrain1"
-PS C:\code\NOBlackBoxGIT\NOBlackBoxTacviewAssets>
+PS C:\code\NOBlackBoxTacviewAssets-main>
 ```
 Follow the provided example command line argument with one of the available Terrain IDs and it will swap the active map out for you.
 
