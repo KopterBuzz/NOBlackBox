@@ -31,10 +31,12 @@ HideManagerGameObject = true
 
 ## The Tacview assets
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
-2. Unzip the TacviewAssets Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
-3. Copy all content to %ProgramData%\Tacview\Data
-- Windows might ask you if you want to merge the folders. Let it happen.
-4. Restart Tacview and in its settings, Change Terrain to Falcon 4.0. We currently hijack the Falcon 4.0 support to inject Nuclear Option Terrain into Tacview.
+2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
+3. Unzip the downloaded Archive found in the [mod release](https://github.com/KopterBuzz/NOBlackBox/releases/latest).
+4. There are 2 installer scripts for different scenarios:
+- If you use Tacview Free version or Stable Build of Standard/Advanced, run install_Standard.bat
+- If you use Tacview Beta, run install_Beta.bat. 
+5. Restart Tacview and in its settings, If you use Tacview Free or Stable release of Standad/Advanced. Change Terrain to Falcon 4. We currently hijack the Falcon 4 support to inject Nuclear Option Terrain into Tacview Stable.
 
 ## Switching between Different Tacview MAPS
 
