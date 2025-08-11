@@ -34,7 +34,7 @@ HideManagerGameObject = true
 2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
 3. Unzip the downloaded Archive.
 4. There are 2 installer scripts for different scenarios:
-- If you use Tacview Free version or Stable Build of Standard/Advanced, run install_Standard.bat
+- If you use Tacview Free version or Stable Build of Standard/Advanced, run install_Stable.bat
 - If you use Tacview Beta, run install_Beta.bat. 
 5. Restart Tacview and in its settings, If you use Tacview Free or Stable release of Standad/Advanced. Change Terrain to Falcon 4. We currently hijack the Falcon 4 support to inject Nuclear Option Terrain into Tacview Stable.
 
