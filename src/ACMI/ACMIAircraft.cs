@@ -51,6 +51,7 @@ namespace NOBlackBox
             {
                 props.Add("Pilot", unit.Player.PlayerName);
                 props.Add("CallSign", unit.definition.code);
+                props.Add("Registration", unit.Player.SteamID.ToString());
             }
 
             return props;
