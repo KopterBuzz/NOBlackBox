@@ -35,7 +35,7 @@ namespace NOBlackBox
             this.enabled = true;
             base.enabled = true;
         }
-        public virtual void Update()
+        public override void Update()
         {
 
         }

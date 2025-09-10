@@ -22,6 +22,12 @@ namespace NOBlackBox
         {
 
         }
+
+        public virtual void Update()
+        {
+
+        }
+
         void Awake()
         {
 
