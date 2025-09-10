@@ -105,6 +105,11 @@ namespace NOBlackBox
                             acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
                             acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
                             break;
+                        case Building building:
+                            acmi.AddComponent<ACMIBuilding_mono>();
+                            acmi.GetComponent<ACMIBuilding_mono>().Init(building);
+                            acmi.GetComponent<ACMIBuilding_mono>().enabled = true;
+                            break;
                         default:
                             break;
                     }

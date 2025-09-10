@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace NOBlackBox
+{
+    internal class ACMIBuilding_mono : ACMIUnit_mono
+    {
+        public Building building;
+        private string coalition;
+        public virtual void Init(Building building)
+        {
+            base.unit = building;
+            this.building = (Building)base.unit;
+            base.unitId = unit.persistentID;
+            base.tacviewId = unit.persistentID + 1;
+            lastState = unit.unitState;
+            Faction? faction = this.unit.NetworkHQ?.faction;
+            props = new Dictionary<string, string>()
+            {
+                { "Name", this.unit.definition.unitName },
+                { "Coalition", faction?.factionName ?? "Neutral" },
+                { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Debug", lastState.ToString()}
+            };
+            UpdatePose();
+            UpdateState();
+            Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+            props = [];
+            this.enabled = true;
+            base.enabled = true;
+        }
+
+        public override void Update()
+        {
+
+            if (unit.NetworkHQ?.faction.factionName != coalition)
+            {
+                coalition = unit.NetworkHQ?.faction.factionName ?? "Neutral";
+                props.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
+
+                string color = "Green";
+                switch (unit.NetworkHQ?.faction.factionName)
+                {
+                    case "Boscali":
+                        color = "Blue";
+                        break;
+                    case "Primeva":
+                        color = "Red";
+                        break;
+                    default:
+                        color = "Green";
+                        break;
+                }
+
+                props.Add("Color", color);
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+                props = [];
+            }
+        }
+    }
+}
