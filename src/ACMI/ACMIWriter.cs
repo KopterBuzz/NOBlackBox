@@ -75,7 +75,7 @@ namespace NOBlackBox
             Close();
         }
 
-        internal void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
+        public void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
         {
             if (props.Count == 0)
                 return;
@@ -93,6 +93,24 @@ namespace NOBlackBox
             //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
+        public void UpdateObject(ACMIObject_mono aObject, DateTime updateTime)
+        {
+            if (aObject.props.Count == 0)
+                return;
+
+            TimeSpan diff = updateTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
+            WriteLine($"{aObject.tacviewId:X},{StringifyProps(aObject.props)}");
+            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
+        }
+
         internal void RemoveObject(ACMIObject aObject, DateTime updateTime)
         {
             TimeSpan diff = updateTime - reference;
@@ -105,6 +123,20 @@ namespace NOBlackBox
 
             //output.WriteLine($"-{aObject.id:X}");
             WriteLine($"-{aObject.id:X}");
+        }
+
+        internal void RemoveObject(ACMIObject_mono aObject, DateTime updateTime)
+        {
+            TimeSpan diff = updateTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            //output.WriteLine($"-{aObject.id:X}");
+            WriteLine($"-{aObject.tacviewId:X}");
         }
 
         internal void WriteEvent(DateTime eventTime, string name, string[] items)

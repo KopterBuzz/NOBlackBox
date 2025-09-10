@@ -21,12 +21,21 @@ namespace NOBlackBox
     {
         internal static new ManualLogSource ?Logger;
         private Recorder? recorder;
+        internal static GameObject recorderMono;
         internal static bool isRecording = false;
         internal static GameObject ?autoSaveCountDown;
         private float waitTime = 0.2f;
         private float timer = 0f;
         internal static int recordedScreenWidth, recordedScreenHeight;
         internal static float guiAnchorLeft, guiAnchorRight;
+        internal readonly bool isRewrite = true;
+
+        //REWRITE VARIABLES - TODO CONFIG ITEMS
+        //update() frequency for recorder_mono in seconds
+        internal static readonly float unitDiscoveryDelta = 1f;
+        internal static readonly float aircraftUpdateDelta = 0.5f;
+        internal static readonly float vehicleUpdateDelta = 1f;
+        internal static readonly float munitionUpdateDelta = 0.5f;
 
         public Plugin()
         {
@@ -85,42 +94,49 @@ namespace NOBlackBox
 
         private async void OnMissionLoad()
         {
-            MapLoader mapLoader = Resources.FindObjectsOfTypeAll<MapLoader>().First();
-            
             await WaitForLocalPlayer();
             Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
             LevelInfo levelInfo = LevelInfo.i;
-            if (MapSettingsManager.i.Maps[0].Prefab)
+            
+            if (levelInfo.LoadedMapSettings)
             {
-                Logger?.LogInfo($"[NOBlackBox]: Terrain Size: {MapSettingsManager.i.Maps[0].Prefab.MapSize}");
+                Logger?.LogInfo($"[NOBlackBox]: Terrain Size: {levelInfo.LoadedMapSettings.MapSize}");
             } else
             {
                 Logger?.LogWarning($"[NOBlackBox]: NO LEVELINFO!!!!");
-
             }
             
-            
-            /*
-            foreach (var name in mapLoader.MapPrefabNames)
+            if (!isRewrite)
             {
-                Logger?.LogInfo($"Map Prefab: {name}");
+                recorder = new Recorder(MissionManager.CurrentMission);
+
+            } else
+            {
+                recorderMono = new GameObject();
+                recorderMono.AddComponent<Recorder_mono>();
+                recorderMono.GetComponent<Recorder_mono>().enabled = true;
             }
-            */
-            recorder = new Recorder(MissionManager.CurrentMission);
             isRecording = true;
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<AutoSaveCountDown>();
             autoSaveCountDown.GetComponent<AutoSaveCountDown>().enabled = true;
-
         }
         private void OnMissionUnload()
         {
-            Logger?.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
-            recorder?.Close();
-            recorder = null;
-            isRecording = false;
-            GameObject.Destroy(autoSaveCountDown);
+            if (!isRewrite)
+            {
+                Logger?.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
+                recorder?.Close();
+                recorder = null;
+                isRecording = false;
+                GameObject.Destroy(autoSaveCountDown);
+            } else
+            {
+                isRecording = false;
+                recorderMono.GetComponent<Recorder_mono>().enabled = false;
+                GameObject.Destroy(autoSaveCountDown);
+                GameObject.Destroy(recorderMono);
+            }
         }
-
     }
 }
