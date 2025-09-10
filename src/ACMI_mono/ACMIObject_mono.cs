@@ -26,14 +26,6 @@ namespace NOBlackBox
         {
 
         }
-        void Update() 
-        {
-
-        }
-        void LateUpdate()
-        {
-
-        }
         void FixedUpdate()
         {
 

@@ -33,36 +33,25 @@ namespace NOBlackBox
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
             this.enabled = true;
+            base.enabled = true;
         }
-        void Update()
+        public virtual void Update()
         {
-            if (!this.enabled || unit.disabled)
-            {
-                return;
-            }
-            timer += Time.deltaTime;
-            if (timer < Plugin.aircraftUpdateDelta)
-            {
-                return;
-            }
-            UpdatePose();
-            UpdateState();
-            Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
-            props = [];
-            timer = 0;
+
         }
-        void LateUpdate()
+        public void LateUpdate()
         {
             try
             {
                 if (!unit.enabled || unit.disabled)
                 {
                     base.disabled = true;
-                    props.Add("Visible", "0");
+                    props.Add("Visible", "0.0");
                     Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                     props = [];
                     Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
                     this.enabled = false;
+                    Plugin.Logger?.LogInfo($"DISABLING UNIT {unitId.ToString(CultureInfo.InvariantCulture)}");
                     GameObject.Destroy(this);
                 }
             } catch

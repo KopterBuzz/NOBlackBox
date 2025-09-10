@@ -78,11 +78,39 @@ namespace NOBlackBox
                 if (!objects.TryGetValue(unit.persistentID, out GameObject acmi))
                 {
                     acmi = new GameObject();
-                    acmi.AddComponent<ACMIUnit_mono>();
-                    acmi.GetComponent<ACMIUnit_mono>().Init(unit);
-                    
-                    acmi.gameObject.GetComponent<ACMIUnit_mono>().enabled = true;
-                    Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_AIRCRAFT,{unit.definition.name}," +
+                    switch (unit)
+                    {
+                        case Aircraft aircraft:
+                            acmi.AddComponent<ACMIAircraft_mono>();
+                            acmi.GetComponent<ACMIAircraft_mono>().Init(aircraft);
+                            acmi.GetComponent<ACMIAircraft_mono>().enabled = true;
+                            break;
+                        case Missile missile:
+                            acmi.AddComponent<ACMIMissile_mono>();
+                            acmi.GetComponent<ACMIMissile_mono>().Init(missile);
+                            acmi.GetComponent<ACMIMissile_mono>().enabled = true;
+                            break;
+                        case GroundVehicle vehicle:
+                            acmi.AddComponent<ACMIGroundVehicle_mono>();
+                            acmi.GetComponent<ACMIGroundVehicle_mono>().Init(vehicle);
+                            acmi.GetComponent<ACMIGroundVehicle_mono>().enabled = true;
+                            break;
+                        case Ship ship:
+                            acmi.AddComponent<ACMIShip_mono>();
+                            acmi.GetComponent<ACMIShip_mono>().Init(ship);
+                            acmi.GetComponent<ACMIShip_mono>().enabled = true;
+                            break;
+                        case PilotDismounted pilot:
+                            acmi.AddComponent<ACMIPilotDismounted_mono>();
+                            acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
+                            acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    //acmi = new GameObject();
+
+                    Plugin.Logger?.LogInfo($"RECORDED UNIT,{unit.definition.name}," +
                         $"{unit.definition.unitName}," +
                         $"{unit.definition.code}");
                     objects.Add(unit.persistentID, acmi);
@@ -101,6 +129,7 @@ namespace NOBlackBox
             {
                 if (null == objects[key])
                 {
+                    Plugin.Logger?.LogInfo($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
                     objects.Remove(key);
                 }
             }

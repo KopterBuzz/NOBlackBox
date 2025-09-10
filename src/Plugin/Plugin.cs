@@ -33,7 +33,7 @@ namespace NOBlackBox
         //REWRITE VARIABLES - TODO CONFIG ITEMS
         //update() frequency for recorder_mono in seconds
         internal static readonly float unitDiscoveryDelta = 1f;
-        internal static readonly float aircraftUpdateDelta = 0.5f;
+        internal static readonly float aircraftUpdateDelta = 0.2f;
         internal static readonly float vehicleUpdateDelta = 1f;
         internal static readonly float munitionUpdateDelta = 0.5f;
 
