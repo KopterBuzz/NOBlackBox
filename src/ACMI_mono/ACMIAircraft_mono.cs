@@ -49,7 +49,10 @@ namespace NOBlackBox
             {
                 props.Add("Pilot", aircraft.Player.PlayerName);
                 props.Add("CallSign", aircraft.definition.code);
-                props.Add("Registration", aircraft.Player.SteamID.ToString());
+                if (Configuration.RecordSteamID.Value == true)
+                {
+                    props.Add("Registration", aircraft.Player.SteamID.ToString());
+                } 
             }
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
