@@ -1,11 +1,8 @@
-﻿using NuclearOption.SavedMission;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -15,7 +12,7 @@ namespace NOBlackBox
         private static readonly FieldInfo bulletSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private readonly Dictionary<Shockwave, GameObject> waves = [];
+        private Dictionary<Shockwave, GameObject> waves = [];
         Shockwave[] shockwaves = [];
 
         private DateTime startDate;
@@ -25,10 +22,10 @@ namespace NOBlackBox
         private float bulletSimDiscoveryTimer = 0f;
         private float shockwaveDiscoveryTimer = 0f;
 
-        private readonly Dictionary<long, GameObject> objects = [];
+        private Dictionary<long, GameObject> objects = [];
 
 
-        private readonly Dictionary<BulletSim.Bullet, GameObject> tracers = [];
+        private Dictionary<BulletSim.Bullet, GameObject> tracers = [];
 
         private Unit[] units = [];
         private BulletSim[] bulletSims = [];
@@ -205,6 +202,9 @@ namespace NOBlackBox
         }
         void OnDestroy()
         {
+            objects = [];
+            waves = [];
+            tracers = [];
             writer?.Close();
             Plugin.Logger?.LogDebug("DESTROYED MONO RECORDER");
         }

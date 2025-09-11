@@ -80,7 +80,14 @@ namespace NOBlackBox
         private static void ClientDisconectCallback(ClientStoppedReason reason)
         {
             Plugin.Logger?.LogDebug("Reached MissionUnloaded");
-            MissionUnloaded?.Invoke();
+            try
+            {
+                MissionUnloaded?.Invoke();
+            } catch
+            {
+                Plugin.Logger?.LogDebug($"LoadingManager failed to invoke MissionUnloaded");
+            }
+            
         }
     }
 }

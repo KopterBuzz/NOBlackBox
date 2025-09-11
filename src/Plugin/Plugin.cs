@@ -37,12 +37,12 @@ namespace NOBlackBox
         private void Awake()
         {
             Configuration.InitSettings(Config);
-            Logger?.LogDebug("[NOBlackBox]: LOADED.");
+            Logger?.LogDebug("LOADED.");
 
             waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
             //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
-            Logger?.LogDebug($"[NOBlackBox]: Wait Time = {waitTime}");
+            Logger?.LogDebug($"Wait Time = {waitTime}");
         }
         private void Update()
         {
@@ -54,6 +54,28 @@ namespace NOBlackBox
             {
                 EncyclopediaExporter.ExportEncyclopediaCSV();
             }
+
+            if (Configuration.StartStopRecordingKey.Value.IsDown())
+            {
+                if (!isRecording)
+                {
+                    StartRecording();
+                    if (isRecording)
+                    {
+                        Logger?.LogDebug("RECORDING STARTED MANUALLY");
+                    }
+                    
+                } else
+                {
+                    StopRecording();
+                    if (!isRecording)
+                    {
+                        Logger?.LogDebug("RECORDING STOPPED MANUALLY");
+                    }
+                    
+                }    
+            }
+
             UpdateGuiAnchors();
         }
 
@@ -67,11 +89,11 @@ namespace NOBlackBox
 
         private async Task<bool> WaitForLocalPlayer()
         {
-            Logger?.LogDebug("[NOBlackBox]: TRYING TO GET PLAYERNAME...");
-            Logger?.LogDebug($"[NOBlackBox]: {GameManager.LocalPlayer.PlayerName}");
+            Logger?.LogDebug("TRYING TO GET PLAYERNAME...");
+            Logger?.LogDebug($"{GameManager.LocalPlayer.PlayerName}");
             while (GameManager.LocalPlayer.PlayerName == null)
             {
-                Logger?.LogDebug("[NOBlackBox]: Waiting for LocalPlayer...");
+                Logger?.LogDebug("Waiting for LocalPlayer...");
                 await Task.Delay(100);
             }
             return true;
@@ -79,37 +101,49 @@ namespace NOBlackBox
 
         private async void OnMissionLoad()
         {
-            await WaitForLocalPlayer();
-            Logger?.LogDebug("[NOBlackBox]: MISSION LOADED.");
-            LevelInfo levelInfo = LevelInfo.i;
-            
-            if (levelInfo.LoadedMapSettings)
+            bool ready = await WaitForLocalPlayer();
+            if (ready)
             {
-                Logger?.LogDebug($"[NOBlackBox]: Terrain Size: {levelInfo.LoadedMapSettings.MapSize}");
-            } else
-            {
-                Logger?.LogWarning($"[NOBlackBox]: NO LEVELINFO!!!!");
+                StartRecording();
+                Logger?.LogDebug("MISSION LOADED.");
             }
-            
+
+        }
+        private void OnMissionUnload()
+        {
+            Logger?.LogDebug("MISSION UNLOADED.");
+            StopRecording();
+
+        }
+
+        private void StartRecording()
+        {
+            if (null == MissionManager.CurrentMission)
+            {
+                Plugin.Logger?.LogWarning("No Mission found. In order to use this feature, you must launch a mission first.");
+                return;
+            }
 
             recorderMono = new GameObject();
             recorderMono.AddComponent<Recorder_mono>();
             recorderMono.GetComponent<Recorder_mono>().enabled = true;
-            
             isRecording = true;
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<AutoSaveCountDown>();
             autoSaveCountDown.GetComponent<AutoSaveCountDown>().enabled = true;
         }
-        private void OnMissionUnload()
+
+        private void StopRecording()
         {
-  
-            Logger?.LogDebug("[NOBlackBox]: MISSION UNLOADED.");
             isRecording = false;
             recorderMono.GetComponent<Recorder_mono>().enabled = false;
             GameObject.Destroy(autoSaveCountDown);
             GameObject.Destroy(recorderMono);
-            
+            ACMIObject_mono[] found = GameObject.FindObjectsByType<ACMIObject_mono>(FindObjectsSortMode.None);
+            foreach (ACMIObject_mono obj in found)
+            {
+                GameObject.Destroy(obj);
+            }
         }
     }
 }
