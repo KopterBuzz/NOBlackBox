@@ -45,7 +45,7 @@ namespace NOBlackBox
             if (pilot.radarAlt <= 10)
             {
                 props.Add("Visible", "0.0");
-                Plugin.Logger?.LogInfo($"PARACHUTE LANDED {unitId.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"PARACHUTE LANDED {unitId.ToString(CultureInfo.InvariantCulture)}");
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
                 GameObject.Destroy(this);

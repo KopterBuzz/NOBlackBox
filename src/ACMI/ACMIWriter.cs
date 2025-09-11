@@ -39,7 +39,7 @@ namespace NOBlackBox
             this.reference = reference;
             currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
 
-            Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
+            Plugin.Logger?.LogDebug("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
             output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
 
@@ -90,7 +90,7 @@ namespace NOBlackBox
 
             //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
             WriteLine($"{aObject.id:X},{StringifyProps(props)}");
-            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
+            //Plugin.Logger.LogDebug($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
         public void UpdateObject(ACMIObject_mono aObject, DateTime updateTime)
@@ -108,7 +108,7 @@ namespace NOBlackBox
 
             //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
             WriteLine($"{aObject.tacviewId:X},{StringifyProps(aObject.props)}");
-            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
+            //Plugin.Logger.LogDebug($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
         }
 
         internal void RemoveObject(ACMIObject aObject, DateTime updateTime)

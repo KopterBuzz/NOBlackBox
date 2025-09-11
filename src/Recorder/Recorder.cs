@@ -32,24 +32,24 @@ namespace NOBlackBox
             if (Configuration.UseMissionTime?.Value == true)
             {
                 startDate = DateTime.Today + TimeSpan.FromHours(mission.environment.timeOfDay);
-                Plugin.Logger?.LogInfo("[NOBlackBox]: USING MISSION CLOCK");
+                Plugin.Logger?.LogDebug("[NOBlackBox]: USING MISSION CLOCK");
             }
             else
             {
                 startDate = DateTime.Now;
-                Plugin.Logger?.LogInfo("[NOBlackBox]: USING SERVER CLOCK");
+                Plugin.Logger?.LogDebug("[NOBlackBox]: USING SERVER CLOCK");
             }
 
             curTime = startDate;
 
             writer = new ACMIWriter(startDate);
-            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING STARTED");
+            Plugin.Logger?.LogDebug("[NOBlackBox]: RECORDING STARTED");
 
         }
 
         ~Recorder()
         {
-            Plugin.Logger?.LogInfo("[NOBlackBox]: RECORDING ENDED");
+            Plugin.Logger?.LogDebug("[NOBlackBox]: RECORDING ENDED");
             Close();
         }
 
@@ -100,7 +100,7 @@ namespace NOBlackBox
                             };
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_AIRCRAFT,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_AIRCRAFT,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -110,7 +110,7 @@ namespace NOBlackBox
                             ((ACMIMissile)acmi).OnDetonate += OnDetonate;
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_WEAPON,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_WEAPON,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -119,7 +119,7 @@ namespace NOBlackBox
                             acmi = new ACMIGroundVehicle((GroundVehicle)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_GROUND,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_GROUND,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -128,7 +128,7 @@ namespace NOBlackBox
                             acmi = new ACMIBuilding((Building)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_BUILDING,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_BUILDING,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -137,7 +137,7 @@ namespace NOBlackBox
                             acmi = new ACMIShip((Ship)unit);
                             if (Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_SHIP,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_SHIP,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -145,7 +145,7 @@ namespace NOBlackBox
                         case PilotDismounted:
                             acmi = new ACMIPilotDismounted((PilotDismounted)unit);
                             {
-                                Plugin.Logger?.LogInfo($"NOBLACKBOX_RECORDED_PILOTDISMOUNTED,{unit.definition.name}," +
+                                Plugin.Logger?.LogDebug($"NOBLACKBOX_RECORDED_PILOTDISMOUNTED,{unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code}");
                             }
@@ -154,7 +154,7 @@ namespace NOBlackBox
                             
                             if(Configuration.EnableUnitLogging.Value == true)
                             {
-                                Plugin.Logger?.LogInfo( $"NOBLACKBOX_UNKNOWN: {unit.definition.name}," +
+                                Plugin.Logger?.LogDebug( $"NOBLACKBOX_UNKNOWN: {unit.definition.name}," +
                                                         $"{unit.definition.unitName}," +
                                                         $"{unit.definition.code},");
                             }
@@ -173,7 +173,7 @@ namespace NOBlackBox
                     props = props.Concat(acmi.Init()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
                 if (unit.IsLocalPlayer)
-                    Plugin.Logger?.LogInfo(props["T"]);
+                    Plugin.Logger?.LogDebug(props["T"]);
 
                 writer.UpdateObject(acmi, curTime, props);
             }

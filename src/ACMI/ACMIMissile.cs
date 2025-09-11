@@ -50,7 +50,7 @@ namespace NOBlackBox
             {
                 if (Detonated)
                 {
-                    Plugin.Logger?.LogInfo($"{unit.persistentID} DETONATED (onDisableUnit)");
+                    Plugin.Logger?.LogDebug($"{unit.persistentID} DETONATED (onDisableUnit)");
                     OnDetonate?.Invoke(this);
                     FireEvent("LeftArea", [id], "");
                     

@@ -15,7 +15,6 @@ namespace NOBlackBox
         internal Unit unit;
         internal Unit.UnitState lastState;
 
-
         public virtual void Init(Unit unit)
         {
             this.unit = unit;
@@ -51,7 +50,7 @@ namespace NOBlackBox
                     props = [];
                     Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
                     this.enabled = false;
-                    Plugin.Logger?.LogInfo($"DISABLING UNIT {unitId.ToString(CultureInfo.InvariantCulture)}");
+                    Plugin.Logger?.LogDebug($"DISABLING UNIT {unitId.ToString(CultureInfo.InvariantCulture)}");
                     GameObject.Destroy(this);
                 }
             } catch

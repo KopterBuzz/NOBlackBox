@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -20,17 +21,18 @@ namespace NOBlackBox
         private DateTime startDate;
         private DateTime curTime;
         public static ACMIWriter writer;
-        private float unitDiscoveryTimer = 0f;
+        private float discoveryTimer = 0f;
         private readonly Dictionary<long, GameObject> objects = [];
         private readonly List<ACMIFlare> flares = [];
         private readonly List<ACMIFlare> newFlare = [];
 
         private readonly List<ACMITracer> newTracers = [];
-        private readonly Dictionary<BulletSim.Bullet, ACMITracer> tracers = [];
+        private readonly Dictionary<BulletSim.Bullet, GameObject> tracers = [];
 
         private Unit[] units = [];
         private BulletSim[] bulletSims = [];
-        private bool processLateUpdate = true;
+        private bool processUnits = false;
+        private bool processBulletSims = false;
 
         public void invokeWriterUpdate(ACMIObject_mono obj)
         {
@@ -44,21 +46,21 @@ namespace NOBlackBox
 
         void Awake()
         {
-            Plugin.Logger?.LogInfo("USING MONO RECORDER");
+            Plugin.Logger?.LogDebug("USING MONO RECORDER");
             if (Configuration.UseMissionTime?.Value == true)
             {
                 startDate = DateTime.Today + TimeSpan.FromHours(MissionManager.CurrentMission.environment.timeOfDay);
-                Plugin.Logger?.LogInfo("USING MISSION CLOCK");
+                Plugin.Logger?.LogDebug("USING MISSION CLOCK");
             }
             else
             {
                 startDate = DateTime.Now;
-                Plugin.Logger?.LogInfo("USING SERVER CLOCK");
+                Plugin.Logger?.LogDebug("USING SERVER CLOCK");
             }
 
             curTime = startDate;
             writer = new ACMIWriter(startDate);
-            Plugin.Logger?.LogInfo("STARTED MONO RECORDER");
+            Plugin.Logger?.LogDebug("STARTED MONO RECORDER");
 
         }
         void Update()
@@ -68,91 +70,141 @@ namespace NOBlackBox
             {
                 return;
             }
-            foreach (var unit in units)
+            if (processUnits)
             {
-                if (!unit.networked || unit.persistentID == 0 || (unit.disabled && unit.GetType() != typeof(Missile)))
+                foreach (var unit in units)
                 {
-                    continue;
-                }
-                bool isNew = false;
-                if (!objects.TryGetValue(unit.persistentID, out GameObject acmi))
-                {
-                    acmi = new GameObject();
-                    switch (unit)
+                    if (!unit.networked || (unit.disabled && unit.GetType() != typeof(Missile)))
                     {
-                        case Aircraft aircraft:
-                            acmi.AddComponent<ACMIAircraft_mono>();
-                            acmi.GetComponent<ACMIAircraft_mono>().Init(aircraft);
-                            acmi.GetComponent<ACMIAircraft_mono>().enabled = true;
-                            break;
-                        case Missile missile:
-                            acmi.AddComponent<ACMIMissile_mono>();
-                            acmi.GetComponent<ACMIMissile_mono>().Init(missile);
-                            acmi.GetComponent<ACMIMissile_mono>().enabled = true;
-                            break;
-                        case GroundVehicle vehicle:
-                            acmi.AddComponent<ACMIGroundVehicle_mono>();
-                            acmi.GetComponent<ACMIGroundVehicle_mono>().Init(vehicle);
-                            acmi.GetComponent<ACMIGroundVehicle_mono>().enabled = true;
-                            break;
-                        case Ship ship:
-                            acmi.AddComponent<ACMIShip_mono>();
-                            acmi.GetComponent<ACMIShip_mono>().Init(ship);
-                            acmi.GetComponent<ACMIShip_mono>().enabled = true;
-                            break;
-                        case PilotDismounted pilot:
-                            acmi.AddComponent<ACMIPilotDismounted_mono>();
-                            acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
-                            acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
-                            break;
-                        case Building building:
-                            acmi.AddComponent<ACMIBuilding_mono>();
-                            acmi.GetComponent<ACMIBuilding_mono>().Init(building);
-                            acmi.GetComponent<ACMIBuilding_mono>().enabled = true;
-                            break;
-                        default:
-                            break;
+                        continue;
                     }
-                    //acmi = new GameObject();
+                    bool isNew = false;
+                    if (!objects.TryGetValue(unit.persistentID, out GameObject acmi))
+                    {
+                        acmi = new GameObject();
+                        switch (unit)
+                        {
+                            case Aircraft aircraft:
+                                acmi.AddComponent<ACMIAircraft_mono>();
+                                acmi.GetComponent<ACMIAircraft_mono>().Init(aircraft);
+                                acmi.GetComponent<ACMIAircraft_mono>().enabled = true;
+                                break;
+                            case Missile missile:
+                                acmi.AddComponent<ACMIMissile_mono>();
+                                acmi.GetComponent<ACMIMissile_mono>().Init(missile);
+                                acmi.GetComponent<ACMIMissile_mono>().enabled = true;
+                                break;
+                            case GroundVehicle vehicle:
+                                acmi.AddComponent<ACMIGroundVehicle_mono>();
+                                acmi.GetComponent<ACMIGroundVehicle_mono>().Init(vehicle);
+                                acmi.GetComponent<ACMIGroundVehicle_mono>().enabled = true;
+                                break;
+                            case Ship ship:
+                                acmi.AddComponent<ACMIShip_mono>();
+                                acmi.GetComponent<ACMIShip_mono>().Init(ship);
+                                acmi.GetComponent<ACMIShip_mono>().enabled = true;
+                                break;
+                            case PilotDismounted pilot:
+                                acmi.AddComponent<ACMIPilotDismounted_mono>();
+                                acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
+                                acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
+                                break;
+                            case Building building:
+                                acmi.AddComponent<ACMIBuilding_mono>();
+                                acmi.GetComponent<ACMIBuilding_mono>().Init(building);
+                                acmi.GetComponent<ACMIBuilding_mono>().enabled = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        //acmi = new GameObject();
 
-                    Plugin.Logger?.LogInfo($"RECORDED UNIT,{unit.definition.name}," +
-                        $"{unit.definition.unitName}," +
-                        $"{unit.definition.code}");
-                    objects.Add(unit.persistentID, acmi);
-                    isNew = true;
+                        Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                            $"{unit.definition.unitName}," +
+                            $"{unit.definition.code}");
+                        objects.Add(unit.persistentID, acmi);
+                        isNew = true;
+                    }
                 }
+                processUnits = false;
+            }
+            if (processBulletSims)
+            {
+                foreach (var bulletSim in bulletSims)
+                {
+                    List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder_mono.bullets.GetValue(bulletSim);
+
+                    foreach (var bullet in bullets)
+                    {
+                        if (!tracers.ContainsKey(bullet))
+                        {
+                            GameObject tracer = new GameObject();
+                            tracer.AddComponent<ACMITracer_mono>();
+                            tracer.GetComponent<ACMITracer_mono>().Init(bulletSim, bullet);
+                            tracer.GetComponent<ACMITracer_mono>().enabled = true;
+
+                            tracers.Add(tracer.GetComponent<ACMITracer_mono>().bullet, tracer);
+                        }
+                    }
+                }
+                processBulletSims = false;
             }
         }
         void LateUpdate()
         {
-            unitDiscoveryTimer += Time.deltaTime;
-            if (unitDiscoveryTimer < Plugin.unitDiscoveryDelta)
+            discoveryTimer += Time.deltaTime;
+            if (discoveryTimer >= Plugin.unitDiscoveryDelta)
             {
-                return;
+                processUnits = UnitDiscovery();
             }
-            foreach (int key in objects.Keys)
+            if (discoveryTimer >= Plugin.tracerUpdateDelta)
             {
-                if (null == objects[key])
-                {
-                    Plugin.Logger?.LogInfo($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
-                    objects.Remove(key);
-                }
+                processBulletSims = BulletSimDiscovery();
             }
-            Plugin.Logger?.LogInfo($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");
-            unitDiscoveryTimer = 0f;
-            units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
-            bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-            Plugin.Logger?.LogInfo($"DISCOVERED {units.Length.ToString(CultureInfo.InvariantCulture)} UNITS!");
         }
         void OnDisable()
         {
             writer?.Close();
-            Plugin.Logger?.LogInfo("DISABLED MONO RECORDER");
+            Plugin.Logger?.LogDebug("DISABLED MONO RECORDER");
         }
         void OnDestroy()
         {
             writer?.Close();
-            Plugin.Logger?.LogInfo("DESTROYED MONO RECORDER");
+            Plugin.Logger?.LogDebug("DESTROYED MONO RECORDER");
+        }
+
+        private bool UnitDiscovery()
+        {
+            foreach (int key in objects.Keys)
+            {
+                if (null == objects[key])
+                {
+                    Plugin.Logger?.LogDebug($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
+                    objects.Remove(key);
+                }
+            }
+            Plugin.Logger?.LogDebug($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");
+            discoveryTimer = 0f;
+            units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
+            Plugin.Logger?.LogDebug($"DISCOVERED {units.Length.ToString(CultureInfo.InvariantCulture)} UNITS!");
+
+            return true;
+
+        }
+
+        internal bool BulletSimDiscovery()
+        {
+            foreach (BulletSim.Bullet key in tracers.Keys)
+            {
+                if (null == tracers[key])
+                {
+                    Plugin.Logger?.LogDebug($"REMOVING TRACER");
+                    tracers.Remove(key);
+                }
+            }
+            bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
+            Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BulletSims!");
+            return true;
         }
     }
 }

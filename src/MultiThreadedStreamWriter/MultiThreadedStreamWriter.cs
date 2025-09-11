@@ -27,7 +27,7 @@ namespace NOBlackBox
 
         private void _writeLoop()
         {
-            Plugin.Logger?.LogInfo("[NOBlackBox]: Starting ACMI StreamWriter Thread.");
+            Plugin.Logger?.LogDebug("[NOBlackBox]: Starting ACMI StreamWriter Thread.");
             bool flushThisLoop = false;
             bool closeThisLoop = false;
             while (true)
@@ -49,15 +49,15 @@ namespace NOBlackBox
                     }
                     _writer.Flush();
                     _writer.Close();
-                    Plugin.Logger?.LogInfo("[NOBlackBox]: Exiting ACMI StreamWriter Thread.");
+                    Plugin.Logger?.LogDebug("[NOBlackBox]: Exiting ACMI StreamWriter Thread.");
                     return;
                 }
 
                 if (flushThisLoop)
                 {
-                    Plugin.Logger?.LogInfo("[NOBlackBox]: ACMI Flush started.");
+                    Plugin.Logger?.LogDebug("[NOBlackBox]: ACMI Flush started.");
                     _writer.Flush();
-                    Plugin.Logger?.LogInfo("[NOBlackBox]: ACMI Flush complete.");
+                    Plugin.Logger?.LogDebug("[NOBlackBox]: ACMI Flush complete.");
                     lock (_stateLock)
                     {
                         _shouldFlush = false;
@@ -83,7 +83,7 @@ namespace NOBlackBox
 
         public void Flush()
         {
-            Plugin.Logger?.LogInfo("[NOBlackBox]: ACMI Flush requested.");
+            Plugin.Logger?.LogDebug("[NOBlackBox]: ACMI Flush requested.");
             lock (_stateLock)
             {
                 _shouldFlush = true;

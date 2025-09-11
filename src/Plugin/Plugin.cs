@@ -33,9 +33,12 @@ namespace NOBlackBox
         //REWRITE VARIABLES - TODO CONFIG ITEMS
         //update() frequency for recorder_mono in seconds
         internal static readonly float unitDiscoveryDelta = 1f;
+        internal static readonly float bulletSimDiscoveryDelta = 0.5f;
         internal static readonly float aircraftUpdateDelta = 0.2f;
         internal static readonly float vehicleUpdateDelta = 1f;
-        internal static readonly float munitionUpdateDelta = 0.5f;
+        internal static readonly float munitionUpdateDelta = 0.2f;
+        internal static readonly float shockwaveUpdateDelta = 0.016f;
+        internal static readonly float tracerUpdateDelta = 0.5f;
 
         public Plugin()
         {
@@ -46,12 +49,12 @@ namespace NOBlackBox
         private void Awake()
         {
             Configuration.InitSettings(Config);
-            Logger?.LogInfo("[NOBlackBox]: LOADED.");
+            Logger?.LogDebug("[NOBlackBox]: LOADED.");
 
             waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
             //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
-            Logger?.LogInfo($"[NOBlackBox]: Wait Time = {waitTime}");
+            Logger?.LogDebug($"[NOBlackBox]: Wait Time = {waitTime}");
         }
         private void Update()
         {
@@ -82,11 +85,11 @@ namespace NOBlackBox
 
         private async Task<bool> WaitForLocalPlayer()
         {
-            Logger?.LogInfo("[NOBlackBox]: TRYING TO GET PLAYERNAME...");
-            Logger?.LogInfo($"[NOBlackBox]: {GameManager.LocalPlayer.PlayerName}");
+            Logger?.LogDebug("[NOBlackBox]: TRYING TO GET PLAYERNAME...");
+            Logger?.LogDebug($"[NOBlackBox]: {GameManager.LocalPlayer.PlayerName}");
             while (GameManager.LocalPlayer.PlayerName == null)
             {
-                Logger?.LogInfo("[NOBlackBox]: Waiting for LocalPlayer...");
+                Logger?.LogDebug("[NOBlackBox]: Waiting for LocalPlayer...");
                 await Task.Delay(100);
             }
             return true;
@@ -95,12 +98,12 @@ namespace NOBlackBox
         private async void OnMissionLoad()
         {
             await WaitForLocalPlayer();
-            Logger?.LogInfo("[NOBlackBox]: MISSION LOADED.");
+            Logger?.LogDebug("[NOBlackBox]: MISSION LOADED.");
             LevelInfo levelInfo = LevelInfo.i;
             
             if (levelInfo.LoadedMapSettings)
             {
-                Logger?.LogInfo($"[NOBlackBox]: Terrain Size: {levelInfo.LoadedMapSettings.MapSize}");
+                Logger?.LogDebug($"[NOBlackBox]: Terrain Size: {levelInfo.LoadedMapSettings.MapSize}");
             } else
             {
                 Logger?.LogWarning($"[NOBlackBox]: NO LEVELINFO!!!!");
@@ -125,7 +128,7 @@ namespace NOBlackBox
         {
             if (!isRewrite)
             {
-                Logger?.LogInfo("[NOBlackBox]: MISSION UNLOADED.");
+                Logger?.LogDebug("[NOBlackBox]: MISSION UNLOADED.");
                 recorder?.Close();
                 recorder = null;
                 isRecording = false;

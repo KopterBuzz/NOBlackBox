@@ -124,10 +124,10 @@ namespace NOBlackBox
 
         internal static void InitSettings(ConfigFile config)
         {
-            Plugin.Logger?.LogInfo("[NOBlackBox]: Loading Settings.");
+            Plugin.Logger?.LogDebug("[NOBlackBox]: Loading Settings.");
 
             _UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: UpdateRate = {_UpdateRate.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: UpdateRate = {_UpdateRate.Value}");
             if (!Enumerable.Range(0, 1001).Contains(_UpdateRate.Value))
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: UpdateRate out of range! Setting default value {DefaultUpdateRate}!");
@@ -136,7 +136,7 @@ namespace NOBlackBox
 
             string DefaultOutputPath = Application.persistentDataPath + "/Replays/";
             _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: OutputPath = {_OutputPath.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: OutputPath = {_OutputPath.Value}");
 
             (bool isFolder, bool success) = Helpers.IsFileOrFolder(_OutputPath.Value);
             if (!isFolder || !success)
@@ -146,7 +146,7 @@ namespace NOBlackBox
             }
 
             _AutoSaveInterval = config.Bind(GeneralSettings, "AutoSaveInterval", DefaultAutoSaveInterval, "Time interval for automatically updating the Tacview file. Min value: 60");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveInterval = {_AutoSaveInterval.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: AutoSaveInterval = {_AutoSaveInterval.Value}");
 
             if (_AutoSaveInterval.Value < 60)
             {
@@ -155,28 +155,28 @@ namespace NOBlackBox
             }
 
             UseMissionTime = config.Bind(OptionalDataSettings, "UseMissionTime", DefaultUseMissionTime, "Use Mission (true) or Server Time (false) for the clock in the recording.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: UseMissionTime = {UseMissionTime.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: UseMissionTime = {UseMissionTime.Value}");
 
             RecordSpeed = config.Bind(OptionalDataSettings, "RecordSpeed", DefaultRecordSpeed, "Toggle recording True Airspeed and Mach number. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordSpeed = {RecordSpeed?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordSpeed = {RecordSpeed?.Value}");
 
             RecordAOA = config.Bind(OptionalDataSettings, "RecordAOA", DefaultRecordAOA, "Toggle recording Angle of Attack. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAOA = {RecordAOA?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordAOA = {RecordAOA?.Value}");
 
             RecordAGL = config.Bind(OptionalDataSettings, "RecordAGL", DefaultRecordAGL, "Toggle recording height above ground level. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordAGL = {RecordAGL?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordAGL = {RecordAGL?.Value}");
 
             RecordRadarMode = config.Bind(OptionalDataSettings, "RecordRadarMode", DefaultRecordRadarMode, "Toggle recording radar mode changes. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordRadarMode = {RecordRadarMode?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordRadarMode = {RecordRadarMode?.Value}");
 
             RecordLandingGear = config.Bind(OptionalDataSettings, "RecordLandingGear", DefaultRecordLandingGear, "Toggle recording landing gear changes. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordLandingGear = {RecordLandingGear?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordLandingGear = {RecordLandingGear?.Value}");
 
             RecordPilotHead = config.Bind(OptionalDataSettings, "RecordPilotHead", DefaultRecordPilotHead, "Toggle recording pilot head movement. Default: true");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: RecordPilotHead = {RecordPilotHead?.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: RecordPilotHead = {RecordPilotHead?.Value}");
 
             _CompressIDs = config.Bind(OptionalDataSettings, "CompressIDs", DefaultCompressIDs, "Compress IDs to reduce filesize with less determinism.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: CompressIDs = {_CompressIDs.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: CompressIDs = {_CompressIDs.Value}");
 
             MetersPerScan = config.Bind(HeightMapGeneratorSettings, "MetersPerScan", DefaultMetersPerScan, "Sample rate of the Heightmap generator. Does a scan per X meter. Default: 4");
             if (MetersPerScan.Value < 1)
@@ -184,7 +184,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: Invalid MetersPerScan! Setting default value {DefaultMetersPerScan}!");
                 MetersPerScan.Value = DefaultMetersPerScan;
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: MetersPerScan = {MetersPerScan.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: MetersPerScan = {MetersPerScan.Value}");
 
             HeightMapResolution = config.Bind(HeightMapGeneratorSettings, "HeightMapResolution", DefaultHeightMapResolution, "Resolution of the Heightmap. Must be divisible by 4. Default: 4096");
             if ((HeightMapResolution.Value % 4) != 0)
@@ -192,7 +192,7 @@ namespace NOBlackBox
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: HeightMapResolution must be divisible by 4! Setting default value {DefaultHeightMapResolution}!");
                 HeightMapResolution.Value = DefaultHeightMapResolution;
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: HeightMapResolution = {HeightMapResolution.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: HeightMapResolution = {HeightMapResolution.Value}");
             /*
             OrtoGraphicSize = config.Bind(HeightMapGeneratorSettings, "OrtographicSize", DefaultOrtoGraphicSize, "Size of Ortographic Camera for Texture Generation. Must be bigger than 0f.");
             if (OrtoGraphicSize.Value <= 0f)
@@ -200,70 +200,70 @@ namespace NOBlackBox
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: OrtographicSize must be divisible by 4! Setting default value {DefaultOrtoGraphicSize}!");
                 OrtoGraphicSize.Value = DefaultOrtoGraphicSize;
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: OrtographicSize = {OrtoGraphicSize.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: OrtographicSize = {OrtoGraphicSize.Value}");
             */
             _GenerateHeightMapKey = config.Bind("Hotkeys", "Generate Heightmap", new KeyboardShortcut(DefaultGenerateHeightMapKey));
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: Generate Heightmap key = {_GenerateHeightMapKey.Value}");
 
             EnableHeightmapGenerator = config.Bind(HeightMapGeneratorSettings, "EnableHeightmapGenerator", DefaultEnableHeightmapGenerator, "Enable/Disable Heightmap Generator. Default: false");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableHeightmapGenerator = {EnableHeightmapGenerator.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: EnableHeightmapGenerator = {EnableHeightmapGenerator.Value}");
 
             //TacviewBetaHeightMapGenerator = config.Bind(HeightMapGeneratorSettings, "TacviewBetaHeightMapGenerator", DefaultTacviewBetaHeightMapGenerator, "True: Compatibility set for Tacview 1.9.5 Beta 11, False: Compatibility set for Tacview Stable. Default: True");
-            //Plugin.Logger?.LogInfo($"[NOBlackBox]: TacviewBetaHeightMapGenerator = {TacviewBetaHeightMapGenerator.Value}");
+            //Plugin.Logger?.LogDebug($"[NOBlackBox]: TacviewBetaHeightMapGenerator = {TacviewBetaHeightMapGenerator.Value}");
 
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
 
             AutoSaveCountDownX = config.Bind(VisualSettings, "AutoSaveCountDownX", DefaultAutoSaveCountDownX, "X coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
             if (AutoSaveCountDownX.Value < 0f || AutoSaveCountDownX.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: AutoSaveCountDownX must be within 0.0 - 1.0 range! Setting default value {DefaultAutoSaveCountDownX}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownX.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownX.Value}");
 
             AutoSaveCountDownY = config.Bind(VisualSettings, "AutoSaveCountDownY", DefaultAutoSaveCountDownY, "Y coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
             if (AutoSaveCountDownY.Value < 0f || AutoSaveCountDownY.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: AutoSaveCountDownX must be within 0.0 - 1.0 range! Setting default value {DefaultAutoSaveCountDownX}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownY.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: AutoSaveCountDownX = {AutoSaveCountDownY.Value}");
 
             TextColorR = config.Bind(VisualSettings, "TextColorR", DefaultTextColorR, "Red color value for GUI Text. Value range: 0.0 - 1.0");
             if (TextColorR.Value < 0f || TextColorR.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorR must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorR}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorR = {TextColorR.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: TextColorR = {TextColorR.Value}");
 
             TextColorG = config.Bind(VisualSettings, "TextColorG", DefaultTextColorG, "Green color value for GUI Text. Value range: 0.0 - 1.0");
             if (TextColorG.Value < 0f || TextColorG.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorG must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorG}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorG = {TextColorG.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: TextColorG = {TextColorG.Value}");
 
             TextColorB = config.Bind(VisualSettings, "TextColorB", DefaultTextColorB, "Blue color value for GUI Text. Value range: 0.0 - 1.0");
             if (TextColorB.Value < 0f || TextColorB.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorB must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorB}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorB = {TextColorB.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: TextColorB = {TextColorB.Value}");
 
             TextColorA = config.Bind(VisualSettings, "TextColorA", DefaultTextColorA, "Transparency value for GUI Text. Value range: 0.0 - 1.0");
             if (TextColorA.Value < 0f || TextColorA.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: TextColorA must be within 0.0 - 1.0 range! Setting default value {DefaultTextColorA}!");
             }
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: TextColorA = {TextColorA.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: TextColorA = {TextColorA.Value}");
 
             EnableUnitLogging = config.Bind(DeveloperFeatures, "EnableUnknownUnitLogging", DefaultEnableUnitLogging, "Toggle logging Unknown Units that are unknown to ACMI Recorder. Default: false");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableUnknownUnitLogging = {EnableUnitLogging.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: EnableUnknownUnitLogging = {EnableUnitLogging.Value}");
 
             EnableEncyclopediaExporter = config.Bind(DeveloperFeatures, "EnableEncyclopediaExporter", DefaultEnableEncyclopediaExporter, "Toggle Encyclopedia Exporter. Default: false");
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EnableEncyclopediaExporter = {EnableEncyclopediaExporter.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: EnableEncyclopediaExporter = {EnableEncyclopediaExporter.Value}");
 
             EncyclopediaExporterKey = config.Bind("Hotkeys", "EncyclopediaExporterKey", new KeyboardShortcut(DefaultEncyclopediaExporterKey));
-            Plugin.Logger?.LogInfo($"[NOBlackBox]: EncyclopediaExporterKey = {EncyclopediaExporterKey.Value}");
+            Plugin.Logger?.LogDebug($"[NOBlackBox]: EncyclopediaExporterKey = {EncyclopediaExporterKey.Value}");
 
         }
     }

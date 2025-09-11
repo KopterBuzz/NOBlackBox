@@ -78,7 +78,7 @@ namespace NOBlackBox
                 if (splits[0] == "name") { continue; }
                 UnitTacviewInfo knownUnit = new UnitTacviewInfo(splits[0], splits[1], splits[2], splits[3], splits[4], splits[5]);
                 knownUnits.Add(splits[0], knownUnit);
-                Plugin.Logger?.LogInfo(knownUnit.ToString());
+                Plugin.Logger?.LogDebug(knownUnit.ToString());
             }
         }
 
@@ -88,10 +88,10 @@ namespace NOBlackBox
             {
                 UnitTacviewInfo unknownUnit = new UnitTacviewInfo(def.unitPrefab.name,def.name, def.unitName, def.code, "", "");
                 unknownUnits.Add(def.unitPrefab.name, unknownUnit);
-                Plugin.Logger?.LogInfo($"Found UNKNOWN Unit: {unknownUnit.ToString()}");
+                Plugin.Logger?.LogDebug($"Found UNKNOWN Unit: {unknownUnit.ToString()}");
             } else
             {
-                Plugin.Logger?.LogInfo($"Found known Unit: {knownUnits[def.unitPrefab.name].ToString()}");
+                Plugin.Logger?.LogDebug($"Found known Unit: {knownUnits[def.unitPrefab.name].ToString()}");
             }
             
         }
@@ -134,7 +134,7 @@ namespace NOBlackBox
                 DefaultPropertiesCollection.Add(DefaultProperties);
             }
             doc.Add(DefaultPropertiesCollection);
-            Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {KnownUnitsXML}");
+            Plugin.Logger?.LogDebug($"Saving custom tacview custom XML to {KnownUnitsXML}");
             doc.Save(KnownUnitsXML);
         }
         public static void ExportEncyclopediaCSV()
