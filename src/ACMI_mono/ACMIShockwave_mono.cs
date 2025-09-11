@@ -47,7 +47,7 @@ namespace NOBlackBox
             try
             {
                 timer += Time.deltaTime;
-                if (timer < Plugin.shockwaveUpdateDelta)
+                if (timer < Configuration.shockwaveUpdateDelta.Value)
                 {
                     return;
                 }

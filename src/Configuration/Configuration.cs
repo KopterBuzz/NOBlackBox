@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using System;
+using System.Globalization;
 
 namespace NOBlackBox
 {
@@ -14,6 +15,17 @@ namespace NOBlackBox
         internal const string DeveloperFeatures = "Developer Features";
 
         internal const int DefaultUpdateRate = 5;
+
+        internal const float DefaultUnitDiscoveryDelta = 1f;
+        internal const float DefaultBulletSimDiscoveryDelta = 0.5f;
+        internal const float DefaultAircraftUpdateDelta = 0.2f;
+        internal const float DefaultVehicleUpdateDelta = 1f;
+        internal const float DefaultMunitionUpdateDelta = 0.2f;
+        internal const float DefaultShockwaveUpdateDelta = 0.016f;
+        internal const float DefaultShockwaveDiscoveryDelta = 0.5f;
+        internal const float DefaultTracerUpdateDelta = 0.5f;
+        internal const float DefaultFlareUpdateDelta = 1f;
+        internal const float DefaultBuildingUpdateDelta = 1f;
 
         internal const int DefaultAutoSaveInterval = 60;
 
@@ -49,6 +61,18 @@ namespace NOBlackBox
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
+
+        internal static ConfigEntry<float> unitDiscoveryDelta;
+        internal static ConfigEntry<float> bulletSimDiscoveryDelta;
+        internal static ConfigEntry<float> aircraftUpdateDelta;
+        internal static ConfigEntry<float> vehicleUpdateDelta;
+        internal static ConfigEntry<float> munitionUpdateDelta;
+        internal static ConfigEntry<float> shockwaveUpdateDelta;
+        internal static ConfigEntry<float> shockwaveDiscoveryDelta;
+        internal static ConfigEntry<float> tracerUpdateDelta;
+        internal static ConfigEntry<float> flareUpdateDelta;
+        internal static ConfigEntry<float> buildingUpdateDelta;
+
         private static ConfigEntry<string> _OutputPath;
         private static ConfigEntry<int> _AutoSaveInterval;
         private static ConfigEntry<bool> _CompressIDs;
@@ -126,13 +150,75 @@ namespace NOBlackBox
         {
             Plugin.Logger?.LogDebug("[NOBlackBox]: Loading Settings.");
 
-            _UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "The number of times per second NOBlackBox will record events. 0 = unlimited. Max Value: 1000");
+            _UpdateRate = config.Bind(GeneralSettings, "UpdateRate", DefaultUpdateRate, "DEPRECATED. SEE THE OTHER UPDATE RATE SETTINGS");
             Plugin.Logger?.LogDebug($"[NOBlackBox]: UpdateRate = {_UpdateRate.Value}");
             if (!Enumerable.Range(0, 1001).Contains(_UpdateRate.Value))
             {
                 Plugin.Logger?.LogWarning($"[NOBlackBox]: UpdateRate out of range! Setting default value {DefaultUpdateRate}!");
                 _UpdateRate.Value = DefaultUpdateRate;
             }
+            //NEW UPDATE RATE SETTINGS
+            if (unitDiscoveryDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid unitDiscoveryDelta! Setting default value {DefaultUnitDiscoveryDelta}!");
+                unitDiscoveryDelta = config.Bind(GeneralSettings, "Unit Discovery Rate", DefaultUnitDiscoveryDelta, $"How many times per second to discover Units. Default = {DefaultUnitDiscoveryDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"unitDiscoveryDelta = {unitDiscoveryDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (bulletSimDiscoveryDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid bulletSimDiscoveryDelta! Setting default value {DefaultBulletSimDiscoveryDelta}!");
+                unitDiscoveryDelta = config.Bind(GeneralSettings, "BulletSim Discovery Rate", DefaultUnitDiscoveryDelta, $"How many times per second to discover objects that fire bullets. Default = {DefaultBulletSimDiscoveryDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"bulletSimDiscoveryDelta = {bulletSimDiscoveryDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (shockwaveDiscoveryDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid shockwaveDiscoveryDelta! Setting default value {DefaultShockwaveDiscoveryDelta}!");
+                unitDiscoveryDelta = config.Bind(GeneralSettings, "Shockwave Discovery Rate", DefaultUnitDiscoveryDelta, $"How many times per second to discover explosion shockwaves. Default = {DefaultShockwaveDiscoveryDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"shockwaveDiscoveryDelta = {shockwaveDiscoveryDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (aircraftUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid aircraftUpdateDelta! Setting default value {DefaultAircraftUpdateDelta}!");
+                aircraftUpdateDelta = config.Bind(GeneralSettings, "Aircraft Update Rate", DefaultAircraftUpdateDelta, $"How many times per second to update Aircraft. Default = {DefaultAircraftUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"aircraftUpdateDelta = {aircraftUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (vehicleUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid vehicleUpdateDelta! Setting default value {DefaultVehicleUpdateDelta}!");
+                vehicleUpdateDelta = config.Bind(GeneralSettings, "Vehicle Update Rate", DefaultVehicleUpdateDelta, $"How many times per second to update Vehicles and Ships. Default = {DefaultVehicleUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"vehicletUpdateDelta = {vehicleUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (munitionUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid munitionUpdateDelta! Setting default value {DefaultMunitionUpdateDelta}!");
+                munitionUpdateDelta = config.Bind(GeneralSettings, "Munition Update Rate", DefaultMunitionUpdateDelta, $"How many times per second to update Bombs, Missiles and Rockets. Default = {DefaultMunitionUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"munitionUpdateDelta = {munitionUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (shockwaveUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid shockwaveUpdateDelta! Setting default value {DefaultShockwaveUpdateDelta}!");
+                shockwaveUpdateDelta = config.Bind(GeneralSettings, "Shockwave Update Rate", DefaultShockwaveUpdateDelta, $"How many times per second to update Shockwave Propagation. Default = {DefaultShockwaveUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"aircraftUpdateDelta = {shockwaveUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (tracerUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid tracerUpdateDelta! Setting default value {DefaultTracerUpdateDelta}!");
+                tracerUpdateDelta = config.Bind(GeneralSettings, "Tracer Update Rate", DefaultTracerUpdateDelta, $"How many times per second to Projectile Tracers. Default = {DefaultTracerUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"tracerUpdateDelta = {tracerUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (flareUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid flareUpdateDelta! Setting default value {DefaultFlareUpdateDelta}!");
+                flareUpdateDelta = config.Bind(GeneralSettings, "Flare Update Rate", DefaultFlareUpdateDelta, $"How many times per second to update Flares. Default = {DefaultFlareUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"flareUpdateDelta = {flareUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+            if (buildingUpdateDelta.Value <= 0f)
+            {
+                Plugin.Logger?.LogWarning($"Invalid buildingUpdateDelta! Setting default value {DefaultBuildingUpdateDelta}!");
+                buildingUpdateDelta = config.Bind(GeneralSettings, "Building Update Rate", DefaultBuildingUpdateDelta, $"How many times per second to update Buildings. Default = {DefaultBuildingUpdateDelta.ToString(CultureInfo.InvariantCulture)}");
+                Plugin.Logger?.LogDebug($"buildingUpdateDelta = {buildingUpdateDelta.Value.ToString(CultureInfo.InvariantCulture)}");
+            }
+
 
             string DefaultOutputPath = Application.persistentDataPath + "/Replays/";
             _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");

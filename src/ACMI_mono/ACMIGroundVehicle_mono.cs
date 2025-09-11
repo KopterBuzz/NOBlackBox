@@ -78,7 +78,7 @@ namespace NOBlackBox
                 return;
             }
             timer += Time.deltaTime;
-            if (timer < Plugin.vehicleUpdateDelta)
+            if (timer < Configuration.vehicleUpdateDelta.Value)
             {
                 return;
             }

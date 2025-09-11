@@ -64,7 +64,7 @@ namespace NOBlackBox
                 return;
             }
             timer += Time.deltaTime;
-            if (timer < Plugin.aircraftUpdateDelta)
+            if (timer < Configuration.aircraftUpdateDelta.Value)
             {
                 return;
             }

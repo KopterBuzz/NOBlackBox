@@ -20,7 +20,6 @@ namespace NOBlackBox
     internal class Plugin : BaseUnityPlugin
     {
         internal static new ManualLogSource ?Logger;
-        private Recorder? recorder;
         internal static GameObject recorderMono;
         internal static bool isRecording = false;
         internal static GameObject ?autoSaveCountDown;
@@ -28,20 +27,6 @@ namespace NOBlackBox
         private float timer = 0f;
         internal static int recordedScreenWidth, recordedScreenHeight;
         internal static float guiAnchorLeft, guiAnchorRight;
-        internal readonly bool isRewrite = true;
-
-        //REWRITE VARIABLES - TODO CONFIG ITEMS
-        //update() frequency for recorder_mono in seconds
-        internal static readonly float unitDiscoveryDelta = 1f;
-        internal static readonly float bulletSimDiscoveryDelta = 0.5f;
-        internal static readonly float aircraftUpdateDelta = 0.2f;
-        internal static readonly float vehicleUpdateDelta = 1f;
-        internal static readonly float munitionUpdateDelta = 0.2f;
-        internal static readonly float shockwaveUpdateDelta = 0.016f;
-        internal static readonly float shockwaveDiscoveryDelta = 0.5f;
-        internal static readonly float tracerUpdateDelta = 0.5f;
-        internal static readonly float flareUpdateDelta = 1f;
-        internal static readonly float buildingUpdateDelta = 1f;
 
         public Plugin()
         {
@@ -61,12 +46,6 @@ namespace NOBlackBox
         }
         private void Update()
         {
-            timer += Time.deltaTime;
-            if (recorder != null && timer >= waitTime)
-            {
-                recorder.Update(timer);
-                timer = 0f;
-            }
             if (Configuration._GenerateHeightMapKey.Value.IsDown())
             {
                 RaycastHeightmapGenerator.Generate();
@@ -112,16 +91,11 @@ namespace NOBlackBox
                 Logger?.LogWarning($"[NOBlackBox]: NO LEVELINFO!!!!");
             }
             
-            if (!isRewrite)
-            {
-                recorder = new Recorder(MissionManager.CurrentMission);
 
-            } else
-            {
-                recorderMono = new GameObject();
-                recorderMono.AddComponent<Recorder_mono>();
-                recorderMono.GetComponent<Recorder_mono>().enabled = true;
-            }
+            recorderMono = new GameObject();
+            recorderMono.AddComponent<Recorder_mono>();
+            recorderMono.GetComponent<Recorder_mono>().enabled = true;
+            
             isRecording = true;
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<AutoSaveCountDown>();
@@ -129,20 +103,13 @@ namespace NOBlackBox
         }
         private void OnMissionUnload()
         {
-            if (!isRewrite)
-            {
-                Logger?.LogDebug("[NOBlackBox]: MISSION UNLOADED.");
-                recorder?.Close();
-                recorder = null;
-                isRecording = false;
-                GameObject.Destroy(autoSaveCountDown);
-            } else
-            {
-                isRecording = false;
-                recorderMono.GetComponent<Recorder_mono>().enabled = false;
-                GameObject.Destroy(autoSaveCountDown);
-                GameObject.Destroy(recorderMono);
-            }
+  
+            Logger?.LogDebug("[NOBlackBox]: MISSION UNLOADED.");
+            isRecording = false;
+            recorderMono.GetComponent<Recorder_mono>().enabled = false;
+            GameObject.Destroy(autoSaveCountDown);
+            GameObject.Destroy(recorderMono);
+            
         }
     }
 }

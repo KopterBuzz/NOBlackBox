@@ -34,7 +34,7 @@ namespace NOBlackBox
         public override void Update()
         {
             timer += Time.deltaTime;
-            if (timer < Plugin.tracerUpdateDelta)
+            if (timer < Configuration.tracerUpdateDelta.Value)
             {
                 return;
             }

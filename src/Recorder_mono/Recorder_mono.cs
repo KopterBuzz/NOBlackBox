@@ -26,10 +26,8 @@ namespace NOBlackBox
         private float shockwaveDiscoveryTimer = 0f;
 
         private readonly Dictionary<long, GameObject> objects = [];
-        private readonly List<ACMIFlare> flares = [];
-        private readonly List<ACMIFlare> newFlare = [];
 
-        private readonly List<ACMITracer> newTracers = [];
+
         private readonly Dictionary<BulletSim.Bullet, GameObject> tracers = [];
 
         private Unit[] units = [];
@@ -186,15 +184,15 @@ namespace NOBlackBox
             unitDiscoveryTimer += Time.deltaTime;
             bulletSimDiscoveryTimer += Time.deltaTime;
             shockwaveDiscoveryTimer += Time.deltaTime;
-            if (shockwaveDiscoveryTimer >= Plugin.shockwaveDiscoveryDelta)
+            if (shockwaveDiscoveryTimer >= Configuration.shockwaveDiscoveryDelta.Value)
             {
                 processShockWaves = ShockWaveDiscovery();
             }
-            if (unitDiscoveryTimer >= Plugin.unitDiscoveryDelta)
+            if (unitDiscoveryTimer >= Configuration.unitDiscoveryDelta.Value)
             {
                 processUnits = UnitDiscovery();
             }
-            if (bulletSimDiscoveryTimer >= Plugin.bulletSimDiscoveryDelta)
+            if (bulletSimDiscoveryTimer >= Configuration.bulletSimDiscoveryDelta.Value)
             {
                 processBulletSims = BulletSimDiscovery();
             }

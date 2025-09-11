@@ -32,7 +32,7 @@ namespace NOBlackBox
         public override void Update()
         {
             timer += Time.deltaTime;
-            if (timer < Plugin.flareUpdateDelta)
+            if (timer < Configuration.flareUpdateDelta.Value)
             {
                 return;
             }
