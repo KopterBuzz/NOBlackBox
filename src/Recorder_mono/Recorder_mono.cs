@@ -15,13 +15,16 @@ namespace NOBlackBox
         private static readonly FieldInfo bulletSim = typeof(Gun).GetField("bulletSim", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo bullets = typeof(BulletSim).GetField("bullets", BindingFlags.NonPublic | BindingFlags.Instance);
 
-        private readonly Dictionary<Shockwave, ACMIShockwave> waves = [];
-        private readonly Dictionary<Shockwave, ACMIShockwave> newWaves = [];
+        private readonly Dictionary<Shockwave, GameObject> waves = [];
+        Shockwave[] shockwaves = [];
 
         private DateTime startDate;
         private DateTime curTime;
         public static ACMIWriter writer;
-        private float discoveryTimer = 0f;
+        private float unitDiscoveryTimer = 0f;
+        private float bulletSimDiscoveryTimer = 0f;
+        private float shockwaveDiscoveryTimer = 0f;
+
         private readonly Dictionary<long, GameObject> objects = [];
         private readonly List<ACMIFlare> flares = [];
         private readonly List<ACMIFlare> newFlare = [];
@@ -33,6 +36,7 @@ namespace NOBlackBox
         private BulletSim[] bulletSims = [];
         private bool processUnits = false;
         private bool processBulletSims = false;
+        private bool processShockWaves = false;
 
         public void invokeWriterUpdate(ACMIObject_mono obj)
         {
@@ -85,6 +89,17 @@ namespace NOBlackBox
                         switch (unit)
                         {
                             case Aircraft aircraft:
+
+                                aircraft.onAddIRSource += (IRSource source) =>
+                                {
+                                    if (source.flare)
+                                    {
+                                        GameObject flare = new GameObject();
+                                        flare.AddComponent<ACMIFlare_mono>();
+                                        flare.GetComponent<ACMIFlare_mono>().Init(source);
+                                        flare.GetComponent<ACMIFlare_mono>().enabled = true;
+                                    }
+                                };
                                 acmi.AddComponent<ACMIAircraft_mono>();
                                 acmi.GetComponent<ACMIAircraft_mono>().Init(aircraft);
                                 acmi.GetComponent<ACMIAircraft_mono>().enabled = true;
@@ -149,18 +164,41 @@ namespace NOBlackBox
                 }
                 processBulletSims = false;
             }
+
+            if(processShockWaves)
+            {
+                foreach (Shockwave wave in shockwaves)
+                {
+                    if (waves.ContainsKey(wave))
+                    {
+                        continue;
+                    }
+                    GameObject shockwave = new GameObject();
+                    shockwave.AddComponent<ACMIShockwave_mono>();
+                    shockwave.GetComponent<ACMIShockwave_mono>().Init(wave);
+                    shockwave.GetComponent<ACMIShockwave_mono>().enabled = true;
+                    waves.Add(wave, shockwave);
+                }
+            }
         }
         void LateUpdate()
         {
-            discoveryTimer += Time.deltaTime;
-            if (discoveryTimer >= Plugin.unitDiscoveryDelta)
+            unitDiscoveryTimer += Time.deltaTime;
+            bulletSimDiscoveryTimer += Time.deltaTime;
+            shockwaveDiscoveryTimer += Time.deltaTime;
+            if (shockwaveDiscoveryTimer >= Plugin.shockwaveDiscoveryDelta)
+            {
+                processShockWaves = ShockWaveDiscovery();
+            }
+            if (unitDiscoveryTimer >= Plugin.unitDiscoveryDelta)
             {
                 processUnits = UnitDiscovery();
             }
-            if (discoveryTimer >= Plugin.tracerUpdateDelta)
+            if (bulletSimDiscoveryTimer >= Plugin.bulletSimDiscoveryDelta)
             {
                 processBulletSims = BulletSimDiscovery();
             }
+
         }
         void OnDisable()
         {
@@ -184,10 +222,9 @@ namespace NOBlackBox
                 }
             }
             Plugin.Logger?.LogDebug($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");
-            discoveryTimer = 0f;
             units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
             Plugin.Logger?.LogDebug($"DISCOVERED {units.Length.ToString(CultureInfo.InvariantCulture)} UNITS!");
-
+            unitDiscoveryTimer = 0f;
             return true;
 
         }
@@ -203,7 +240,24 @@ namespace NOBlackBox
                 }
             }
             bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-            Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BulletSims!");
+            Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BULLETSIMS!");
+            bulletSimDiscoveryTimer = 0f;
+            return true;
+        }
+
+        public bool ShockWaveDiscovery()
+        {
+            foreach (Shockwave key in waves.Keys)
+            {
+                if (null == waves[key])
+                {
+                    Plugin.Logger?.LogDebug($"REMOVING TRACER");
+                    waves.Remove(key);
+                }
+            }
+            shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
+            Plugin.Logger?.LogDebug($"DISCOVERED {shockwaves.Length.ToString(CultureInfo.InvariantCulture)} SHOCKWAVES!");
+            shockwaveDiscoveryTimer = 0f;
             return true;
         }
     }

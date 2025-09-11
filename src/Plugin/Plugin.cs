@@ -15,7 +15,7 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.6.3")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.7.0")]
     [BepInProcess("NuclearOption.exe")]
     internal class Plugin : BaseUnityPlugin
     {
@@ -38,7 +38,10 @@ namespace NOBlackBox
         internal static readonly float vehicleUpdateDelta = 1f;
         internal static readonly float munitionUpdateDelta = 0.2f;
         internal static readonly float shockwaveUpdateDelta = 0.016f;
+        internal static readonly float shockwaveDiscoveryDelta = 0.5f;
         internal static readonly float tracerUpdateDelta = 0.5f;
+        internal static readonly float flareUpdateDelta = 1f;
+        internal static readonly float buildingUpdateDelta = 1f;
 
         public Plugin()
         {

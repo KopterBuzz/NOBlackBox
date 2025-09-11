@@ -38,7 +38,7 @@ namespace NOBlackBox
         {
 
         }
-        public void LateUpdate()
+        public virtual void LateUpdate()
         {
             try
             {

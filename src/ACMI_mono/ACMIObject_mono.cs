@@ -27,10 +27,6 @@ namespace NOBlackBox
         {
 
         }
-        public virtual void LateUpdate()
-        {
-
-        }
 
         void Awake()
         {

@@ -4,29 +4,27 @@ using System.Globalization;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using static BulletSim;
 
 namespace NOBlackBox
 {
-    internal class ACMITracer_mono : ACMIObject_mono
+    internal class ACMIFlare_mono : ACMIObject_mono
     {
-        private static int BULLETID = 0;
-
-        public BulletSim sim;
-        public BulletSim.Bullet bullet;
+        private static int FLAREID = 0;
 
         private Vector3 lastPos = new(float.NaN, float.NaN, float.NaN);
 
-        public virtual void Init(BulletSim sim, BulletSim.Bullet bullet)
+        public IRFlare flare;
+
+        public virtual void Init(IRSource source)
         {
-            this.sim = sim;
-            this.bullet = bullet;
-            base.unitId = (long)(Interlocked.Increment(ref BULLETID) - 1) | (1L << 33);
+            this.flare = source.transform.gameObject.GetComponent<IRFlare>();
+            base.unitId = (long)(Interlocked.Increment(ref FLAREID) - 1) | (1L << 32);
             base.tacviewId = base.unitId;
             props = new Dictionary<string, string>()
             {
-                { "Type", "Misc+Projectile+Shell" }
+                {"Type","Misc+Decoy+Flare" }
             };
-
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
         }
@@ -34,43 +32,43 @@ namespace NOBlackBox
         public override void Update()
         {
             timer += Time.deltaTime;
-            if (timer < Plugin.tracerUpdateDelta)
+            if (timer < Plugin.flareUpdateDelta)
             {
                 return;
             }
             UpdatePose();
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
-            timer = 0f;
+            timer = 0;
         }
 
         public virtual void LateUpdate()
         {
-            if (bullet.tracer == null || !bullet.tracer.activeSelf)
+            if  (flare == null || !flare.enabled || null == flare.transform.position)
             {
-                this.enabled = false;
-                base.enabled = false;
-                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
-                Plugin.Logger?.LogDebug($"DISABLING TRACER {unitId.ToString(CultureInfo.InvariantCulture)}");
-                props = [];
-                GameObject.Destroy(this);
+                DisableFlare();
             }
         }
 
         public void UpdatePose()
         {
-
-            float fx = MathF.Round(bullet.position.x, 2);
-            float fy = MathF.Round(bullet.position.y, 2);
-            float fz = MathF.Round(bullet.position.z, 2);
-
-            Vector3 newPos = new(fx, fy, fz);
-
-            if (newPos != lastPos)
+            try
             {
-                props.Add("T", UpdatePosition(newPos).ToString(CultureInfo.InvariantCulture));
+                float fx = MathF.Round(flare.transform.position.GlobalX(), 2);
+                float fy = MathF.Round(flare.transform.position.GlobalY(), 2);
+                float fz = MathF.Round(flare.transform.position.GlobalZ(), 2);
 
-                lastPos = newPos;
+                Vector3 newPos = new(fx, fy, fz);
+
+                if (newPos != lastPos)
+                {
+                    props.Add("T", UpdatePosition(newPos).ToString(CultureInfo.InvariantCulture));
+
+                    lastPos = newPos;
+                }
+            } catch
+            {
+                DisableFlare();
             }
 
         }
@@ -84,6 +82,16 @@ namespace NOBlackBox
             (float latitude, float longitude) = Helpers.CartesianToGeodetic(newPos.x, newPos.z);
 
             return $"{(newPos.x != lastPos.x ? longitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{(newPos.z != lastPos.z ? latitude.ToString(CultureInfo.InvariantCulture) : string.Empty)}|{y}|{x}|{z}";
+        }
+
+        private void DisableFlare()
+        {
+            this.enabled = false;
+            base.enabled = false;
+            Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
+            Plugin.Logger?.LogDebug($"DISABLING FLARE {unitId.ToString(CultureInfo.InvariantCulture)}");
+            props = [];
+            GameObject.Destroy(this);
         }
     }
 }

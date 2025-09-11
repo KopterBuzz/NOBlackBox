@@ -30,6 +30,10 @@ namespace NOBlackBox
             get; private set;
         }
         Missile missile;
+        GameObject shockwave;
+
+        public event Action<ACMIMissile_mono>? OnDetonate;
+
         public virtual void Init(Missile missile)
         {
             base.unit = missile;

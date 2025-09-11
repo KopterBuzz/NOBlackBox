@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace NOBlackBox
 {
@@ -33,7 +34,11 @@ namespace NOBlackBox
 
         public override void Update()
         {
-
+            timer += Time.deltaTime;
+            if (timer < Plugin.buildingUpdateDelta)
+            {
+                return;
+            }
             if (unit.NetworkHQ?.faction.factionName != coalition)
             {
                 coalition = unit.NetworkHQ?.faction.factionName ?? "Neutral";
@@ -56,6 +61,7 @@ namespace NOBlackBox
                 props.Add("Color", color);
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                 props = [];
+                timer = 0;
             }
         }
     }
