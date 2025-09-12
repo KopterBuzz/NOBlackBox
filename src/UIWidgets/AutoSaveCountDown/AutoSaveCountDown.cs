@@ -34,6 +34,7 @@ namespace NOBlackBox
                                    50),
                                    $"Next AutoSave: {countDown:N1} sec", fontSize);
             }
+            GUI.Label(new Rect((0.2f * Plugin.recordedScreenWidth), (0.2f * Plugin.recordedScreenHeight), 400, 50), "REC", fontSize);
         }
     }
 }

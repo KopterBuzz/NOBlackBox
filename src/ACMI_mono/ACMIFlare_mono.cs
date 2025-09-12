@@ -25,7 +25,14 @@ namespace NOBlackBox
             {
                 {"Type","Misc+Decoy+Flare" }
             };
-            Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+            try
+            {
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+            } catch
+            {
+                Destroy(this);
+            }
+            
             props = [];
         }
 

@@ -20,9 +20,10 @@ namespace NOBlackBox
     internal class Plugin : BaseUnityPlugin
     {
         internal static new ManualLogSource ?Logger;
-        internal static GameObject recorderMono;
+        internal static GameObject ?recorderMono;
         internal static bool isRecording = false;
         internal static GameObject ?autoSaveCountDown;
+        internal static GameObject ?recordingIndicator;
         private float waitTime = 0.2f;
         private float timer = 0f;
         internal static int recordedScreenWidth, recordedScreenHeight;
@@ -128,9 +129,14 @@ namespace NOBlackBox
             recorderMono.AddComponent<Recorder_mono>();
             recorderMono.GetComponent<Recorder_mono>().enabled = true;
             isRecording = true;
+
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<AutoSaveCountDown>();
             autoSaveCountDown.GetComponent<AutoSaveCountDown>().enabled = true;
+
+            //recordingIndicator = new GameObject();
+            //recordingIndicator.AddComponent<RecordingIndicator>();
+            //recordingIndicator.GetComponent<RecordingIndicator>().enabled = true;
         }
 
         private void StopRecording()
@@ -139,8 +145,14 @@ namespace NOBlackBox
             recorderMono.GetComponent<Recorder_mono>().enabled = false;
             GameObject.Destroy(autoSaveCountDown);
             GameObject.Destroy(recorderMono);
+            //GameObject.Destroy(recordingIndicator);
             ACMIObject_mono[] found = GameObject.FindObjectsByType<ACMIObject_mono>(FindObjectsSortMode.None);
+            ACMIFlare_mono[] foundFlares = GameObject.FindObjectsByType<ACMIFlare_mono>(FindObjectsSortMode.None);
             foreach (ACMIObject_mono obj in found)
+            {
+                GameObject.Destroy(obj);
+            }
+            foreach (ACMIFlare_mono obj in foundFlares)
             {
                 GameObject.Destroy(obj);
             }

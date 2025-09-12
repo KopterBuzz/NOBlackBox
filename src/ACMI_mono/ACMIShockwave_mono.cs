@@ -51,8 +51,9 @@ namespace NOBlackBox
                 {
                     return;
                 }
-                float radius = (float)propagation.GetValue(shockwave) / 10f;
-                if (radius <= lastRadius)
+                float radius = MathF.Round(((float)propagation.GetValue(shockwave) / 5f), 2);
+                
+                if (radius == lastRadius || !shockwave.enabled || !shockwave)
                 {
                     DisableShockWave();
                 }
@@ -69,10 +70,10 @@ namespace NOBlackBox
 
         private void DisableShockWave()
         {
-            this.enabled = false;
-            base.enabled = false;
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
             Plugin.Logger?.LogDebug($"DISABLING SHOCKWAVE {unitId.ToString(CultureInfo.InvariantCulture)}");
+            this.enabled = false;
+            base.enabled = false;
             props = [];
             GameObject.Destroy(this);
         }

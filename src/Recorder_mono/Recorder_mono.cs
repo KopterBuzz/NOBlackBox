@@ -144,16 +144,26 @@ namespace NOBlackBox
                 {
                     List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder_mono.bullets.GetValue(bulletSim);
 
+                    int counter = 0;
                     foreach (var bullet in bullets)
                     {
+                        counter++;
                         if (!tracers.ContainsKey(bullet))
                         {
-                            GameObject tracer = new GameObject();
-                            tracer.AddComponent<ACMITracer_mono>();
-                            tracer.GetComponent<ACMITracer_mono>().Init(bulletSim, bullet);
-                            tracer.GetComponent<ACMITracer_mono>().enabled = true;
+                            if (counter % 5 == 0)
+                            {
+                                GameObject tracer = new GameObject();
+                                tracer.AddComponent<ACMITracer_mono>();
+                                tracer.GetComponent<ACMITracer_mono>().Init(bulletSim, bullet);
+                                tracer.GetComponent<ACMITracer_mono>().enabled = true;
+                                tracers.Add(tracer.GetComponent<ACMITracer_mono>().bullet, tracer);
+                                counter = 0;
+                            }
+                            else
+                            {
+                                tracers.Add(bullet, null);
+                            }
 
-                            tracers.Add(tracer.GetComponent<ACMITracer_mono>().bullet, tracer);
                         }
                     }
                 }
@@ -229,14 +239,30 @@ namespace NOBlackBox
 
         internal bool BulletSimDiscovery()
         {
-            foreach (BulletSim.Bullet key in tracers.Keys)
+            try
             {
-                if (null == tracers[key])
+                foreach (BulletSim.Bullet key in tracers.Keys)
                 {
-                    Plugin.Logger?.LogDebug($"REMOVING TRACER");
-                    tracers.Remove(key);
+                    if (null == tracers[key])
+                    {
+                        Plugin.Logger?.LogDebug($"REMOVING TRACER");
+                        try
+                        {
+                            tracers.Remove(key);
+                        }
+                        catch
+                        {
+                            //wtf
+                        }
+
+                    }
                 }
             }
+            catch
+            {
+                //wtf2
+            }
+
             bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
             Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BULLETSIMS!");
             bulletSimDiscoveryTimer = 0f;
