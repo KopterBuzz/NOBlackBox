@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -15,13 +17,16 @@ namespace NOBlackBox
             this.building = (Building)base.unit;
             base.unitId = unit.persistentID;
             base.tacviewId = unit.persistentID + 1;
+            base.destroyedEvent = true;
             lastState = unit.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
             {
                 { "Name", this.unit.definition.unitName },
+                { "CallSign", $"{building.definition.code} {tacviewId:X}"},
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Type","Ground+Static+Building"},
                 { "Debug", lastState.ToString()}
             };
             UpdatePose();

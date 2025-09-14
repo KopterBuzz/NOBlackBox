@@ -95,6 +95,7 @@ namespace NOBlackBox
 
         internal void RemoveObject(ACMIObject_mono aObject, DateTime updateTime)
         {
+
             TimeSpan diff = updateTime - reference;
             if (diff != lastUpdate)
             {
@@ -103,13 +104,12 @@ namespace NOBlackBox
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"-{aObject.id:X}");
             WriteLine($"-{aObject.tacviewId:X}");
         }
 
-        internal void WriteEvent(DateTime eventTime, string name, string[] items)
+        internal void WriteDestroyedEvent(ACMIObject_mono aObject, DateTime updateTime)
         {
-            TimeSpan diff = eventTime - reference;
+            TimeSpan diff = updateTime - reference;
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
@@ -117,8 +117,14 @@ namespace NOBlackBox
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
-            WriteLine($"0,Event={name}|{string.Join("|", items)}");
+            if (Configuration.DestructionEvents.Value == true)
+            {
+                WriteLine("#" + diff.TotalSeconds);
+                if (aObject.destroyedEvent)
+                {
+                    WriteLine($"0,Event=Destroyed|{aObject.tacviewId:X}|");
+                }
+            }
         }
 
         private string StringifyProps(Dictionary<string, string> props)

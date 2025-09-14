@@ -9,7 +9,7 @@ namespace NOBlackBox
 {
     internal class ACMIMissile_mono : ACMIUnit_mono
     {
-        private readonly Dictionary<string, string> TACVIEWTYPES = new()
+        private readonly Dictionary<string, string> TYPES = new()
         {
             {"MSL", "Weapon+Missile"},
             {"BOMB", "Weapon+Bomb"},
@@ -40,6 +40,12 @@ namespace NOBlackBox
             this.missile = (Missile)base.unit;
             base.unitId = missile.persistentID;
             base.tacviewId = missile.persistentID + 1;
+
+            if (unit.unitName.EndsWith("kt)"))
+            {
+                base.destroyedEvent = true;
+            }
+
             lastState = missile.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
@@ -47,6 +53,8 @@ namespace NOBlackBox
                 { "Name", base.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Type", TYPES.GetValueOrDefault(missile.definition.code, "Weapon") },
+                { "CallSign", $"{missile.definition.code} {tacviewId:X}" },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

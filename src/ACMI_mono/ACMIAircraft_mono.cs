@@ -35,6 +35,7 @@ namespace NOBlackBox
             this.aircraft = (Aircraft)base.unit;
             base.unitId = aircraft.persistentID;
             base.tacviewId = aircraft.persistentID + 1;
+            base.destroyedEvent = true;
             lastState = aircraft.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
@@ -43,12 +44,13 @@ namespace NOBlackBox
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
                 { "Debug", lastState.ToString()},
-                { "Type", TYPES.GetValueOrDefault(aircraft.definition.code, "Air")}
+                { "Type", TYPES.GetValueOrDefault(aircraft.definition.code, "Air")},
+                { "CallSign", $"{aircraft.definition.code} {tacviewId:X}" }
             };
             if (aircraft.Player != null)
             {
                 props.Add("Pilot", aircraft.Player.PlayerName);
-                props.Add("CallSign", aircraft.definition.code);
+                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.PlayerName.ToString(CultureInfo.InvariantCulture)})";
                 if (Configuration.RecordSteamID.Value == true)
                 {
                     props.Add("Registration", aircraft.Player.SteamID.ToString());
@@ -62,6 +64,7 @@ namespace NOBlackBox
 
         public override void Update()
         {
+            base.destroyedEvent = !aircraft.IsLanded();
             if (!this.enabled || unit.disabled)
             {
                 return;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UnityEngine;
 
@@ -32,13 +33,16 @@ namespace NOBlackBox
             this.ship = (Ship)base.unit;
             base.unitId = ship.persistentID;
             base.tacviewId = ship.persistentID + 1;
+            base.destroyedEvent = true;
             lastTarget = new Unit?[Math.Min(10, ship.weaponStations.Count)];
             Faction? faction = base.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
             {
                 { "Name", base.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
+                { "CallSign", $"{ship.definition.code} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Type", TYPES.GetValueOrDefault(ship.definition.unitName, "Sea+Watercraft") },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

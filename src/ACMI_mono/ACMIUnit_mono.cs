@@ -14,9 +14,11 @@ namespace NOBlackBox
         private Vector3 lastRot = new(float.NaN, float.NaN, float.NaN);
         internal Unit unit;
         internal Unit.UnitState lastState;
+        internal bool purge = false;
 
         public virtual void Init(Unit unit)
         {
+            /*
             this.unit = unit;
             base.unitId = unit.persistentID;
             base.tacviewId = unit.persistentID + 1;
@@ -33,6 +35,7 @@ namespace NOBlackBox
             props = [];
             this.enabled = true;
             base.enabled = true;
+            */
         }
         public override void Update()
         {
@@ -46,12 +49,22 @@ namespace NOBlackBox
                 {
                     base.disabled = true;
                     props.Add("Visible", "0.0");
+                    props.Add("Type", null);
                     Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                     props = [];
-                    Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
-                    this.enabled = false;
-                    Plugin.Logger?.LogDebug($"DISABLING UNIT {unitId.ToString(CultureInfo.InvariantCulture)}");
-                    GameObject.Destroy(this);
+                    if (base.destroyedEvent && !purge)
+                    {
+                        Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterDestroy(this);
+                    }
+                    if (purge)
+                    {
+                        Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
+                        this.enabled = false;
+                        Plugin.Logger?.LogDebug($"DISABLING UNIT {unitId.ToString(CultureInfo.InvariantCulture)}");
+                        GameObject.Destroy(this);
+                    }
+                    //this is to stagger the Destroyed Event and the Remove call to 2 different time steps, as having them both on the same time step will confuse Tacview
+                    purge = true;
                 }
             } catch
             {

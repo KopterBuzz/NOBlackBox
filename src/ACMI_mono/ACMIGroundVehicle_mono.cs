@@ -51,19 +51,21 @@ namespace NOBlackBox
 
         private Unit? lastTarget;
 
-        public virtual void Init(GroundVehicle unit)
+        public virtual void Init(GroundVehicle vehicle)
         {
 
-            base.unit = unit;
-            base.unitId = unit.persistentID;
-            base.tacviewId = unit.persistentID + 1;
-            lastState = unit.unitState;
+            base.unit = vehicle;
+            base.unitId = vehicle.persistentID;
+            base.tacviewId = vehicle.persistentID + 1;
+            lastState = vehicle.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
             {
                 { "Name", this.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
+                { "CallSign", $"{vehicle.definition.code} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Type", TYPES.GetValueOrDefault(vehicle.definition.unitName, "Ground") },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

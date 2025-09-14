@@ -43,6 +43,11 @@ namespace NOBlackBox
             writer.RemoveObject(obj, curTime);
         }
 
+        public void invokeWriterDestroy(ACMIObject_mono obj)
+        {
+            writer.WriteDestroyedEvent(obj, curTime);
+        }
+
         void Awake()
         {
             Plugin.Logger?.LogDebug("USING MONO RECORDER");
@@ -177,7 +182,6 @@ namespace NOBlackBox
                 {
                     List<BulletSim.Bullet> bullets = (List<BulletSim.Bullet>)Recorder_mono.bullets.GetValue(bulletSim);
 
-                    int counter = 0;
                     foreach (var bullet in bullets)
                     {
 

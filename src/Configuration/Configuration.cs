@@ -116,6 +116,9 @@ namespace NOBlackBox
 
         internal static ConfigEntry<KeyboardShortcut> StartStopRecordingKey;
 
+        internal static readonly bool DefaultDestructionEvents = true;
+        internal static ConfigEntry<bool> DestructionEvents;
+
 #pragma warning restore
 
         internal static int UpdateRate
@@ -315,6 +318,9 @@ namespace NOBlackBox
 
             RecordEjectedPilots = config.Bind(GeneralSettings, "RecordEjectedPilots", DefaultRecordEjectedPilots, "Toggle Recording Ejected Pilots.");
             Plugin.Logger?.LogDebug($"RecordEjectedPilots = {RecordEjectedPilots.Value}");
+
+            DestructionEvents = config.Bind(GeneralSettings, "DestructionEvents", DefaultDestructionEvents, "Toggle Recording Destruction Events for Buildings and Ships.");
+            Plugin.Logger?.LogDebug($"DestructionEvents = {DestructionEvents.Value}");
 
             AutoStartRecording = config.Bind(GeneralSettings, "AutoStartRecording", DefaultAutoStartRecording, "Toggle Automatically starting to record on mission load.");
             Plugin.Logger?.LogDebug($"AutoStartRecording = {AutoStartRecording.Value}");

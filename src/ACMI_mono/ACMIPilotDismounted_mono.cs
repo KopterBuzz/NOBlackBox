@@ -23,6 +23,7 @@ namespace NOBlackBox
                 { "Name", this.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
+                { "Type", "Ground+Light+Human+Air+Parachutist" },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
@@ -42,9 +43,10 @@ namespace NOBlackBox
             {
                 return;
             }
-            if (pilot.radarAlt <= 10)
+            if (pilot.radarAlt <= 1)
             {
                 props.Add("Visible", "0.0");
+                props.Add("Type", null);
                 Plugin.Logger?.LogDebug($"PARACHUTE LANDED {unitId.ToString(CultureInfo.InvariantCulture)}");
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRemove(this);
