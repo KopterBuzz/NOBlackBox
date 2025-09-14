@@ -50,7 +50,6 @@ namespace NOBlackBox
             if (aircraft.Player != null)
             {
                 props.Add("Pilot", aircraft.Player.PlayerName);
-                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.PlayerName.ToString(CultureInfo.InvariantCulture)})";
                 if (Configuration.RecordSteamID.Value == true)
                 {
                     props.Add("Registration", aircraft.Player.SteamID.ToString());
