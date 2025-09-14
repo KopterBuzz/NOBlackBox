@@ -80,7 +80,7 @@ namespace NOBlackBox
                     bool isNew = false;
                     if (!objects.TryGetValue(unit.persistentID, out GameObject acmi))
                     {
-                        acmi = new GameObject();
+                        
                         switch (unit)
                         {
                             case Aircraft aircraft:
@@ -95,45 +95,78 @@ namespace NOBlackBox
                                         flare.GetComponent<ACMIFlare_mono>().enabled = true;
                                     }
                                 };
+                                acmi = new GameObject();
                                 acmi.AddComponent<ACMIAircraft_mono>();
                                 acmi.GetComponent<ACMIAircraft_mono>().Init(aircraft);
                                 acmi.GetComponent<ACMIAircraft_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                objects.Add(unit.persistentID, acmi);
+                                isNew = true;
                                 break;
                             case Missile missile:
+                                acmi = new GameObject();
                                 acmi.AddComponent<ACMIMissile_mono>();
                                 acmi.GetComponent<ACMIMissile_mono>().Init(missile);
                                 acmi.GetComponent<ACMIMissile_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                objects.Add(unit.persistentID, acmi);
+                                isNew = true;
                                 break;
                             case GroundVehicle vehicle:
+                                acmi = new GameObject();
                                 acmi.AddComponent<ACMIGroundVehicle_mono>();
                                 acmi.GetComponent<ACMIGroundVehicle_mono>().Init(vehicle);
                                 acmi.GetComponent<ACMIGroundVehicle_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                objects.Add(unit.persistentID, acmi);
+                                isNew = true;
                                 break;
                             case Ship ship:
+                                acmi = new GameObject();
                                 acmi.AddComponent<ACMIShip_mono>();
                                 acmi.GetComponent<ACMIShip_mono>().Init(ship);
                                 acmi.GetComponent<ACMIShip_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                objects.Add(unit.persistentID, acmi);
+                                isNew = true;
                                 break;
                             case PilotDismounted pilot:
-                                acmi.AddComponent<ACMIPilotDismounted_mono>();
-                                acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
-                                acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
+                                if (Configuration.RecordEjectedPilots.Value == true)
+                                {
+                                    acmi = new GameObject();
+                                    acmi.AddComponent<ACMIPilotDismounted_mono>();
+                                    acmi.GetComponent<ACMIPilotDismounted_mono>().Init(pilot);
+                                    acmi.GetComponent<ACMIPilotDismounted_mono>().enabled = true;
+                                    Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                        $"{unit.definition.unitName}," +
+                                        $"{unit.definition.code}");
+                                    objects.Add(unit.persistentID, acmi);
+                                    isNew = true;
+                                }
                                 break;
                             case Building building:
+                                acmi = new GameObject();
                                 acmi.AddComponent<ACMIBuilding_mono>();
                                 acmi.GetComponent<ACMIBuilding_mono>().Init(building);
                                 acmi.GetComponent<ACMIBuilding_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                objects.Add(unit.persistentID, acmi);
+                                isNew = true;
                                 break;
                             default:
                                 break;
                         }
                         //acmi = new GameObject();
-
-                        Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
-                            $"{unit.definition.unitName}," +
-                            $"{unit.definition.code}");
-                        objects.Add(unit.persistentID, acmi);
-                        isNew = true;
                     }
                 }
                 processUnits = false;
@@ -147,23 +180,14 @@ namespace NOBlackBox
                     int counter = 0;
                     foreach (var bullet in bullets)
                     {
-                        counter++;
+
                         if (!tracers.ContainsKey(bullet))
                         {
-                            if (counter % 5 == 0)
-                            {
-                                GameObject tracer = new GameObject();
-                                tracer.AddComponent<ACMITracer_mono>();
-                                tracer.GetComponent<ACMITracer_mono>().Init(bulletSim, bullet);
-                                tracer.GetComponent<ACMITracer_mono>().enabled = true;
-                                tracers.Add(tracer.GetComponent<ACMITracer_mono>().bullet, tracer);
-                                counter = 0;
-                            }
-                            else
-                            {
-                                tracers.Add(bullet, null);
-                            }
-
+                            GameObject tracer = new GameObject();
+                            tracer.AddComponent<ACMITracer_mono>();
+                            tracer.GetComponent<ACMITracer_mono>().Init(bulletSim, bullet);
+                            tracer.GetComponent<ACMITracer_mono>().enabled = true;
+                            tracers.Add(tracer.GetComponent<ACMITracer_mono>().bullet, tracer);
                         }
                     }
                 }

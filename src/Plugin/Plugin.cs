@@ -102,19 +102,23 @@ namespace NOBlackBox
 
         private async void OnMissionLoad()
         {
-            bool ready = await WaitForLocalPlayer();
-            if (ready)
+            if (Configuration.AutoStartRecording.Value == true)
             {
-                StartRecording();
-                Logger?.LogDebug("MISSION LOADED.");
+                bool ready = await WaitForLocalPlayer();
+                if (ready)
+                {
+                    StartRecording();
+                    Logger?.LogDebug("MISSION LOADED. START RECORDING.");
+                }
             }
-
         }
         private void OnMissionUnload()
         {
-            Logger?.LogDebug("MISSION UNLOADED.");
-            StopRecording();
-
+            if (isRecording)
+            {
+                Logger?.LogDebug("MISSION UNLOADED. STOP RECORDING.");
+                StopRecording();
+            }
         }
 
         private void StartRecording()

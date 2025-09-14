@@ -17,13 +17,13 @@ namespace NOBlackBox
         internal const int DefaultUpdateRate = 5;
 
         internal const float DefaultUnitDiscoveryDelta = 1f;
-        internal const float DefaultBulletSimDiscoveryDelta = 0.5f;
+        internal const float DefaultBulletSimDiscoveryDelta = 1f;
         internal const float DefaultAircraftUpdateDelta = 0.2f;
         internal const float DefaultVehicleUpdateDelta = 1f;
         internal const float DefaultMunitionUpdateDelta = 0.2f;
         internal const float DefaultShockwaveUpdateDelta = 0.016f;
         internal const float DefaultShockwaveDiscoveryDelta = 0.5f;
-        internal const float DefaultTracerUpdateDelta = 0.5f;
+        internal const float DefaultTracerUpdateDelta = 1f;
         internal const float DefaultFlareUpdateDelta = 1f;
         internal const float DefaultBuildingUpdateDelta = 1f;
 
@@ -55,6 +55,9 @@ namespace NOBlackBox
         internal const bool DefaultEnableAutoSaveCountDown = false;
         internal const float DefaultAutoSaveCountDownX = 0.1f;
         internal const float DefaultAutoSaveCountDownY = 0.1f;
+
+        internal const bool DefaultRecordEjectedPilots = false;
+        internal const bool DefaultAutoStartRecording = true;
 
         internal const bool DefaultEnableUnitLogging = false;
         internal const bool DefaultEnableEncyclopediaExporter = false;
@@ -106,6 +109,9 @@ namespace NOBlackBox
 
         internal static ConfigEntry<bool> EnableUnitLogging;
         internal static ConfigEntry<bool> EnableEncyclopediaExporter;
+        internal static ConfigEntry<bool> RecordEjectedPilots;
+        internal static ConfigEntry<bool> AutoStartRecording;
+
         internal static ConfigEntry<KeyboardShortcut> EncyclopediaExporterKey;
 
         internal static ConfigEntry<KeyboardShortcut> StartStopRecordingKey;
@@ -306,6 +312,12 @@ namespace NOBlackBox
 
             //TacviewBetaHeightMapGenerator = config.Bind(HeightMapGeneratorSettings, "TacviewBetaHeightMapGenerator", DefaultTacviewBetaHeightMapGenerator, "True: Compatibility set for Tacview 1.9.5 Beta 11, False: Compatibility set for Tacview Stable. Default: True");
             //Plugin.Logger?.LogDebug($"TacviewBetaHeightMapGenerator = {TacviewBetaHeightMapGenerator.Value}");
+
+            RecordEjectedPilots = config.Bind(GeneralSettings, "RecordEjectedPilots", DefaultRecordEjectedPilots, "Toggle Recording Ejected Pilots.");
+            Plugin.Logger?.LogDebug($"RecordEjectedPilots = {RecordEjectedPilots.Value}");
+
+            AutoStartRecording = config.Bind(GeneralSettings, "AutoStartRecording", DefaultAutoStartRecording, "Toggle Automatically starting to record on mission load.");
+            Plugin.Logger?.LogDebug($"AutoStartRecording = {AutoStartRecording.Value}");
 
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
             Plugin.Logger?.LogDebug($"EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
