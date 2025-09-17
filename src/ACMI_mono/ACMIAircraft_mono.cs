@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -36,6 +37,7 @@ namespace NOBlackBox
             base.unitId = aircraft.persistentID;
             base.tacviewId = aircraft.persistentID + 1;
             base.destroyedEvent = true;
+            base.canTarget = true;
             lastState = aircraft.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
@@ -49,7 +51,8 @@ namespace NOBlackBox
             };
             if (aircraft.Player != null)
             {
-                props.Add("Pilot", aircraft.Player.PlayerName);
+                //props.Add("Pilot", aircraft.Player.PlayerName);
+                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.PlayerName}) {tacviewId:X}";
                 if (Configuration.RecordSteamID.Value == true)
                 {
                     props.Add("Registration", aircraft.Player.SteamID.ToString());
@@ -63,6 +66,7 @@ namespace NOBlackBox
 
         public override void Update()
         {
+            
             base.destroyedEvent = !aircraft.IsLanded();
             if (!this.enabled || unit.disabled)
             {
@@ -76,9 +80,40 @@ namespace NOBlackBox
             UpdatePose();
             UpdateAircraft();
             UpdateState();
+            UpdateTargets();
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
             timer = 0;
+        }
+
+        internal override void UpdateTargets()
+        {
+            targets = aircraft.weaponManager.GetTargetList().ToArray();
+            if (targets.Any() && targets != lastTargets)
+            {
+                lastTargets = targets;
+                int max = targets.Length;
+                if (max > 10)
+                {
+                    max = 10;
+                }
+                if (targets.Length > 1)
+                {
+                    
+                    for (int i = 0; i < max; i++)
+                    {
+                        if (i == 0)
+                        {
+                            lockedTargetString = "LockedTarget";
+                        }
+                        else
+                        {
+                            lockedTargetString = $"LockedTarget{i:X}";
+                        }
+                            props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID):X}");
+                    }
+                }
+            }
         }
 
         void UpdateAircraft()

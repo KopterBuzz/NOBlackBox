@@ -20,6 +20,8 @@ namespace NOBlackBox
         private float lastRadius = 0f;
         private float waveSpeed = 0f;
 
+        private float shockWaveTimer = 0f;
+
         public virtual void Init(Shockwave shockwave)
         {
             Vector3 pos = shockwave.transform.position;
@@ -51,6 +53,7 @@ namespace NOBlackBox
         {
             try
             {
+                shockWaveTimer += Time.deltaTime;
                 timer += Time.deltaTime;
                 if (timer < Configuration.shockwaveUpdateDelta.Value)
                 {
@@ -59,7 +62,7 @@ namespace NOBlackBox
                 float radius = MathF.Round(((float)propagation.GetValue(shockwave)), 2);
                 waveSpeed = (radius - lastRadius) / timer;
                 
-                if (radius == lastRadius || !shockwave.enabled || !shockwave || waveSpeed <= 0f || radius >= blastRadius)
+                if (radius == lastRadius || !shockwave.enabled || !shockwave || waveSpeed <= 0f || radius >= blastRadius || (blastRadius <= 1000 && shockWaveTimer > 3f))
                 {
                     DisableShockWave();
                 }

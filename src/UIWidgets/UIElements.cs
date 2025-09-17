@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NOBlackBox
 {
-    internal class AutoSaveCountDown : MonoBehaviour
+    internal class UIElements : MonoBehaviour
     {
         public double countDown;
         internal float timer;
@@ -34,7 +34,14 @@ namespace NOBlackBox
                                    50),
                                    $"Next AutoSave: {countDown:N1} sec", fontSize);
             }
-            GUI.Label(new Rect((0.2f * Plugin.recordedScreenWidth), (0.2f * Plugin.recordedScreenHeight), 400, 50), "REC", fontSize);
+            if (Configuration.EnableRecordingIndicator.Value)
+            {
+                GUI.Label(new Rect((Configuration.RecordingIndicatorX.Value * Plugin.recordedScreenWidth),
+                                    (Configuration.RecordingIndicatorY.Value * Plugin.recordedScreenHeight),
+                                    400,
+                                    50),
+                                    "REC", fontSize);
+            }
         }
     }
 }

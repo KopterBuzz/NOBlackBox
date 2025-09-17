@@ -22,7 +22,7 @@ namespace NOBlackBox
         private float bulletSimDiscoveryTimer = 0f;
         private float shockwaveDiscoveryTimer = 0f;
 
-        private Dictionary<long, GameObject> objects = [];
+        internal Dictionary<long, GameObject> unitObjects = [];
 
 
         private Dictionary<BulletSim.Bullet, GameObject> tracers = [];
@@ -83,7 +83,7 @@ namespace NOBlackBox
                         continue;
                     }
                     bool isNew = false;
-                    if (!objects.TryGetValue(unit.persistentID, out GameObject acmi))
+                    if (!unitObjects.TryGetValue(unit.persistentID, out GameObject acmi))
                     {
                         
                         switch (unit)
@@ -107,7 +107,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                objects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID, acmi);
                                 isNew = true;
                                 break;
                             case Missile missile:
@@ -118,7 +118,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                objects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID, acmi);
                                 isNew = true;
                                 break;
                             case GroundVehicle vehicle:
@@ -129,7 +129,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                objects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID, acmi);
                                 isNew = true;
                                 break;
                             case Ship ship:
@@ -140,7 +140,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                objects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID, acmi);
                                 isNew = true;
                                 break;
                             case PilotDismounted pilot:
@@ -153,7 +153,7 @@ namespace NOBlackBox
                                     Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                         $"{unit.definition.unitName}," +
                                         $"{unit.definition.code}");
-                                    objects.Add(unit.persistentID, acmi);
+                                    unitObjects.Add(unit.persistentID, acmi);
                                     isNew = true;
                                 }
                                 break;
@@ -165,7 +165,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                objects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID, acmi);
                                 isNew = true;
                                 break;
                             default:
@@ -240,7 +240,7 @@ namespace NOBlackBox
         }
         void OnDestroy()
         {
-            objects = [];
+            unitObjects = [];
             waves = [];
             tracers = [];
             writer?.Close();
@@ -249,12 +249,12 @@ namespace NOBlackBox
 
         private bool UnitDiscovery()
         {
-            foreach (int key in objects.Keys)
+            foreach (int key in unitObjects.Keys)
             {
-                if (null == objects[key])
+                if (null == unitObjects[key])
                 {
                     Plugin.Logger?.LogDebug($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
-                    objects.Remove(key);
+                    unitObjects.Remove(key);
                 }
             }
             Plugin.Logger?.LogDebug($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");

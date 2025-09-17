@@ -15,6 +15,11 @@ namespace NOBlackBox
         internal Unit unit;
         internal Unit.UnitState lastState;
         internal bool purge = false;
+        internal bool canTarget = false;
+
+        internal Unit[] lastTargets = [];
+        internal Unit[] targets = [];
+        internal string lockedTargetString = "LockedTarget";
 
         public virtual void Init(Unit unit)
         {
@@ -120,6 +125,26 @@ namespace NOBlackBox
                 lastState = unit.unitState;
                 props.Add("Debug",lastState.ToString());
             }
+        }
+
+        internal virtual void UpdateTargets()
+        {
+
+        }
+
+
+        internal long GetTacviewIdOfUnit(long unitId)
+        {
+            long id = -1;
+            try
+            {
+                id = Plugin.recorderMono.GetComponent<Recorder_mono>().unitObjects[unitId].GetComponent<ACMIUnit_mono>().tacviewId;
+            } catch
+            {
+                Plugin.Logger?.LogDebug($"GetTacviewIdofUnit failed to look up UNIT ID {unitId}");
+                id = -1;
+            }
+            return id;
         }
     }
 }

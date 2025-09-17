@@ -1,6 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -55,17 +57,17 @@ namespace NOBlackBox
         {
 
             base.unit = vehicle;
-            base.unitId = vehicle.persistentID;
-            base.tacviewId = vehicle.persistentID + 1;
-            lastState = vehicle.unitState;
+            base.unitId = unit.persistentID;
+            base.tacviewId = unit.persistentID + 1;
+            lastState = unit.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()
             {
                 { "Name", this.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
-                { "CallSign", $"{vehicle.definition.code} {tacviewId:X}"},
+                { "CallSign", $"{unit.definition.code} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
-                { "Type", TYPES.GetValueOrDefault(vehicle.definition.unitName, "Ground") },
+                { "Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Ground") },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
@@ -85,44 +87,64 @@ namespace NOBlackBox
                 return;
             }
             UpdatePose();
-            UpdateWeaponStations();
+            UpdateTargets();
             UpdateState();
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
             timer = 0;
         }
-
-        public void UpdateWeaponStations()
+        internal override void UpdateTargets()
         {
-            if (unit.weaponStations.Count > 0)
+            foreach (WeaponStation station in unit.weaponStations)
             {
-                Turret turret = unit.weaponStations[0].GetTurret();
-                Unit? target = turret.GetTarget();
-
-                if (target != lastTarget)
+                try
                 {
-                    if (target != null)
+                    targets.AddItem<Unit>(station.GetTurret().GetTarget());
+                }
+                catch
+                {
+                    //no target
+                }
+
+            }
+
+            if (targets.Any())
+            {
+                if (!lastTargets.Any())
+                {
+                    lastTargets = targets;
+                }
+                else
+                {
+                    if (lastTargets == targets)
                     {
-                        props["LockedTarget"] = target.persistentID.ToString(CultureInfo.InvariantCulture);
-
-                        if (lastTarget == null)
-                            props["LockedTargetMode"] = "1";
-
-                        lastTarget = target;
+                        return;
                     }
-                    else
+                }
+                lastTargets = targets;
+                int max = targets.Length;
+                if (max > 10)
+                {
+                    max = 10;
+                }
+                if (targets.Length > 1)
+                {
+
+                    for (int i = 0; i < max; i++)
                     {
-                        if (lastTarget != null)
+                        if (i == 0)
                         {
-                            if (lastTarget.disabled || !turret.GetWeaponStation().reloading) // When reloading we get false negatives
-                            {
-                                props["LockedTargetMode"] = "0";
-                                lastTarget = target;
-                            }
+                            lockedTargetString = "LockedTarget";
                         }
+                        else
+                        {
+                            lockedTargetString = $"LockedTarget{i:X}";
+                        }
+                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID):X}");
                     }
                 }
             }
+            targets = [];
         }
     }
 }

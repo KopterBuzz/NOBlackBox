@@ -56,6 +56,16 @@ namespace NOBlackBox
         internal const float DefaultAutoSaveCountDownX = 0.1f;
         internal const float DefaultAutoSaveCountDownY = 0.1f;
 
+        internal const bool DefaultEnableRecordingIndicator = true;
+        internal const float DefaultRecordingIndicatorX = 0.2f;
+        internal const float DefaultRecordingIndicatorY = 0.2f;
+        internal static ConfigEntry<bool> EnableRecordingIndicator;
+        internal static ConfigEntry<float> RecordingIndicatorX;
+        internal static ConfigEntry<float> RecordingIndicatorY;
+
+
+
+
         internal const bool DefaultRecordEjectedPilots = false;
         internal const bool DefaultAutoStartRecording = true;
 
@@ -328,12 +338,29 @@ namespace NOBlackBox
             EnableAutoSaveCountDown = config.Bind(VisualSettings, "EnableAutoSaveCountDown", DefaultEnableAutoSaveCountDown, "Toggle AutoSave Countdown Timer.");
             Plugin.Logger?.LogDebug($"EnableAutoSaveCountDown = {EnableAutoSaveCountDown.Value}");
 
+            EnableRecordingIndicator = config.Bind(VisualSettings, "EnableRecordingIndicator", DefaultEnableRecordingIndicator, "Toggle Recording Indicator.");
+            Plugin.Logger?.LogDebug($"EnableRecordingIndicator = {EnableRecordingIndicator.Value}");
+
             AutoSaveCountDownX = config.Bind(VisualSettings, "AutoSaveCountDownX", DefaultAutoSaveCountDownX, "X coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
             if (AutoSaveCountDownX.Value < 0f || AutoSaveCountDownX.Value > 1.0f)
             {
                 Plugin.Logger?.LogWarning($"AutoSaveCountDownX must be within 0.0 - 1.0 range! Setting default value {DefaultAutoSaveCountDownX}!");
             }
             Plugin.Logger?.LogDebug($"AutoSaveCountDownX = {AutoSaveCountDownX.Value}");
+
+            RecordingIndicatorY = config.Bind(VisualSettings, "RecordingIndicatorY", DefaultRecordingIndicatorY, "Y coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
+            if (RecordingIndicatorY.Value < 0f || RecordingIndicatorY.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"RecordingIndicatorX must be within 0.0 - 1.0 range! Setting default value {DefaultRecordingIndicatorX}!");
+            }
+            Plugin.Logger?.LogDebug($"RecordingIndicatorX = {RecordingIndicatorY.Value}");
+
+            RecordingIndicatorX = config.Bind(VisualSettings, "RecordingIndicatorX", DefaultRecordingIndicatorX, "X coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
+            if (RecordingIndicatorX.Value < 0f || RecordingIndicatorX.Value > 1.0f)
+            {
+                Plugin.Logger?.LogWarning($"RecordingIndicatorX must be within 0.0 - 1.0 range! Setting default value {DefaultRecordingIndicatorX}!");
+            }
+            Plugin.Logger?.LogDebug($"RecordingIndicatorX = {RecordingIndicatorX.Value}");
 
             AutoSaveCountDownY = config.Bind(VisualSettings, "AutoSaveCountDownY", DefaultAutoSaveCountDownY, "Y coordinate of Auto Save Countdown Timer on GUI. Scales with Resolution. Value range: 0.0 - 1.0");
             if (AutoSaveCountDownY.Value < 0f || AutoSaveCountDownY.Value > 1.0f)

@@ -40,6 +40,7 @@ namespace NOBlackBox
             this.missile = (Missile)base.unit;
             base.unitId = missile.persistentID;
             base.tacviewId = missile.persistentID + 1;
+            base.canTarget = true;
 
             if (unit.unitName.EndsWith("kt)"))
             {
@@ -75,6 +76,7 @@ namespace NOBlackBox
             }
             UpdatePose();
             UpdateState();
+            UpdateMissile();
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
             timer = 0;
@@ -82,13 +84,13 @@ namespace NOBlackBox
 
         void UpdateMissile()
         {
-            warheadField = typeof(Missile).GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
-            object warheadInstance = warheadField.GetValue(unit);
-            Type warheadType = warheadInstance.GetType();
-            detonatedField = warheadType.GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
-            armedField = warheadType.GetField("Armed", BindingFlags.Public | BindingFlags.Instance);
-            bool isDetonated = (bool)detonatedField.GetValue(warheadInstance);
-            bool isArmed = (bool)armedField.GetValue(warheadInstance);
+            //warheadField = typeof(Missile).GetField("warhead", BindingFlags.NonPublic | BindingFlags.Instance);
+            //object warheadInstance = warheadField.GetValue(unit);
+            //Type warheadType = warheadInstance.GetType();
+            //detonatedField = warheadType.GetField("detonated", BindingFlags.NonPublic | BindingFlags.Instance);
+            //armedField = warheadType.GetField("Armed", BindingFlags.Public | BindingFlags.Instance);
+            //bool isDetonated = (bool)detonatedField.GetValue(warheadInstance);
+            //bool isArmed = (bool)armedField.GetValue(warheadInstance);
 
             if (unit.speed != lastTAS && Configuration.RecordSpeed.Value == true)
             {
@@ -116,7 +118,7 @@ namespace NOBlackBox
             {
                 if (missile.targetID != -1)
                 {
-                    props.Add("LockedTarget", missile.targetID.ToString("X", CultureInfo.InvariantCulture));
+                    props.Add("LockedTarget", $"{GetTacviewIdOfUnit(missile.targetID):X}");
 
                     if (lastTarget == -1)
                         props.Add("LockedTargetMode", "1");

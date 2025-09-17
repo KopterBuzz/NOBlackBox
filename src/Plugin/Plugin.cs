@@ -135,8 +135,8 @@ namespace NOBlackBox
             isRecording = true;
 
             autoSaveCountDown = new GameObject();
-            autoSaveCountDown.AddComponent<AutoSaveCountDown>();
-            autoSaveCountDown.GetComponent<AutoSaveCountDown>().enabled = true;
+            autoSaveCountDown.AddComponent<UIElements>();
+            autoSaveCountDown.GetComponent<UIElements>().enabled = true;
 
             //recordingIndicator = new GameObject();
             //recordingIndicator.AddComponent<RecordingIndicator>();
