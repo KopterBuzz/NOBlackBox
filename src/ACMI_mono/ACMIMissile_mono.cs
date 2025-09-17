@@ -55,7 +55,7 @@ namespace NOBlackBox
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
                 { "Type", TYPES.GetValueOrDefault(missile.definition.code, "Weapon") },
-                { "CallSign", $"{missile.definition.code} {tacviewId:X}" },
+                { "CallSign", $"{missile.definition.unitName} {tacviewId:X}" },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
