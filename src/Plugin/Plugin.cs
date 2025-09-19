@@ -8,6 +8,9 @@ using NuclearOption.SceneLoading;
 using System.Linq;
 using NuclearOption.Networking;
 using Mirage;
+using NuclearOption.MissionEditorScripts;
+using NuclearOption.DedicatedServer;
+using UnityEngine.SceneManagement;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -18,6 +21,7 @@ namespace NOBlackBox
 {
     [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.7.1")]
     [BepInProcess("NuclearOption.exe")]
+    [BepInProcess("NuclearOptionServer.exe")]
     internal class Plugin : BaseUnityPlugin
     {
         internal static new ManualLogSource ?Logger;
@@ -31,11 +35,13 @@ namespace NOBlackBox
         internal static float guiAnchorLeft, guiAnchorRight;
         internal static BasePlayer ?localPlayer = null;
 
+        internal static bool recordingManually = false;
+
+        private Action? OnGameStateChange;
+
         public Plugin()
         {
             Logger = base.Logger;
-            LoadingManager.MissionLoaded += OnMissionLoad;
-            LoadingManager.MissionUnloaded += OnMissionUnload;
         }
         private void Awake()
         {
@@ -46,6 +52,10 @@ namespace NOBlackBox
             //waitTime = 1f / Configuration.UpdateRate.Value;
             waitTime = MathF.Round(waitTime, 3);
             Logger?.LogDebug($"Wait Time = {waitTime}");
+
+            OnGameStateChange += ResetRecordingManually;
+            GameManager.OnGameStateChanged.AddListener(OnGameStateChange);
+
         }
         private void Update()
         {
@@ -60,8 +70,10 @@ namespace NOBlackBox
 
             if (Configuration.StartStopRecordingKey.Value.IsDown())
             {
+                recordingManually = true;
                 if (!isRecording)
                 {
+                    
                     StartRecording();
                     if (isRecording)
                     {
@@ -79,7 +91,20 @@ namespace NOBlackBox
                 }    
             }
 
+            
+
+            if (!isRecording && MissionManager.IsRunning && !recordingManually)
+            {
+                StartRecording();
+            }
+            
+            if (isRecording && !MissionManager.IsRunning && !recordingManually)
+            {
+                StopRecording();
+            }
+
             UpdateGuiAnchors();
+
         }
 
         private static void UpdateGuiAnchors()
@@ -90,62 +115,18 @@ namespace NOBlackBox
             guiAnchorRight = (int)Math.Round(0.7 * recordedScreenWidth);
         }
 
-        private async Task<bool> WaitForLocalPlayer()
-        {
-            Logger?.LogDebug("TRYING TO GET PLAYERNAME...");
-            
-            while (null == localPlayer)
-            {
-                GameManager.GetLocalPlayer(out localPlayer);
-                Logger?.LogDebug("Waiting for LocalPlayer...");
-                await Task.Delay(100);
-            }
-            Logger?.LogDebug($"{localPlayer.name ?? "Server"}");
-            return true;
-        }
-
-        private async void OnMissionLoad()
-        {
-            if (Configuration.AutoStartRecording.Value == true)
-            {
-                bool ready = false;
-                if (!GameManager.IsHeadless)
-                {
-                    ready = await WaitForLocalPlayer();
-                } else
-                {
-                    ready = true;
-                }
-
-                if (ready)
-                {
-                    StartRecording();
-                    Logger?.LogDebug("MISSION LOADED. START RECORDING.");
-                }
-            }
-        }
-        private void OnMissionUnload()
-        {
-            if (isRecording)
-            {
-                Logger?.LogDebug("MISSION UNLOADED. STOP RECORDING.");
-                StopRecording();
-            }
-            localPlayer = null;
-        }
 
         private void StartRecording()
         {
-            if (null == MissionManager.CurrentMission)
+            if (isRecording)
             {
-                Plugin.Logger?.LogWarning("No Mission found. In order to use this feature, you must launch a mission first.");
                 return;
             }
-
+            isRecording = true;
             recorderMono = new GameObject();
             recorderMono.AddComponent<Recorder_mono>();
             recorderMono.GetComponent<Recorder_mono>().enabled = true;
-            isRecording = true;
+            
 
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<UIElements>();
@@ -158,6 +139,10 @@ namespace NOBlackBox
 
         private void StopRecording()
         {
+            if (!isRecording)
+            {
+                return;
+            }
             isRecording = false;
             recorderMono.GetComponent<Recorder_mono>().enabled = false;
             GameObject.Destroy(autoSaveCountDown);
@@ -173,6 +158,16 @@ namespace NOBlackBox
             {
                 GameObject.Destroy(obj);
             }
+        }
+
+        private void ResetRecordingManually()
+        {
+            recordingManually = false;
+        }
+
+        private void ResetRecordingManuallyCallback()
+        {
+            OnGameStateChange?.Invoke();
         }
     }
 }

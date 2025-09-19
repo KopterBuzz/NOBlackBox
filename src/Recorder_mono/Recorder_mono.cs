@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NuclearOption.Networking;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace NOBlackBox
         private bool processUnits = false;
         private bool processBulletSims = false;
         private bool processShockWaves = false;
-
+        
         public void invokeWriterUpdate(ACMIObject_mono obj)
         {
             writer.UpdateObject(obj, curTime);
@@ -65,6 +66,7 @@ namespace NOBlackBox
             curTime = startDate;
             writer = new ACMIWriter(startDate);
             Plugin.Logger?.LogDebug("STARTED MONO RECORDER");
+            Plugin.recordingManually = false;
 
         }
         void Update()

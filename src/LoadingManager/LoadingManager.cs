@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Mirage;
 using NOBlackBox;
+using NuclearOption.DedicatedServer;
 using NuclearOption.Networking;
 using System;
 using System.Linq;
@@ -53,8 +54,14 @@ namespace NOBlackBox
 
         private static void NetworkManagerPostfix()
         {
-            NetworkManagerNuclearOption.i.Client.Connected.AddListener(ClientConnectCallback);
-            NetworkManagerNuclearOption.i.Client.Disconnected.AddListener(ClientDisconectCallback);
+            if (!GameManager.IsHeadless)
+            {
+                NetworkManagerNuclearOption.i.Client.Connected.AddListener(ConnectCallback);
+                NetworkManagerNuclearOption.i.Client.Disconnected.AddListener(DisconnectCallback);
+            } else
+            {
+                NetworkManagerNuclearOption.i.Server.Started.AddListener(StartedCallback);
+            }
 
             Plugin.Logger?.LogDebug("Reached NetworkReady");
             NetworkReady?.Invoke();
@@ -71,13 +78,13 @@ namespace NOBlackBox
             identity.OnStartLocalPlayer.AddListener(MissionLoadCallback);
         }
 
-        private static void ClientConnectCallback(INetworkPlayer player)
+        private static void ConnectCallback(INetworkPlayer player)
         {
             if (MissionManager.CurrentMission != null)
                 player.OnIdentityChanged += OnIdentity;
         }
 
-        private static void ClientDisconectCallback(ClientStoppedReason reason)
+        private static void DisconnectCallback(ClientStoppedReason reason)
         {
             Plugin.Logger?.LogDebug("Reached MissionUnloaded");
             try
@@ -87,7 +94,17 @@ namespace NOBlackBox
             {
                 Plugin.Logger?.LogDebug($"LoadingManager failed to invoke MissionUnloaded");
             }
-            
+
+        }
+
+        private static void StartedCallback()
+        {
+            MissionLoaded?.Invoke();
+        }
+
+        private static void StoppedCallback()
+        {
+            MissionUnloaded?.Invoke();
         }
     }
 }
