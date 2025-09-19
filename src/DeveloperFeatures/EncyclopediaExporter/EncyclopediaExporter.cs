@@ -77,8 +77,11 @@ namespace NOBlackBox
                 string[] splits = line.Split(',');
                 if (splits[0] == "name") { continue; }
                 UnitTacviewInfo knownUnit = new UnitTacviewInfo(splits[0], splits[1], splits[2], splits[3], splits[4], splits[5]);
-                knownUnits.Add(splits[0], knownUnit);
                 Plugin.Logger?.LogDebug(knownUnit.ToString());
+                if (!knownUnits.ContainsKey(splits[0]))
+                {
+                    knownUnits.Add(splits[0], knownUnit);
+                }
             }
         }
 

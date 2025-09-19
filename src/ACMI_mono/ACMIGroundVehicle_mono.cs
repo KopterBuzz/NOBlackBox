@@ -36,8 +36,16 @@ namespace NOBlackBox
             { "Linebreaker IFV", "Ground+Medium+Vehicle" },
             { "Linebreaker SAM", "Ground+Medium+Vehicle+AntiAircraft" },
             { "AeroSentry SPAAG", "Ground+Medium+Vehicle+AntiAircraft" },
-            { "FGA-57 Anvil", "Ground+Medium+Vehicle+AntiAircraft" }
-        };
+            { "FGA-57 Anvil", "Ground+Medium+Vehicle+AntiAircraft" },
+            { "Hexhound GMG", "Ground+Medium+Vehicle"},
+            { "Hexhound SAM", "Ground+Medium+AntiAircraft+Vehicle" },
+            { "M12 Jackknife", "Ground+Medium+Vehicle"},
+            { "CRAM Trailer", "Ground+Medium+AntiAircraft+Vehicle"},
+            { "Laser CIWS Trailer", "Ground+Medium+AntiAircraft+Vehicle" },
+            { "Munitions Container", "Misc+Container" },
+			{ "Munitions Pallet", "Misc+Container" },
+			{ "Naval Supply Pallet", "Misc+Container" }
+		};
 
         private readonly static Dictionary<string, int> RANGE = new()
         {

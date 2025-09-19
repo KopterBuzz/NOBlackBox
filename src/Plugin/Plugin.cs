@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NuclearOption.SceneLoading;
 using System.Linq;
 using NuclearOption.Networking;
+using Mirage;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -99,7 +100,7 @@ namespace NOBlackBox
                 Logger?.LogDebug("Waiting for LocalPlayer...");
                 await Task.Delay(100);
             }
-            Logger?.LogDebug($"{localPlayer.name}");
+            Logger?.LogDebug($"{localPlayer.name ?? "Server"}");
             return true;
         }
 
@@ -107,7 +108,15 @@ namespace NOBlackBox
         {
             if (Configuration.AutoStartRecording.Value == true)
             {
-                bool ready = await WaitForLocalPlayer();
+                bool ready = false;
+                if (!GameManager.IsHeadless)
+                {
+                    ready = await WaitForLocalPlayer();
+                } else
+                {
+                    ready = true;
+                }
+
                 if (ready)
                 {
                     StartRecording();
