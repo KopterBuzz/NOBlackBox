@@ -50,7 +50,7 @@ namespace NOBlackBox
         {
             try
             {
-                if (!unit.enabled || unit.disabled)
+                if (unit.disabled)
                 {
                     base.disabled = true;
                     props.Add("Visible", "0.0");

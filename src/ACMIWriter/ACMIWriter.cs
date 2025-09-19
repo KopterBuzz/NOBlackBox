@@ -47,7 +47,7 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.7.1" },
+                { "DataRecorder", $"NOBlackBox 0.3.7.3" },
                 { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
 				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
@@ -122,7 +122,27 @@ namespace NOBlackBox
                 WriteLine("#" + diff.TotalSeconds);
                 if (aObject.destroyedEvent)
                 {
-                    WriteLine($"0,Event=Destroyed|{aObject.tacviewId:X}|");
+                    WriteLine($"0,Event=Message|{aObject.tacviewId:X}|Has been destroyed.");
+                }
+            }
+        }
+
+        internal void WriteRepairedEvent(ACMIObject_mono aObject, DateTime updateTime)
+        {
+            TimeSpan diff = updateTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            if (Configuration.DestructionEvents.Value == true)
+            {
+                WriteLine("#" + diff.TotalSeconds);
+                if (aObject.destroyedEvent)
+                {
+                    WriteLine($"0,Event=Message|{aObject.tacviewId:X}|Has been repaired.");
                 }
             }
         }

@@ -44,7 +44,7 @@ namespace NOBlackBox
             {
                 return;
             }
-            if (unit.NetworkHQ?.faction.factionName != coalition)
+            if (unit.NetworkHQ?.faction.factionName != coalition && !building.disabled && !base.disabled)
             {
                 coalition = unit.NetworkHQ?.faction.factionName ?? "Neutral";
                 props.Add("Coalition", unit.NetworkHQ?.faction.factionName ?? "Neutral");
@@ -64,10 +64,37 @@ namespace NOBlackBox
                 }
 
                 props.Add("Color", color);
+                props.Add("Debug", $"{building.unitState.ToString()}");
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+
+            }
+            if (unit.disabled && !base.disabled)
+            {
+                props = [];
+                props.Add("Visible", "0.0");
+                props.Add("Type", null);
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterDestroy(this);
+                props = [];
+                base.disabled = true;
+            }
+            if (!unit.disabled && base.disabled)
+            {
+                this.Init(this.building);
+                props.Add("Visible", "1.0");
                 Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
                 props = [];
-                timer = 0;
+                Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterRepair(this);
+                base.disabled = false;
             }
+            props = [];
+            timer = 0;
         }
+
+        public override void LateUpdate()
+        {
+            
+        }
+
     }
 }

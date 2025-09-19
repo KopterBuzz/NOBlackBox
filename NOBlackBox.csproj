@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="src\LoadingManager\LoadingManager.cs" />
+    <Compile Include="src\LoadingManager\LoadingManager.cs.bak" />
   </ItemGroup>
 
   <ItemGroup>

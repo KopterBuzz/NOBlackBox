@@ -49,6 +49,11 @@ namespace NOBlackBox
             writer.WriteDestroyedEvent(obj, curTime);
         }
 
+        public void invokeWriterRepair(ACMIObject_mono obj)
+        {
+            writer.WriteRepairedEvent(obj, curTime);
+        }
+
         void Awake()
         {
             Plugin.Logger?.LogDebug("USING MONO RECORDER");
@@ -255,13 +260,13 @@ namespace NOBlackBox
             {
                 if (null == unitObjects[key])
                 {
-                    Plugin.Logger?.LogDebug($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
+                    // Plugin.Logger?.LogDebug($"REMOVING OBJECT {key.ToString(CultureInfo.InvariantCulture)}");
                     unitObjects.Remove(key);
                 }
             }
-            Plugin.Logger?.LogDebug($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");
+            //Plugin.Logger?.LogDebug($"Frame TICK at {curTime.ToString(CultureInfo.InvariantCulture)}");
             units = UnityEngine.Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
-            Plugin.Logger?.LogDebug($"DISCOVERED {units.Length.ToString(CultureInfo.InvariantCulture)} UNITS!");
+            //Plugin.Logger?.LogDebug($"DISCOVERED {units.Length.ToString(CultureInfo.InvariantCulture)} UNITS!");
             unitDiscoveryTimer = 0f;
             return true;
 
@@ -275,7 +280,7 @@ namespace NOBlackBox
                 {
                     if (null == tracers[key])
                     {
-                        Plugin.Logger?.LogDebug($"REMOVING TRACER");
+                        //Plugin.Logger?.LogDebug($"REMOVING TRACER");
                         try
                         {
                             tracers.Remove(key);
@@ -294,7 +299,7 @@ namespace NOBlackBox
             }
 
             bulletSims = UnityEngine.Object.FindObjectsByType<BulletSim>(FindObjectsSortMode.None);
-            Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BULLETSIMS!");
+            //Plugin.Logger?.LogDebug($"DISCOVERED {bulletSims.Length.ToString(CultureInfo.InvariantCulture)} BULLETSIMS!");
             bulletSimDiscoveryTimer = 0f;
             return true;
         }
@@ -305,12 +310,12 @@ namespace NOBlackBox
             {
                 if (null == waves[key])
                 {
-                    Plugin.Logger?.LogDebug($"REMOVING TRACER");
+                    //Plugin.Logger?.LogDebug($"REMOVING TRACER");
                     waves.Remove(key);
                 }
             }
             shockwaves = UnityEngine.Object.FindObjectsByType<Shockwave>(FindObjectsSortMode.None);
-            Plugin.Logger?.LogDebug($"DISCOVERED {shockwaves.Length.ToString(CultureInfo.InvariantCulture)} SHOCKWAVES!");
+            //Plugin.Logger?.LogDebug($"DISCOVERED {shockwaves.Length.ToString(CultureInfo.InvariantCulture)} SHOCKWAVES!");
             shockwaveDiscoveryTimer = 0f;
             return true;
         }
