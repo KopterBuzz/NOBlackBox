@@ -1,81 +1,100 @@
-name,unitName,code,TacviewACMIType,TacviewXMLBase
-6x6_1_AA,AFV6 AA,AA,Ground + AntiAircraft + Vehicle,Vehicle.Military.APC
-6x6_1_APC,AFV6 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
-AFV8_APC,AFV8 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
-LinebreakerAPC,Linebreaker APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
-6x6_1_AT,AFV6 AT,AT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC
-EnrichmentPlant1,Enrichment Plant,BLD,Ground + Static + Building,Core.Default
-PlatformFlat,Flat Platform,BLD,Ground + Static + Building,Core.Default
-PlatformLarge,Large Platform,BLD,Ground + Static + Building,Core.Default
-PlatformSlope,Sloped Platform,BLD,Ground + Static + Building,Core.Default
-PlatformSmall,Small Platform,BLD,Ground + Static + Building,Core.Default
-Refinery,Refinery Structure,BLD,Ground + Static + Building,Core.Default
-StorageTank,Storage Tank,BLD,Ground + Static + Building,Core.Default
-VehicleDepot1,Vehicle Depot,BLD,Ground + Static + Building,Core.Default
-Pillbox,Pillbox,BNKR,Ground + Static + Building,Core.Default
-Bomb_125_1,PAB-125,BOMB,Weapon + Bomb,Bomb.Glider
-Bomb_250_1,PAB-250,BOMB,Weapon + Bomb,Bomb.Glider
-Bomb_demolition,Demolition Bomb,BOMB,Weapon + Bomb,Bomb.Glider
-Bomb_glide1,PAB-80LR,BOMB,Weapon + Bomb,Bomb.Glider
-Bomb_penetrator1,GPO-2P Auger,BOMB,Weapon + Bomb,Bomb.Glider
-Bomb500,GPO-500,BOMB,Weapon + Bomb,Bomb.Glider
-NuclearBomb1,GPO-N (1.5kt),BOMB,Weapon + Bomb,Bomb.Glider
-NuclearBomb1_strategic,GPO-N (250kt),BOMB,Weapon + Bomb,Bomb.Glider
-MunitionsContainer1,Munitions Container,CTNR,Misc + Container,Core.Default
-NavalSupplyContainer1,Naval Container,CTNR,Misc + Container,Core.Default
-FactoryLarge,Large Factory,FAC,Ground + Static + Building,Core.Default
-FactoryTall,Vertical Factory,FAC,Ground + Static + Building,Core.Default
-shelter1,Hardened Aircraft Shelter,HGR-H,Ground + Static + Building,Core.Default
-hangar_med,Medium Aircraft Hangar,HGR-M,Ground + Static + Building,Core.Default
-HLT-FT,HLT Fuel Tanker,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
-HLT-L,HLT Flatbed,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
-HLT-M,HLT Munitions Truck,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
-HLT-T,HLT Tractor,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
-helipad1,Helipad,HPAD,Ground + Static + Building,Core.Default
-6x6_1_IFV,AFV6 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
-AFV8_IVF,AFV8 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
-LinebreakerIFV,Linebreaker IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC
-LandingCraft1,OTB-31 landing craft,LCAC,Sea + Watercraft,Watercraft.Military
-LightTruck1_AA,LCV25 AA,LCV25,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC
-LightTruck1_AT,LCV25 AT,LCV25,Ground + Medium + Vehicle,Vehicle.Military.APC
-LCV45,LCV45 Recon Truck,LCV45,Ground + Medium + Vehicle,Vehicle.Military.APC
-MBT,Type-12 MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank
-MBT1,Spearhead MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank
-AAM1,MMR-S3,MSL,Weapon + Missile,Core.Missile
-AAM2,AAM-29 Scythe,MSL,Weapon + Missile,Core.Missile
-AAM3,IRM-S2,MSL,Weapon + Missile,Core.Missile
-AAM4,AAM-36 Scimitar,MSL,Weapon + Missile,Core.Missile
-AGM_heavy,AGM-68,MSL,Weapon + Missile,Core.Missile
-AGM1,AGM-48,MSL,Weapon + Missile,Core.Missile
-AGM2,ATP-1,MSL,Weapon + Missile,Core.Missile
-AIR-2_Genie,AIR-2 Genie,MSL,Weapon + Missile,Core.Missile
-ARM1,ARAD-116,MSL,Weapon + Missile,Core.Missile
-AShM1,AShM-300,MSL,Weapon + Missile,Core.Missile
-AShM2,AGM-99,MSL,Weapon + Missile,Core.Missile
-AShM3,Tusko-B (HE),MSL,Weapon + Missile,Core.Missile
-ballisticMissile1,Piledriver TBM (HE),MSL,Weapon + Missile,Core.Missile
-ballisticMissile1_tacNuke,Piledriver TBM (20kt),MSL,Weapon + Missile,Core.Missile
-CruiseMissile1,ALM-C450,MSL,Weapon + Missile,Core.Missile
-CruiseMissile20kt,ALND-4 (20kt),MSL,Weapon + Missile,Core.Missile
-GTG1,Ground-to-ground missile,MSL,Weapon + Missile,Core.Missile
-Rocket1,AGR-18 Lynchpin,MSL,Weapon + Missile,Core.Missile
-Rocket2,AGR-24 Kingpin,MSL,Weapon + Missile,Core.Missile
-SAM_IR1,IRM-S1,MSL,Weapon + Missile,Core.Missile
-SAM_Radar1,RAM-45,MSL,Weapon + Missile,Core.Missile
-SAM_Radar2,StratoLance R9,MSL,Weapon + Missile,Core.Missile
-PilotDismounted,Pilot,PILOT,Ground + Light + Human,Core.Default
-HLT-R,HLT Radar Truck,RDR,Ground + Heavy +  Vehicle,Vehicle.Military.Truck
-RadarStation1,Radar Station,RDR,Ground + Static + Building,Core.Default
-revetment1,Aircraft Revetment,REV,Ground + Static + Building,Core.Default
-AFV8_SAM,AFV8 Mobile Air Defense,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
-LinebreakerSAM,Linebreaker SAM,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
-RadarSam1,T9K41 Boltstrike,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
-SAMTrailer1,StratoLance R9 Launcher,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck
-Shell_76mm_guided,76mm Guided Shell,SHL,Projectile + Shell,Core.Missile
-AssaultCarrier1,Annex Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military
-FleetCarrier1,Hyperion Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military
-Corvette1,Shard Class Corvette,SHP,Sea + Watercraft + Warship,Watercraft.Military
-Destroyer1,Dynamo Class Destroyer,SHP,Sea + Watercraft + Warship,Watercraft.Military
-SPAAG1,AeroSentry SPAAG,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck
-SPAAG2,FGA-57 Anvil,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck
-ControlTower1,Control Tower,TWR,Ground + Static + Building,Core.Default
+prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape
+Shell_76mm_guided,Shell_76mm_guided,76mm Guided Shell,SHL,Heavy + Shell,Core.Shell,Shell_76mm_guided.obj
+AAM2,AAM2,AAM-29 Scythe,MSL,Weapon + Missile,Core.Missile,AAM2.obj
+AAM4,AAM4,AAM-36 Scimitar,MSL,Weapon + Missile,Core.Missile,AAM4.obj
+SPAAG1,SPAAG1,AeroSentry SPAAG,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck,SPAAG1.obj
+6x6_1_AA,6x6_1_AA,AFV6 AA,AA,Ground + AntiAircraft + Vehicle,Vehicle.Military.APC,6x6_1_AA.obj
+6x6_1_APC,6x6_1_APC,AFV6 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC,6x6_1_APC.obj
+6x6_1_AT,6x6_1_AT,AFV6 AT,AT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC,6x6_1_AT.obj
+6x6_1_IFV,6x6_1_IFV,AFV6 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC,6x6_1_IFV.obj
+AFV8_APC,AFV8_APC,AFV8 APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC,AFV8_APC.obj
+AFV8_IFV,AFV8_IVF,AFV8 IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC,AFV8_IFV.obj
+AFV8_SAM,AFV8_SAM,AFV8 Mobile Air Defense,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck,AFV8_SAM.obj
+AGM1,AGM1,AGM-48,MSL,Weapon + Missile,Core.Missile,AGM1.obj
+AGM_heavy,AGM_heavy,AGM-68,MSL,Weapon + Missile,Core.Missile,AGM_heavy.obj
+AShM2,AShM2,AGM-99,MSL,Weapon + Missile,Core.Missile,AShM2.obj
+Rocket1,Rocket1,AGR-18 Lynchpin,MSL,Weapon + Missile,Core.Missile,Rocket1.obj
+Rocket2,Rocket2,AGR-24 Kingpin,MSL,Weapon + Missile,Core.Missile,Rocket2.obj
+AIR-2_Genie,AIR-2_Genie,AIR-2 Genie,MSL,Weapon + Missile,Core.Missile,AIR-2_Genie.obj
+revetment1,revetment1,Aircraft Revetment,REV,Ground + Static + Building,Core.Default,revetment1.obj
+CruiseMissile1,CruiseMissile1,ALM-C450,MSL,Weapon + Missile,Core.Missile,CruiseMissile1.obj
+CruiseMissile20kt,CruiseMissile20kt,ALND-4 (20kt),MSL,Weapon + Missile,Core.Missile,CruiseMissile20kt.obj
+AssaultCarrier1,AssaultCarrier1,Annex Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military,AssaultCarrier1.obj
+ARM1,ARM1,ARAD-116,MSL,Weapon + Missile,Core.Missile,ARM1.obj
+AShM1,AShM1,AShM-300,MSL,Weapon + Missile,Core.Missile,AShM1.obj
+AGM2,AGM2,ATP-1,MSL,Weapon + Missile,Core.Missile,AGM2.obj
+COIN,CI-22,CI-22 Cricket,CI-22,Air + FixedWing,FixedWing.Fighter.TwinProp,COIN.obj
+controlTower1,ControlTower1,Control Tower,TWR,Ground + Static + Building,Core.Default,controlTower1.obj
+bomb_demolition,Bomb_demolition,Demolition Bomb,BOMB,Weapon + Bomb,Bomb.Glider,bomb_demolition.obj
+Destroyer1,Destroyer1,Dynamo Class Destroyer,SHP,Sea + Watercraft + Warship,Watercraft.Military,Destroyer1.obj
+enrichmentPlant1,EnrichmentPlant1,Enrichment Plant,BLD,Ground + Static + Building,Core.Default,enrichmentPlant1.obj
+EW1,EW1,EW-25 Medusa,EW-25,Air + FixedWing,FixedWing.Fighter.Jet,EW1.obj
+SPAAG2,SPAAG2,FGA-57 Anvil,SPAAG,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.Truck,SPAAG2.obj
+Platform_flat,PlatformFlat,Flat Platform,BLD,Ground + Static + Building,Core.Default,Platform_flat.obj
+Fighter1,FS-12,FS-12 Revoker,FS-12,Air + FixedWing,FixedWing.Fighter.Jet,Fighter1.obj
+SmallFighter1,SmallFighter1,FS-20 Vortex,FS-20,Air + FixedWing,FixedWing.Fighter.Jet,SmallFighter1.obj
+bomb_penetrator1,Bomb_penetrator1,GPO-2P Auger,BOMB,Weapon + Bomb,Bomb.Glider,bomb_penetrator1.obj
+bomb500,Bomb500,GPO-500,BOMB,Weapon + Bomb,Bomb.Glider,bomb500.obj
+nuclearBomb1,NuclearBomb1,GPO-N (1.5kt),BOMB,Weapon + Bomb,Bomb.Glider,nuclearBomb1.obj
+nuclearBomb1_strategic,NuclearBomb1_strategic,GPO-N (250kt),BOMB,Weapon + Bomb,Bomb.Glider,nuclearBomb1_strategic.obj
+Missile_G2G,GTG1,Ground-to-ground missile,MSL,Weapon + Missile,Core.Missile,Missile_G2G.obj
+shelter1,shelter1,Hardened Aircraft Shelter,HGR-H,Ground + Static + Building,Core.Default,shelter1.obj
+Helipad,helipad1,Helipad,HPAD,Ground + Static + Building,Core.Default,Helipad.obj
+HLT-L,HLT-L,HLT Flatbed,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck,HLT-L.obj
+HLT-FT,HLT-FT,HLT Fuel Tanker,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck,HLT-FT.obj
+HLT-M,HLT-M,HLT Munitions Truck,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck,HLT-M.obj
+HLT-R,HLT-R,HLT Radar Truck,RDR,Ground + Heavy +  Vehicle,Vehicle.Military.Truck,HLT-R.obj
+HLT-T,HLT-T,HLT Tractor,HLT,Ground + Heavy +  Vehicle,Vehicle.Military.Truck,HLT-T.obj
+FleetCarrier1,FleetCarrier1,Hyperion Class Carrier,SHP,Sea + Watercraft + AircraftCarrier,Watercraft.Military,FleetCarrier1.obj
+SAM_IR1,SAM_IR1,IRM-S1,MSL,Weapon + Missile,Core.Missile,SAM_IR1.obj
+AAM3,AAM3,IRM-S2,MSL,Weapon + Missile,Core.Missile,AAM3.obj
+Multirole1,Multirole1,KR-67 Ifrit,KR-67,Air + FixedWing,FixedWing.Fighter.Jet,Multirole1.obj
+factory_large,FactoryLarge,Large Factory,FAC,Ground + Static + Building,Core.Default,factory_large.obj
+Platform_large,PlatformLarge,Large Platform,BLD,Ground + Static + Building,Core.Default,Platform_large.obj
+LightTruck1_AA,LightTruck1_AA,LCV25 AA,LCV25,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,LightTruck1_AA.obj
+LightTruck1_AT,LightTruck1_AT,LCV25 AT,LCV25,Ground + Medium + Vehicle,Vehicle.Military.APC,LightTruck1_AT.obj
+LCV45,LCV45,LCV45 Recon Truck,LCV45,Ground + Medium + Vehicle,Vehicle.Military.APC,LCV45.obj
+Linebreaker_APC,LinebreakerAPC,Linebreaker APC,APC,Ground + Heavy + Armor + Vehicle,Vehicle.Military.APC,Linebreaker_APC.obj
+Linebreaker_IFV,LinebreakerIFV,Linebreaker IFV,IFV,Ground + Medium + Vehicle,Vehicle.Military.APC,Linebreaker_IFV.obj
+Linebreaker_SAM,LinebreakerSAM,Linebreaker SAM,SAM IR,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck,Linebreaker_SAM.obj
+hangar_med,hangar_med,Medium Aircraft Hangar,HGR-M,Ground + Static + Building,Core.Default,hangar_med.obj
+AAM1,AAM1,MMR-S3,MSL,Weapon + Missile,Core.Missile,AAM1.obj
+MunitionsContainer1,MunitionsContainer1,Munitions Container,CTNR,Misc + Container,Core.Default,MunitionsContainer1.obj
+NavalSupplyContainer1,NavalSupplyContainer1,Naval Container,CTNR,Misc + Container,Core.Default,NavalSupplyContainer1.obj
+LandingCraft1,LandingCraft1,OTB-31 landing craft,LCAC,Sea + Watercraft,Watercraft.Military,LandingCraft1.obj
+bomb_125_1,Bomb_125_1,PAB-125,BOMB,Weapon + Bomb,Bomb.Glider,bomb_125_1.obj
+bomb_250_1,Bomb_250_1,PAB-250,BOMB,Weapon + Bomb,Bomb.Glider,bomb_250_1.obj
+bomb_glide1,Bomb_glide1,PAB-80LR,BOMB,Weapon + Bomb,Bomb.Glider,bomb_glide1.obj
+ballisticMissile1_tacNuke,ballisticMissile1_tacNuke,Piledriver TBM (20kt),MSL,Weapon + Missile,Core.Missile,ballisticMissile1_tacNuke.obj
+ballisticMissile1,ballisticMissile1,Piledriver TBM (HE),MSL,Weapon + Missile,Core.Missile,ballisticMissile1.obj
+pillbox,Pillbox,Pillbox,BNKR,Ground + Static + Building,Core.Default,pillbox.obj
+pilotDismounted,PilotDismounted,Pilot,PILOT,Ground + Light + Human,Core.Default,pilotDismounted.obj
+radarStation1,RadarStation1,Radar Station,RDR,Ground + Static + Building,Core.Default,radarStation1.obj
+SAM_Radar1,SAM_Radar1,RAM-45,MSL,Weapon + Missile,Core.Missile,SAM_Radar1.obj
+refinery_main,Refinery,Refinery Structure,BLD,Ground + Static + Building,Core.Default,refinery_main.obj
+AttackHelo1,AttackHelo1,SAH-46 Chicane,SAH-46,Air + Rotorcraft,Rotorcraft.Attack,AttackHelo1.obj
+Darkreach,SFB,SFB-81 Darkreach,SFB-81,Air + FixedWing,FixedWing.Bomber.Jet,Darkreach.obj
+Corvette1,Corvette1,Shard Class Corvette,SHP,Sea + Watercraft + Warship,Watercraft.Military,Corvette1.obj
+Platform_slope,PlatformSlope,Sloped Platform,BLD,Ground + Static + Building,Core.Default,Platform_slope.obj
+Platform_small,PlatformSmall,Small Platform,BLD,Ground + Static + Building,Core.Default,Platform_small.obj
+MBT1,MBT1,Spearhead MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank,MBT1.obj
+storageTank,StorageTank,Storage Tank,BLD,Ground + Static + Building,Core.Default,storageTank.obj
+SAM_Radar2,SAM_Radar2,StratoLance R9,MSL,Weapon + Missile,Core.Missile,SAM_Radar2.obj
+SAMTrailer1,SAMTrailer1,StratoLance R9 Launcher,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck,SAMTrailer1.obj
+trainer,Trainer,T/A-30 Compass,T/A-30,Air + FixedWing,FixedWing.Fighter.Jet,trainer.obj
+RadarSAM1,RadarSam1,T9K41 Boltstrike,SAM R,Ground + AntiAircraft + Vehicle,Vehicle.Military.Truck,RadarSAM1.obj
+AShM3,AShM3,Tusko-B (HE),MSL,Weapon + Missile,Core.Missile,AShM3.obj
+MBT,MBT,Type-12 MBT,MBT,Ground + Heavy + Armor + Vehicle,Vehicle.Military.Tank,MBT.obj
+VehicleDepot1,VehicleDepot1,Vehicle Depot,BLD,Ground + Static + Building,Core.Default,VehicleDepot1.obj
+factory_tall,FactoryTall,Vertical Factory,FAC,Ground + Static + Building,Core.Default,factory_tall.obj
+QuadVTOL1,QuadVTOL1,VL-49 Tarantula,VL-49,Air + Rotorcraft,Rotorcraft.Attack,QuadVTOL1.obj
+UtilityHelo1,UtilityHelo1,UH-90 Ibis,UH-90,Air + Rotorcraft,Rotorcraft.Attack,UtilityHelo1.obj
+UGV1_grenade,UGV1_grenade,Hexhound GMG,UGV,Ground + Medium + Vehicle,Vehicle.Military.APC,UGV1_grenade.obj
+UGV1_SAM,UGV1_sam,Hexhound SAM,UGV,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,UGV1_SAM.obj
+UGVDozer1,UGVDozer1,M12 Jackknife,CEV,Ground + Medium + Vehicle,Vehicle.Military.Truck,UGVDozer1.obj
+CRAMTrailer1,CRAMTrailer1,CRAM Trailer,CRAM,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,CRAMTrailer1.obj
+LaserTrailer1,LaserTrailer1,Laser CIWS Trailer,CIWS (L),Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,LaserTrailer1.obj
+ammunitionBunker,ammunitionBunker,Munitions Bunker,AMMO,Ground + Static + Building,Core.Default,ammunitionBunker.obj
+guardTower1,guardTower1,Guard Tower,TWR,Ground + Static + Building,Core.Default,guardTower1.obj
+MunitionsPallet1,MunitionsPallet1,Munitions Pallet,CTNR,Misc + Container,Core.Default,MunitionsPallet1.obj
+NavalPallet1,NavalPallet1,Naval Supply Pallet,CTNR,Misc + Container,Core.Default,NavalPallet1.obj

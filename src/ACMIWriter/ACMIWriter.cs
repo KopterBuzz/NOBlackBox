@@ -39,7 +39,7 @@ namespace NOBlackBox
             this.reference = reference;
             currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
 
-            Plugin.Logger?.LogInfo("[NOBlackBox]: MAP NAME IS " + currentMapKey.Path);
+            Plugin.Logger?.LogDebug("MAP NAME IS " + currentMapKey.Path);
             output.WriteLine("FileType=text/acmi/tacview");
             output.WriteLine("FileVersion=2.2");
 
@@ -47,8 +47,8 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.6.3" },
-                { "Author", GameManager.LocalPlayer.PlayerName.Replace(",", "\\,") },
+                { "DataRecorder", $"NOBlackBox 0.3.7.3" },
+                { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
 				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
             };
@@ -75,9 +75,9 @@ namespace NOBlackBox
             Close();
         }
 
-        internal void UpdateObject(ACMIObject aObject, DateTime updateTime, Dictionary<string, string> props)
+        public void UpdateObject(ACMIObject_mono aObject, DateTime updateTime)
         {
-            if (props.Count == 0)
+            if (aObject.props.Count == 0)
                 return;
 
             TimeSpan diff = updateTime - reference;
@@ -89,11 +89,25 @@ namespace NOBlackBox
             }
 
             //output.WriteLine($"{aObject.id:X},{StringifyProps(props)}");
-            WriteLine($"{aObject.id:X},{StringifyProps(props)}");
-            //Plugin.Logger.LogInfo($"[NOBlackBox]: Time Elapsed = {diff.TotalSeconds}");
+            WriteLine($"{aObject.tacviewId:X},{StringifyProps(aObject.props)}");
+            //Plugin.Logger.LogDebug($"Time Elapsed = {diff.TotalSeconds}");
         }
 
-        internal void RemoveObject(ACMIObject aObject, DateTime updateTime)
+        internal void RemoveObject(ACMIObject_mono aObject, DateTime updateTime)
+        {
+
+            TimeSpan diff = updateTime - reference;
+            if (diff != lastUpdate)
+            {
+                lastUpdate = diff;
+                //output.WriteLine("#" + diff.TotalSeconds);
+                WriteLine("#" + diff.TotalSeconds);
+            }
+
+            WriteLine($"-{aObject.tacviewId:X}");
+        }
+
+        internal void WriteDestroyedEvent(ACMIObject_mono aObject, DateTime updateTime)
         {
             TimeSpan diff = updateTime - reference;
             if (diff != lastUpdate)
@@ -103,13 +117,19 @@ namespace NOBlackBox
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"-{aObject.id:X}");
-            WriteLine($"-{aObject.id:X}");
+            if (Configuration.DestructionEvents.Value == true)
+            {
+                WriteLine("#" + diff.TotalSeconds);
+                if (aObject.destroyedEvent)
+                {
+                    WriteLine($"0,Event=Message|{aObject.tacviewId:X}|Has been destroyed.");
+                }
+            }
         }
 
-        internal void WriteEvent(DateTime eventTime, string name, string[] items)
+        internal void WriteRepairedEvent(ACMIObject_mono aObject, DateTime updateTime)
         {
-            TimeSpan diff = eventTime - reference;
+            TimeSpan diff = updateTime - reference;
             if (diff != lastUpdate)
             {
                 lastUpdate = diff;
@@ -117,8 +137,14 @@ namespace NOBlackBox
                 WriteLine("#" + diff.TotalSeconds);
             }
 
-            //output.WriteLine($"0,Event={name}|{string.Join("|", items)}");
-            WriteLine($"0,Event={name}|{string.Join("|", items)}");
+            if (Configuration.DestructionEvents.Value == true)
+            {
+                WriteLine("#" + diff.TotalSeconds);
+                if (aObject.destroyedEvent)
+                {
+                    WriteLine($"0,Event=Message|{aObject.tacviewId:X}|Has been repaired.");
+                }
+            }
         }
 
         private string StringifyProps(Dictionary<string, string> props)

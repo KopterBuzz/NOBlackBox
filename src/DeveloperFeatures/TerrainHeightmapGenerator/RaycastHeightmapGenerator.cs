@@ -85,12 +85,12 @@ namespace NOBlackBox
             //do checks
             if (Configuration.EnableHeightmapGenerator.Value == false)
             {
-                Plugin.Logger?.LogInfo("HeightmapGenerator is disabled. Enable it in NOBlackBox Configuration settings by setting EnableHeightmapGenerator = true");
+                Plugin.Logger?.LogDebug("HeightmapGenerator is disabled. Enable it in NOBlackBox Configuration settings by setting EnableHeightmapGenerator = true");
                 return;
             }
             if (null == MissionManager.CurrentMission)
             {
-                Plugin.Logger?.LogInfo("No Terrain found. In order to use this feature, you must launch a mission first.");
+                Plugin.Logger?.LogDebug("No Terrain found. In order to use this feature, you must launch a mission first.");
                 return;
             }
             try
@@ -125,13 +125,13 @@ namespace NOBlackBox
                     .Select(collider => collider.bounds.min.GlobalY())
                     .Min() - Datum.originPosition.GlobalY();
 
-                Plugin.Logger?.LogInfo("Attempting to export custom terrain heightmap");
+                Plugin.Logger?.LogDebug("Attempting to export custom terrain heightmap");
                 Map thisMap = null;
-                Plugin.Logger?.LogInfo("Looping through MapSettingsManager.i.Maps..");
+                Plugin.Logger?.LogDebug("Looping through MapSettingsManager.i.Maps..");
                 foreach (Map map_ in MapSettingsManager.i.Maps)
                 {
                     
-                    Plugin.Logger?.LogInfo($"checking {map_.Prefab.name}");
+                    Plugin.Logger?.LogDebug($"checking {map_.Prefab.name}");
                     if (map_.Prefab.name == MapSettingsManager.i.MapLoader.CurrentMap.Path)
                     {
                         thisMap = map_;
@@ -168,11 +168,11 @@ namespace NOBlackBox
                     https://www.opendem.info/arc2meters.html
                  */
                 terrainHalfInDegrees = ((terrainHalf / 30.86666667f) / 60f) / 60f;
-                Plugin.Logger?.LogInfo($"terrainSize: {terrainSize.ToString()}");
-                Plugin.Logger?.LogInfo($"textureSize: {textureSize.ToString()}");
-                Plugin.Logger?.LogInfo($"terrainScale: {terrainScale.ToString()}");
-                Plugin.Logger?.LogInfo($"maxHeight: {maxHeight.ToString()}");
-                Plugin.Logger?.LogInfo($"minHeight: {minHeight.ToString()}");
+                Plugin.Logger?.LogDebug($"terrainSize: {terrainSize.ToString()}");
+                Plugin.Logger?.LogDebug($"textureSize: {textureSize.ToString()}");
+                Plugin.Logger?.LogDebug($"terrainScale: {terrainScale.ToString()}");
+                Plugin.Logger?.LogDebug($"maxHeight: {maxHeight.ToString()}");
+                Plugin.Logger?.LogDebug($"minHeight: {minHeight.ToString()}");
                 // call Heightmap generator
                 GenerateRayCastHeightmap();
             }
@@ -190,13 +190,13 @@ namespace NOBlackBox
             int oldPosZ = -2;
             int posX = -1;
             int posZ  = -1;
-            Plugin.Logger?.LogInfo($"Generating Heightmap...");
+            Plugin.Logger?.LogDebug($"Generating Heightmap...");
 
             // iterate over both axis, scale the world position to heightmap position using terrainScale.
             // any raycast where the hit would land on a heightmap position that's already been populated is skipped, massive time save
             for (int z = (int)(-1 * terrainHalf); z < terrainHalf; z += metersPerRay)
             {
-                Plugin.Logger?.LogInfo($"{((z + terrainHalf) / terrainSize) * 100}%");
+                Plugin.Logger?.LogDebug($"{((z + terrainHalf) / terrainSize) * 100}%");
                 if (z + metersPerRay > terrainSize - 1) { z = (int)(terrainSize - 1); }
                 for (int x = (int)(-1 * terrainHalf); x < terrainHalf; x += metersPerRay)
                 {
@@ -282,7 +282,7 @@ namespace NOBlackBox
 				}
 			}
 
-			Plugin.Logger?.LogInfo($"Heightmap RAW exported to: {filePath}");
+			Plugin.Logger?.LogDebug($"Heightmap RAW exported to: {filePath}");
 		}
 
 		static void SaveHeightMapCustomTexture()
@@ -294,7 +294,7 @@ namespace NOBlackBox
 
 			string outputPath = Path.Combine(outputDir, textureFileName);
 			File.WriteAllBytes(outputPath, tex);
-			Plugin.Logger?.LogInfo($"Heightmap Texture exported to: {outputPath}");
+			Plugin.Logger?.LogDebug($"Heightmap Texture exported to: {outputPath}");
 			texture = null;
 			renderCamTexture.Release();
 			tex = null;
@@ -333,7 +333,7 @@ namespace NOBlackBox
                 )
             );
             string XMLPath = Path.Combine(outputDir, customHeightMapListXMLFileName);
-            Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {XMLPath}");
+            Plugin.Logger?.LogDebug($"Saving custom tacview custom XML to {XMLPath}");
             doc.Save(XMLPath);
         }
 
@@ -377,16 +377,16 @@ namespace NOBlackBox
                 if (existing != null)
                 {
                     existing.ReplaceWith(newHeightmap);
-                    Plugin.Logger?.LogInfo($"Updating {heightmapFileName} in {CombinedCustomHeightMapListXMLPath}...");
+                    Plugin.Logger?.LogDebug($"Updating {heightmapFileName} in {CombinedCustomHeightMapListXMLPath}...");
                 }
                 else
                 {
                     heightmapList.Add(newHeightmap);
-                    Plugin.Logger?.LogInfo($"Adding {heightmapFileName} to {CombinedCustomHeightMapListXMLPath}...");
+                    Plugin.Logger?.LogDebug($"Adding {heightmapFileName} to {CombinedCustomHeightMapListXMLPath}...");
                 }
 
                 doc.Save(CombinedCustomHeightMapListXMLPath);
-                Plugin.Logger?.LogInfo($"Saved {CombinedCustomHeightMapListXMLPath} to disk.");
+                Plugin.Logger?.LogDebug($"Saved {CombinedCustomHeightMapListXMLPath} to disk.");
 
             } catch
             {
@@ -419,7 +419,7 @@ namespace NOBlackBox
                         )
                     )
                 );
-                Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {CombinedCustomHeightMapListXMLPath}");
+                Plugin.Logger?.LogDebug($"Saving custom tacview custom XML to {CombinedCustomHeightMapListXMLPath}");
                 doc.Save(CombinedCustomHeightMapListXMLPath);
             }
         }
@@ -450,7 +450,7 @@ namespace NOBlackBox
                 )
             );
             string XMLPath = Path.Combine(outputDir, customTextureListXMLFileName);
-            Plugin.Logger?.LogInfo($"Saving custom tacview custom XML to {XMLPath}");
+            Plugin.Logger?.LogDebug($"Saving custom tacview custom XML to {XMLPath}");
             doc.Save(XMLPath);
         }
 
