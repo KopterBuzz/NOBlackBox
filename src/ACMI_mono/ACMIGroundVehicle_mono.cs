@@ -13,7 +13,7 @@ namespace NOBlackBox
         private readonly static Dictionary<string, string> TYPES = new()
         {
             { "HLT", "Ground+Heavy+Vehicle" },
-            { "Stratolance R9 Launcher", "Ground+Heavy+Static+AntiAircraft" },
+            { "StratoLance R9 Launcher", "Ground+Heavy+Vehicle+AntiAircraft" },
             { "T9K41 Boltstrike", "Ground+Heavy+Vehicle+AntiAircraft" },
             { "Spearhead MBT", "Ground+Heavy+Vehicle+Tank" },
             { "Type-12 MBT", "Ground+Heavy+Vehicle+Tank" },
@@ -41,7 +41,7 @@ namespace NOBlackBox
 
         private readonly static Dictionary<string, int> RANGE = new()
         {
-            { "Stratolance R9 Launcher", 50000 },
+            { "StratoLance R9 Launcher", 50000 },
             { "T9K41 Boltstrike", 15000 },
             { "LCV24 AA", 5000 },
             { "AFV6 AA", 5000 },
@@ -57,10 +57,16 @@ namespace NOBlackBox
         {
 
             base.unit = vehicle;
-            base.unitId = unit.persistentID;
-            base.tacviewId = unit.persistentID + 1;
+            base.unitId = unit.persistentID.Id;
+            base.tacviewId = unit.persistentID.Id + 1;
             lastState = unit.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
+
+            if (new[] {"SAM","RDR","SPAAG"}.Any(c => unit.definition.code.Contains(c)))
+            {
+                base.destroyedEvent = true;
+            }
+
             props = new Dictionary<string, string>()
             {
                 { "Name", this.unit.definition.unitName },
@@ -140,7 +146,7 @@ namespace NOBlackBox
                         {
                             lockedTargetString = $"LockedTarget{i:X}";
                         }
-                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID):X}");
+                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID.Id):X}");
                     }
                 }
             }

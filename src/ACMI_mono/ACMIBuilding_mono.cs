@@ -15,8 +15,8 @@ namespace NOBlackBox
         {
             base.unit = building;
             this.building = (Building)base.unit;
-            base.unitId = unit.persistentID;
-            base.tacviewId = unit.persistentID + 1;
+            base.unitId = unit.persistentID.Id;
+            base.tacviewId = unit.persistentID.Id + 1;
             base.destroyedEvent = true;
             lastState = unit.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;

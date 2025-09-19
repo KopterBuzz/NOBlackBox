@@ -34,8 +34,8 @@ namespace NOBlackBox
         {
             base.unit = aircraft;
             this.aircraft = (Aircraft)base.unit;
-            base.unitId = aircraft.persistentID;
-            base.tacviewId = aircraft.persistentID + 1;
+            base.unitId = aircraft.persistentID.Id;
+            base.tacviewId = aircraft.persistentID.Id + 1;
             base.destroyedEvent = true;
             base.canTarget = true;
             lastState = aircraft.unitState;
@@ -110,7 +110,7 @@ namespace NOBlackBox
                         {
                             lockedTargetString = $"LockedTarget{i:X}";
                         }
-                            props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID):X}");
+                            props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID.Id):X}");
                     }
                 }
             }
@@ -152,7 +152,7 @@ namespace NOBlackBox
                 lastRadar = aircraft.radar;
             }
 
-            if (aircraft.Player == GameManager.LocalPlayer && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead.Value == true)
+            if (aircraft.Player == Plugin.localPlayer && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead.Value == true)
             {
 
                 Camera camera = Camera.main;

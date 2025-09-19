@@ -33,8 +33,8 @@ namespace NOBlackBox
         {
             base.unit = ship;
             this.ship = (Ship)base.unit;
-            base.unitId = ship.persistentID;
-            base.tacviewId = ship.persistentID + 1;
+            base.unitId = ship.persistentID.Id;
+            base.tacviewId = ship.persistentID.Id + 1;
             base.destroyedEvent = true;
             base.canTarget = true;
             lastTarget = new Unit?[Math.Min(10, ship.weaponStations.Count)];
@@ -120,7 +120,7 @@ namespace NOBlackBox
                         {
                             lockedTargetString = $"LockedTarget{i:X}";
                         }
-                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID):X}");
+                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID.Id):X}");
                     }
                 }
             }

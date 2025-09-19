@@ -25,8 +25,8 @@ namespace NOBlackBox
         {
             /*
             this.unit = unit;
-            base.unitId = unit.persistentID;
-            base.tacviewId = unit.persistentID + 1;
+            base.unitId = unit.persistentID.Id;
+            base.tacviewId = unit.persistentID.Id + 1;
             lastState = unit.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;
             props = new Dictionary<string, string>()

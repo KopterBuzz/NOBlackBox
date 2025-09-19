@@ -83,7 +83,7 @@ namespace NOBlackBox
                         continue;
                     }
                     bool isNew = false;
-                    if (!unitObjects.TryGetValue(unit.persistentID, out GameObject acmi))
+                    if (!unitObjects.TryGetValue(unit.persistentID.Id, out GameObject acmi))
                     {
                         
                         switch (unit)
@@ -107,7 +107,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                unitObjects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID.Id, acmi);
                                 isNew = true;
                                 break;
                             case Missile missile:
@@ -118,7 +118,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                unitObjects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID.Id, acmi);
                                 isNew = true;
                                 break;
                             case GroundVehicle vehicle:
@@ -129,7 +129,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                unitObjects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID.Id, acmi);
                                 isNew = true;
                                 break;
                             case Ship ship:
@@ -140,7 +140,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                unitObjects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID.Id, acmi);
                                 isNew = true;
                                 break;
                             case PilotDismounted pilot:
@@ -153,7 +153,7 @@ namespace NOBlackBox
                                     Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                         $"{unit.definition.unitName}," +
                                         $"{unit.definition.code}");
-                                    unitObjects.Add(unit.persistentID, acmi);
+                                    unitObjects.Add(unit.persistentID.Id, acmi);
                                     isNew = true;
                                 }
                                 break;
@@ -165,7 +165,7 @@ namespace NOBlackBox
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
-                                unitObjects.Add(unit.persistentID, acmi);
+                                unitObjects.Add(unit.persistentID.Id, acmi);
                                 isNew = true;
                                 break;
                             default:

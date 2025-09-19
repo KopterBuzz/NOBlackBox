@@ -28,6 +28,7 @@ namespace NOBlackBox
         private float timer = 0f;
         internal static int recordedScreenWidth, recordedScreenHeight;
         internal static float guiAnchorLeft, guiAnchorRight;
+        internal static BasePlayer ?localPlayer = null;
 
         public Plugin()
         {
@@ -91,12 +92,14 @@ namespace NOBlackBox
         private async Task<bool> WaitForLocalPlayer()
         {
             Logger?.LogDebug("TRYING TO GET PLAYERNAME...");
-            Logger?.LogDebug($"{GameManager.LocalPlayer.PlayerName}");
-            while (GameManager.LocalPlayer.PlayerName == null)
+            
+            while (null == localPlayer)
             {
+                GameManager.GetLocalPlayer(out localPlayer);
                 Logger?.LogDebug("Waiting for LocalPlayer...");
                 await Task.Delay(100);
             }
+            Logger?.LogDebug($"{localPlayer.name}");
             return true;
         }
 
@@ -119,6 +122,7 @@ namespace NOBlackBox
                 Logger?.LogDebug("MISSION UNLOADED. STOP RECORDING.");
                 StopRecording();
             }
+            localPlayer = null;
         }
 
         private void StartRecording()
