@@ -57,10 +57,16 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Mirage">
-      <HintPath>D:\SteamLibrary\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -119,6 +119,8 @@ namespace NOBlackBox
                                                         new XAttribute("LoadingOrder", "1.0"));
             foreach (UnitTacviewInfo info in knownUnits.Values)
             {
+                string shortName = info.code;
+                if (shortName == "OBJ") { shortName = "BLD"; }
                 XElement DefaultProperties = new XElement("DefaultProperties",
                     new XAttribute("Id", info.prefabName),
                     new XAttribute("Base", info.tacviewXMLBase),
@@ -128,12 +130,13 @@ namespace NOBlackBox
                             new XElement("Name", info.unitName)
                         ),
                         new XElement("Properties",
-                            new XElement("ShortName",info.code),
+                            new XElement("ShortName",shortName),
                             new XElement("LongName",info.unitName),
                             new XElement("FullName",info.unitName),
                             new XElement("Shape",info.tacviewXMLShape)
                         )
                     );
+                shortName = string.Empty;
                 DefaultPropertiesCollection.Add(DefaultProperties);
             }
             doc.Add(DefaultPropertiesCollection);
@@ -164,6 +167,10 @@ namespace NOBlackBox
                 CheckUnitInfo(def);
             }
             foreach (UnitDefinition def in Encyclopedia.i.otherUnits)
+            {
+                CheckUnitInfo(def);
+            }
+            foreach (UnitDefinition def in Encyclopedia.i.scenery)
             {
                 CheckUnitInfo(def);
             }

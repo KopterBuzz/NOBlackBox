@@ -1,9 +1,10 @@
-﻿using NuclearOption.Networking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using NOBlackBox.src.ACMI_mono;
+using NuclearOption.Networking;
 using UnityEngine;
 
 namespace NOBlackBox
@@ -169,6 +170,17 @@ namespace NOBlackBox
                                 acmi.AddComponent<ACMIBuilding_mono>();
                                 acmi.GetComponent<ACMIBuilding_mono>().Init(building);
                                 acmi.GetComponent<ACMIBuilding_mono>().enabled = true;
+                                Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
+                                    $"{unit.definition.unitName}," +
+                                    $"{unit.definition.code}");
+                                unitObjects.Add(unit.persistentID.Id, acmi);
+                                isNew = true;
+                                break;
+                            case Scenery scenery:
+                                acmi = new GameObject();
+                                acmi.AddComponent<ACMIScenery_mono>();
+                                acmi.GetComponent<ACMIScenery_mono>().Init(scenery);
+                                acmi.GetComponent<ACMIScenery_mono>().enabled = true;
                                 Plugin.Logger?.LogDebug($"RECORDED UNIT,{unit.definition.name}," +
                                     $"{unit.definition.unitName}," +
                                     $"{unit.definition.code}");
