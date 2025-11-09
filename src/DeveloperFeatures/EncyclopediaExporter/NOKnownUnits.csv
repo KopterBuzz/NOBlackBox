@@ -1,4 +1,5 @@
 prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape
+prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,prefabName.obj
 Shell_76mm_guided,Shell_76mm_guided,76mm Guided Shell,SHL,Heavy + Shell,Core.Shell,Shell_76mm_guided.obj
 AAM2,AAM2,AAM-29 Scythe,MSL,Weapon + Missile,Core.Missile,AAM2.obj
 AAM4,AAM4,AAM-36 Scimitar,MSL,Weapon + Missile,Core.Missile,AAM4.obj
@@ -98,31 +99,31 @@ ammunitionBunker,ammunitionBunker,Munitions Bunker,AMMO,Ground + Static + Buildi
 guardTower1,guardTower1,Guard Tower,TWR,Ground + Static + Building,Core.Default,guardTower1.obj
 MunitionsPallet1,MunitionsPallet1,Munitions Pallet,CTNR,Misc + Container,Core.Default,MunitionsPallet1.obj
 NavalPallet1,NavalPallet1,Naval Supply Pallet,CTNR,Misc + Container,Core.Default,NavalPallet1.obj
-Platform_small_columns,PlatformSmallColumns,Small Platform Columns,OBJ,Ground + Static + Building,,Platform_small_columns.obj
-Column1,Column1,Column 50m,OBJ,Ground + Static + Building,,Column1.obj
-Ring1,Ring1,Ring D50m,OBJ,Ground + Static + Building,,Ring1.obj
-Cylinder1,Cylinder1,Cylinder D20x50m,OBJ,Ground + Static + Building,,Cylinder1.obj
-Cylinder2,Cylinder2,Cylinder D25x50m,OBJ,Ground + Static + Building,,Cylinder2.obj
-Cone1,Cone1,Cone D40x20m,OBJ,Ground + Static + Building,,Cone1.obj
-Cone2,Cone2,Cone D25x20m,OBJ,Ground + Static + Building,,Cone2.obj
-Cone3,Cone3,Cone D40x25m,OBJ,Ground + Static + Building,,Cone3.obj
-Bend2,Bend2,Bend D25x45deg 2D,OBJ,Ground + Static + Building,,Bend2.obj
-Bend4,Bend4,Bend D25x45deg 4D,OBJ,Ground + Static + Building,,Bend4.obj
-hullDown1,hullDown1,Hull down square,OBJ,Ground + Static + Building,,hullDown1.obj
-ContainerStack1,ContainerStack1,Container stack,OBJ,,,ContainerStack1.obj
-Container4,Container4,Container white,OBJ,Ground + Static + Building,,Container4.obj
-Container3,Container3,Container red,OBJ,Ground + Static + Building,,Container3.obj
-Container2,Container2,Container blue,OBJ,Ground + Static + Building,,Container2.obj
-Container1,Container1,Container orange,OBJ,Ground + Static + Building,,Container1.obj
-ConcreteBarrier1,ConcreteBarrier1,Concrete barrier,OBJ,Ground + Static + Building,,ConcreteBarrier1.obj
-hesco5,hesco5,Gabion Wall 10x1.5x1.5,OBJ,Ground + Static + Building,,hesco5.obj
-camoNet1,camoNet1,Camo Net 1,OBJ,Ground + Static + Building,,camoNet1.obj
-hullDown2,hullDown2,Hull down circular,OBJ,Ground + Static + Building,,hullDown2.obj
-CoolingTower,CoolingTower,Cooling Tower,OBJ,Ground + Static + Building,,CoolingTower.obj
-Truss1,Truss1,Truss 50m,OBJ,Ground + Static + Building,,Truss1.obj
-Pipeline,Pipeline,Pipeline,OBJ,Ground + Static + Building,,Pipeline.obj
-TowerCrane,TowerCrane,Tower Crane,OBJ,Ground + Static + Building,,TowerCrane.obj
-gabionWall_20x3x3,gabionWall_20x3x3,Gabion Wall 20x3x3,OBJ,Ground + Static + Building,,gabionWall_20x3x3.obj
-ConcretePad1,ConcretePad1,Concrete Pad,OBJ,Ground + Static + Building,,ConcretePad1.obj
-ConcreteWall1,ConcreteWall1,Concrete Wall,OBJ,Ground + Static + Building,,ConcreteWall1.obj
-ConcreteWall1x5,ConcreteWall1x5,Concrete Wall 10m,OBJ,Ground + Static + Building,,ConcreteWall1x5.obj
+Platform_small_columns,PlatformSmallColumns,Small Platform Columns,OBJ,Ground + Static + Building,Core.Default,Platform_small_columns.obj
+Column1,Column1,Column 50m,OBJ,Ground + Static + Building,Core.Default,Column1.obj
+Ring1,Ring1,Ring D50m,OBJ,Ground + Static + Building,Core.Default,Ring1.obj
+Cylinder1,Cylinder1,Cylinder D20x50m,OBJ,Ground + Static + Building,Core.Default,Cylinder1.obj
+Cylinder2,Cylinder2,Cylinder D25x50m,OBJ,Ground + Static + Building,Core.Default,Cylinder2.obj
+Cone1,Cone1,Cone D40x20m,OBJ,Ground + Static + Building,Core.Default,Cone1.obj
+Cone2,Cone2,Cone D25x20m,OBJ,Ground + Static + Building,Core.Default,Cone2.obj
+Cone3,Cone3,Cone D40x25m,OBJ,Ground + Static + Building,Core.Default,Cone3.obj
+Bend2,Bend2,Bend D25x45deg 2D,OBJ,Ground + Static + Building,Core.Default,Bend2.obj
+Bend4,Bend4,Bend D25x45deg 4D,OBJ,Ground + Static + Building,Core.Default,Bend4.obj
+hullDown1,hullDown1,Hull down square,OBJ,Ground + Static + Building,Core.Default,hullDown1.obj
+ContainerStack1,ContainerStack1,Container stack,OBJ,Core.Default,,ContainerStack1.obj
+Container4,Container4,Container white,OBJ,Ground + Static + Building,Core.Default,Container4.obj
+Container3,Container3,Container red,OBJ,Ground + Static + Building,Core.Default,Container3.obj
+Container2,Container2,Container blue,OBJ,Ground + Static + Building,Core.Default,Container2.obj
+Container1,Container1,Container orange,OBJ,Ground + Static + Building,Core.Default,Container1.obj
+ConcreteBarrier1,ConcreteBarrier1,Concrete barrier,OBJ,Ground + Static + Building,Core.Default,ConcreteBarrier1.obj
+hesco5,hesco5,Gabion Wall 10x1.5x1.5,OBJ,Ground + Static + Building,Core.Default,hesco5.obj
+camoNet1,camoNet1,Camo Net 1,OBJ,Ground + Static + Building,Core.Default,camoNet1.obj
+hullDown2,hullDown2,Hull down circular,OBJ,Ground + Static + Building,Core.Default,hullDown2.obj
+CoolingTower,CoolingTower,Cooling Tower,OBJ,Ground + Static + Building,Core.Default,CoolingTower.obj
+Truss1,Truss1,Truss 50m,OBJ,Ground + Static + Building,Core.Default,Truss1.obj
+Pipeline,Pipeline,Pipeline,OBJ,Ground + Static + Building,Core.Default,Pipeline.obj
+TowerCrane,TowerCrane,Tower Crane,OBJ,Ground + Static + Building,Core.Default,TowerCrane.obj
+gabionWall_20x3x3,gabionWall_20x3x3,Gabion Wall 20x3x3,OBJ,Ground + Static + Building,Core.Default,gabionWall_20x3x3.obj
+ConcretePad1,ConcretePad1,Concrete Pad,OBJ,Ground + Static + Building,Core.Default,ConcretePad1.obj
+ConcreteWall1,ConcreteWall1,Concrete Wall,OBJ,Ground + Static + Building,Core.Default,ConcreteWall1.obj
+ConcreteWall1x5,ConcreteWall1x5,Concrete Wall 10m,OBJ,Ground + Static + Building,Core.Default,ConcreteWall1x5.obj
