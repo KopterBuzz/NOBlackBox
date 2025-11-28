@@ -31,6 +31,8 @@ HideManagerGameObject = true
 
 ## The Tacview assets
 ###### Unlike previous versions of Tacwiev, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
+###### Tacview 1.9.5 also comes with Nuclear Option Assets by default, and Nuclear Option has a faster release cycle than Tacview 1, at least currently.
+###### Therefore, it might still be beneficial to install the latest assets from source with the below instructions.
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
 2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
 3. Unzip the downloaded Archive.
