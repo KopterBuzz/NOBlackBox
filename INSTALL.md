@@ -30,40 +30,19 @@ HideManagerGameObject = true
 5. Enjoy :)
 
 ## The Tacview assets
+###### Unlike previous versions of Tacwiev, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
 2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
 3. Unzip the downloaded Archive.
-4. There are 2 installer scripts for different scenarios:
-- If you use Tacview Free version or Stable Build of Standard/Advanced, run install_Stable.bat
-- If you use Tacview Beta, run install_Beta.bat. 
-5. Restart Tacview and in its settings, If you use Tacview Free or Stable release of Standad/Advanced. Change Terrain to Falcon 4. We currently hijack the Falcon 4 support to inject Nuclear Option Terrain into Tacview Stable.
+5. Inside the unzipped directory, you should see two scripts, install.bat and TacviewAssetSetup.ps1
 
-## Switching between Different Tacview MAPS
+	Open their Properties from the right-click drop-down menu (right-click/show more options/Properties), and at the bottom of the General Tab, tick Unblock then click Apply and Ok.
+4. Open Windows PowerShell as Administrator
+5. Run ```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force``` 
+6. Browse to the unzipped archive, where the install scripts are
+7. run ```.\install.bat``` 
+8. If it was running, restart Tacview. Change Terrain Layer to Nuclear Option.
 
-### If you have 1.9.5 Beta 11 and use NOBlackBox 0.3.6 or newer to create recordings, you no longer need to manually switch maps for Tacview.
-### If you are using Tacview 1.9.4 Stable, or an older Beta, follow the below procedure:
-
-At the moment, Tacview Stable can only load ONE Nuclear Option Terrain at a time.
-To switch between different Terrains do this:
-
-Inside [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip), there is a PowersHell Script called TacviewStableMapSwitcher.ps1
-
-This script file can help you switching the active Custom Heightmap and Texture for Tacview Free/Stable releases.
-
-Open PowerShell and run the script to provide you usage instructions:
-
-```
-PS C:\code\NOBlackBoxTacviewAssets-main> .\TacviewStableMapSwitcher.ps1
-The Following Terrains are available:
-NuclearOption.Terrain1
-NuclearOption.Terrain_naval
-Re-Run this tool with -target  Target Terrain ID to switch the default Tacview Terrain!
-Example: .\TacviewStableMapSwitcher.ps1 -target "NuclearOption.Terrain1"
-PS C:\code\NOBlackBoxTacviewAssets-main>
-```
-Follow the provided example command line argument with one of the available Terrain IDs and it will swap the active map out for you.
-
-If you are getting ACCESS Denied Errors, try opening PowerShell as Administrator instead.
 
 ## Using NOBlackBox
 The mod will be enabled by default after installation.
@@ -97,11 +76,73 @@ Default values are automatically set.
 
 ### UpdateRate
 
+DEPRECATED USE THE REST OF THE UPDATE AND DISCOVERY RATE SETTINGS TO CUSTOMIZE UPDATE FREQUENCIES
+
 The number of times per second NOBlackBox will record events. Max Value: 1000
 
 Please do note that higher values impact performance.
 
 Default value: 5
+
+### Unit Discovery Rate
+
+Time interval in seconds to discover Units.
+
+Default value: 1
+
+### BulletSim Discovery Rate
+
+Time interval in seconds to discover objects that fire bullets.
+
+Default value: 1
+
+### Shockwave Discovery Rate
+
+Time interval in seconds to discover explosion shockwaves.
+
+Default value: 0.5
+
+### Aircraft Update Rate
+
+Time interval in seconds to update Aircraft.
+
+Default value: 0.2
+
+### Vehicle Update Rate
+
+Time interval in seconds to update Vehicles and Ships.
+
+Default value: 1
+
+### Munition Update Rate
+
+Time interval in seconds to update Bombs, Missiles and Rockets.
+
+Default value: 0.2
+
+### Shockwave Update Rate
+
+Time interval in seconds to update Shockwave Propagation.
+
+Default value: 0.016
+
+### Tracer Update Rate
+
+Time interval in seconds to Projectile Tracers.
+
+Default value: 1
+
+### Flare Update Rate
+
+Time interval in seconds to update Flares.
+
+Default value: 1
+
+### Building Update Rate
+
+Time interval in seconds to update Buildings.
+
+Default value: 1
 
 ### OutputPath
 The location where Tacview files will be saved. Must be a valid folder path.
