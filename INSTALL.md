@@ -26,12 +26,12 @@ The mod works with the following loaders:
 [Chainloader]
 HideManagerGameObject = true
 ```
-4. Copy the NOBlackBox folder file to the game's BepInEx plugins folder.
+4. Copy the NOBlackBox folder to the game's BepInEx plugins folder.
 5. Enjoy :)
 
 ## The Tacview assets
-###### Unlike previous versions of Tacwiev, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
-###### Tacview 1.9.5 also comes with Nuclear Option Assets by default, and Nuclear Option has a faster release cycle than Tacview 1, at least currently.
+###### Unlike previous versions of Tacview, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
+###### Tacview 1.9.5 also comes with Nuclear Option Assets by default, and Nuclear Option has a faster release cycle than Tacview 1, at least currently, so the assets that come with Tacview might be out of date.
 ###### Therefore, it might still be beneficial to install the latest assets from source with the below instructions.
 1. [Install Tacview](https://www.tacview.net/download/latest/en/) and run it once to make sure it settles. :)
 2. Download [Tacview Assets for NOBlackBox](https://github.com/KopterBuzz/NOBlackBoxTacviewAssets/archive/refs/heads/main.zip) 
