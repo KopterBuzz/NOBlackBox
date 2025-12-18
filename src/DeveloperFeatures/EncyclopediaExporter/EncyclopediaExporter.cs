@@ -34,7 +34,7 @@ namespace NOBlackBox
 
         public override string ToString()
         {
-            return $"{prefabName},{name},{unitName},{code},{tacviewACMIType},{tacviewXMLBase},{tacviewXMLShape}";
+            return $"{prefabName};{name};{unitName};{code};{tacviewACMIType};{tacviewXMLBase};{tacviewXMLShape}";
         }
     }
     internal static class EncyclopediaExporter
@@ -61,7 +61,7 @@ namespace NOBlackBox
         private static string KnownUnitsXML = Path.Combine(outputDir, "NuclearOption.xml");
 
 
-        private static string unitCSVHeader = "prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape";
+        private static string unitCSVHeader = "prefabName;name;unitName;code;TacviewACMIType;TacviewXMLBase;TacviewXMLShape";
         private static Dictionary<string, UnitTacviewInfo> knownUnits = new Dictionary<string, UnitTacviewInfo>();
         private static Dictionary<string, UnitTacviewInfo> unknownUnits = new Dictionary<string, UnitTacviewInfo>();
 
@@ -74,7 +74,7 @@ namespace NOBlackBox
             string[] lines = File.ReadAllLines(KnownUnitsCSV);
             foreach (string line in lines)
             {
-                string[] splits = line.Split(',');
+                string[] splits = line.Split(';');
                 if (splits[0] == "name") { continue; }
                 UnitTacviewInfo knownUnit = new UnitTacviewInfo(splits[0], splits[1], splits[2], splits[3], splits[4], splits[5]);
                 Plugin.Logger?.LogDebug(knownUnit.ToString());
@@ -90,6 +90,7 @@ namespace NOBlackBox
             if (!knownUnits.ContainsKey(def.unitPrefab.name))
             {
                 UnitTacviewInfo unknownUnit = new UnitTacviewInfo(def.unitPrefab.name,def.name, def.unitName, def.code, "", "");
+                
                 unknownUnits.Add(def.unitPrefab.name, unknownUnit);
                 Plugin.Logger?.LogDebug($"Found UNKNOWN Unit: {unknownUnit.ToString()}");
             } else

@@ -44,7 +44,28 @@ namespace NOBlackBox
             { "Laser CIWS Trailer", "Ground+Medium+AntiAircraft+Vehicle" },
             { "Munitions Container", "Misc+Container" },
 			{ "Munitions Pallet", "Misc+Container" },
-			{ "Naval Supply Pallet", "Misc+Container" }
+			{ "Naval Supply Pallet", "Misc+Container" },
+            { "MSV Flatbed", "Ground+Heavy+Vehicle" },
+            { "MSV Tractor", "Ground+Heavy+Vehicle" },
+            { "MSV Fuel Tanker", "Ground+Heavy+Vehicle" },
+            { "MSV Munitions", "Ground+Heavy+Vehicle" },
+            { "MSV MRAP", "Ground+Heavy+Vehicle" },
+            { "MSV Fire Control", "Ground+Heavy+Vehicle" },
+            { "HLT Fire Control", "Ground+Heavy+Vehicle" },
+            { "Boltstrike RAM45 Launcher", "Ground+AntiAircraft+Vehicle" },
+            { "Radar Container", "Misc+Container" },
+            { "MSV Nuclear Ballistic Missile Launcher", "Ground+Heavy+Vehicle" },
+            { "MSV Ballistic Missile Launcher", "Ground+Heavy+Vehicle" },
+            { "MSV R9 Stratolance Launcher", "Ground+AntiAircraft+Vehicle" },
+            { "MSV CRAM", "Ground+Heavy+Vehicle" },
+            { "MSV LADS", "Ground+Heavy+Vehicle" },
+            { "MSV Radar", "Ground+Heavy+Vehicle" },
+            { "Fuel Bladder 1500L", "Misc+Container" },
+            { "Fuel Bladder 6000L", "Misc+Container" },
+            { "Fuel Bladder 10,000L", "Misc+Container" },
+            { "Wreck HLT", "Ground+Heavy+Vehicle" },
+            { "Wreck MBT", "Ground+Heavy+Vehicle" }
+
 		};
 
         private readonly static Dictionary<string, int> RANGE = new()
