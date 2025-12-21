@@ -15,7 +15,7 @@ The mod works with the following loaders:
 
 ### Installation with BepInEx
 
-###### It is known that this mod will not work if you are running Nuclear Option or Nuclear Option Dedicated Server on Windows with the Built-In Administrator account.
+###### It is known that this mod may not work if you are running Nuclear Option or Nuclear Option Dedicated Server on Windows with the Built-In Administrator account.
 ###### If you are facing this issue I highly recommend you stop using the Built-In Administrator to run the game.
 ###### Furthermore, this is considered an unsupported configuration and I will not be able to provide technical assistance.
 
