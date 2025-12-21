@@ -14,6 +14,11 @@ The mod works with the following loaders:
 	- BepInEx 5
 
 ### Installation with BepInEx
+
+###### It is known that this mod will not work if you are running Nuclear Option or Nuclear Option Dedicated Server on Windows with the Built-In Administrator account.
+###### If you are facing this issue I highly recommend you stop using the Built-In Administrator to run the game.
+###### Furthermore, this is considered an unsupported configuration and I will not be able to provide technical assistance.
+
 0. [Download](https://github.com/KopterBuzz/NOBlackBox/releases) the latest release of the mod. Unzip it somewhere.
 1. Download and install the latest release of [BepInEx 5](https://github.com/BepInEx/BepInEx/releases/latest) for Nuclear Option.
 
