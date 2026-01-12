@@ -28,6 +28,13 @@ namespace NOBlackBox
         private float lastAGL = float.NaN;
         private float lastTAS = float.NaN;
         private float lastAOA = float.NaN;
+        private float lastThrottle = float.NaN;
+        private float lastPitch = float.NaN;
+        private float lastYaw = float.NaN;
+        private float lastRoll = float.NaN;
+        private float lastThrust = float.NaN;
+        private float avgThrust = float.NaN;
+
         private Vector3 lastHead = Vector3.zero;
 
         Aircraft aircraft;
@@ -118,6 +125,29 @@ namespace NOBlackBox
             }
         }
 
+        private float getAvgThrust()
+        {
+            float avgThrust = float.NaN;
+
+            int count = aircraft.engines.Count;
+            for (int i = 0; i < aircraft.engines.Count;i++)
+            {
+                float thrust = aircraft.engines[i].GetThrust();
+                if (thrust != 0f)
+                {
+                    avgThrust = avgThrust + thrust;
+                } else
+                {
+                    count = count - 1;
+                } 
+            }
+            if (avgThrust != 0f)
+            {
+                avgThrust /= count;
+            }
+            return avgThrust;
+        }
+
         void UpdateAircraft()
         {
             if (aircraft.speed != lastTAS && Configuration.RecordSpeed.Value == true)
@@ -180,6 +210,37 @@ namespace NOBlackBox
                     }
 
                     lastHead = newRot;
+                }
+            }
+
+            if (Configuration.RecordExtraTelemetry.Value == true)
+            {
+               
+                if (lastThrottle != aircraft.GetInputs().throttle)
+                {
+                    props.Add("Throttle", aircraft.GetInputs().throttle.ToString("0.##", CultureInfo.InvariantCulture));
+                    lastThrottle = aircraft.GetInputs().throttle;
+                }
+                if (lastRoll != aircraft.GetInputs().roll)
+                {
+                    props.Add("RollControlInput", aircraft.GetInputs().roll.ToString("0.##", CultureInfo.InvariantCulture));
+                    lastRoll = aircraft.GetInputs().roll;
+                }
+                if (lastPitch != aircraft.GetInputs().pitch)
+                {
+                    props.Add("PitchControlInput", aircraft.GetInputs().pitch.ToString("0.##", CultureInfo.InvariantCulture));
+                    lastPitch = aircraft.GetInputs().pitch;
+                }
+                if (lastYaw != aircraft.GetInputs().yaw)
+                {
+                    props.Add("YawControlInput", aircraft.GetInputs().yaw.ToString("0.##", CultureInfo.InvariantCulture));
+                    lastYaw = aircraft.GetInputs().yaw;
+                }
+                if (lastThrust != getAvgThrust())
+                {
+                    avgThrust = getAvgThrust();
+                    props.Add("EngineRPM", avgThrust.ToString("0.##", CultureInfo.InvariantCulture));
+                    lastThrust = avgThrust;
                 }
             }
         }

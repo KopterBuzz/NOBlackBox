@@ -17,13 +17,13 @@ namespace NOBlackBox
         internal const int DefaultUpdateRate = 5;
 
         internal const float DefaultUnitDiscoveryDelta = 1f;
-        internal const float DefaultBulletSimDiscoveryDelta = 1f;
+        internal const float DefaultBulletSimDiscoveryDelta = 0.2f;
         internal const float DefaultAircraftUpdateDelta = 0.2f;
         internal const float DefaultVehicleUpdateDelta = 1f;
         internal const float DefaultMunitionUpdateDelta = 0.2f;
         internal const float DefaultShockwaveUpdateDelta = 0.016f;
         internal const float DefaultShockwaveDiscoveryDelta = 0.5f;
-        internal const float DefaultTracerUpdateDelta = 1f;
+        internal const float DefaultTracerUpdateDelta = 0.2f;
         internal const float DefaultFlareUpdateDelta = 1f;
         internal const float DefaultBuildingUpdateDelta = 1f;
 
@@ -39,6 +39,9 @@ namespace NOBlackBox
         internal const bool DefaultRecordLandingGear = true;
         internal const bool DefaultRecordPilotHead = true;
         internal const bool DefaultCompressIDs = false;
+        internal const bool DefaultRecordExtraTelemetry = true;
+
+        internal const bool DefaultEnableLogging = false;
         
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
         internal const int DefaultMetersPerScan = 4;
@@ -100,6 +103,7 @@ namespace NOBlackBox
         internal static ConfigEntry<bool> RecordRadarMode;
         internal static ConfigEntry<bool> RecordLandingGear;
         internal static ConfigEntry<bool> RecordPilotHead;
+        internal static ConfigEntry<bool> RecordExtraTelemetry;
 
         internal static ConfigEntry<int> HeightMapResolution;
         internal static ConfigEntry<int> MetersPerScan;
@@ -121,6 +125,8 @@ namespace NOBlackBox
         internal static ConfigEntry<bool> EnableEncyclopediaExporter;
         internal static ConfigEntry<bool> RecordEjectedPilots;
         internal static ConfigEntry<bool> AutoStartRecording;
+
+        internal static ConfigEntry<bool> EnableLogging;
 
         internal static ConfigEntry<KeyboardShortcut> EncyclopediaExporterKey;
 
@@ -290,6 +296,9 @@ namespace NOBlackBox
             RecordPilotHead = config.Bind(OptionalDataSettings, "RecordPilotHead", DefaultRecordPilotHead, "Toggle recording pilot head movement. Default: true");
             Plugin.Logger?.LogDebug($"RecordPilotHead = {RecordPilotHead?.Value}");
 
+            RecordExtraTelemetry = config.Bind(OptionalDataSettings, "RecordExtraTelemetry", DefaultRecordExtraTelemetry, "Toggle recording Extra Telemetry. Default: true");
+            Plugin.Logger?.LogDebug($"RecordExtraTelemetry = {RecordExtraTelemetry?.Value}");
+
             _CompressIDs = config.Bind(OptionalDataSettings, "CompressIDs", DefaultCompressIDs, "Compress IDs to reduce filesize with less determinism.");
             Plugin.Logger?.LogDebug($"CompressIDs = {_CompressIDs.Value}");
 
@@ -408,6 +417,9 @@ namespace NOBlackBox
 
             StartStopRecordingKey = config.Bind("Hotkeys", "StartStopRecordingKey", new KeyboardShortcut(DefaultStartStopRecordingKey));
             Plugin.Logger?.LogDebug($"StartStopRecordingKey = {StartStopRecordingKey.Value}");
+
+            EnableLogging = config.Bind(DeveloperFeatures, "EnableLogging", DefaultEnableLogging, "Toggle Logging. Default: false");
+            Plugin.Logger?.LogDebug($"EnableLogging = {EnableLogging.Value}");
 
         }
     }

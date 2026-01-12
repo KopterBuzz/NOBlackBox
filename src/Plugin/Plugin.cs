@@ -19,7 +19,7 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.7.5")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.0")]
     [BepInProcess("NuclearOption.exe")]
     [BepInProcess("NuclearOptionServer.exe")]
     internal class Plugin : BaseUnityPlugin
@@ -41,11 +41,15 @@ namespace NOBlackBox
 
         public Plugin()
         {
-            Logger = base.Logger;
+            //Logger = base.Logger;
         }
         private void Awake()
         {
             Configuration.InitSettings(Config);
+            if (Configuration.EnableLogging.Value == true)
+            {
+                Logger = base.Logger;
+            }
             Logger?.LogDebug("LOADED.");
 
             waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;

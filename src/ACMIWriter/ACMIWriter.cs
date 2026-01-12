@@ -47,7 +47,7 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.7.5" },
+                { "DataRecorder", $"NOBlackBox 0.3.8.0" },
                 { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
 				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
@@ -170,9 +170,13 @@ namespace NOBlackBox
             output.Flush();
         }
 
-        internal void Close()
+        internal async void Close()
         {
             output.Close();
+            string zipPath = await ZipHelper.ZipFileAsync(filename);
+            Plugin.Logger?.LogDebug($"saving compressed acmi {zipPath}");
+            await ZipHelper.DeleteFileAsync(filename);
+            Plugin.Logger?.LogDebug($"deleted uncompressed acmi {filename}");
         }
     }
 }
