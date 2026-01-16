@@ -38,10 +38,12 @@ namespace NOBlackBox
         private Vector3 lastHead = Vector3.zero;
 
         Aircraft aircraft;
+        Aircraft localAircraft = null;
 
         public virtual void Init(Aircraft aircraft)
         {
-            base.unit = aircraft;
+            GameManager.GetLocalAircraft(out localAircraft);
+            if(localAircraft && localAircraft.persistentID == aircraft.persistentID) { base.unit = localAircraft; } else { base.unit = aircraft; }
             this.aircraft = (Aircraft)base.unit;
             base.unitId = aircraft.persistentID.Id;
             base.tacviewId = aircraft.persistentID.Id + 1;
@@ -184,14 +186,16 @@ namespace NOBlackBox
                 lastRadar = aircraft.radar;
             }
 
-            if (aircraft.Player == Plugin.localPlayer && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead.Value == true)
+            if (localAircraft && localAircraft.persistentID == aircraft.persistentID && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead.Value == true)
             {
+                
+                Camera camera = CameraStateManager.i.mainCamera;
 
-                Camera camera = Camera.main;
+                Vector3 rot = camera.transform.localEulerAngles;
 
-                float fax = MathF.Round(camera.transform.localEulerAngles.x, 2);
-                float fay = MathF.Round(camera.transform.localEulerAngles.y, 2);
-                float faz = MathF.Round(camera.transform.localEulerAngles.z, 2);
+                float fax = MathF.Round(rot.x, 2);
+                float fay = MathF.Round(rot.y, 2);
+                float faz = MathF.Round(rot.z, 2);
 
                 Vector3 newRot = new(fax, fay, faz);
 
