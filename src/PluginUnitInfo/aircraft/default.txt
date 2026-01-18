@@ -1,0 +1,11 @@
+CI-22,Air+FixedWing
+T/A-30,Air+FixedWing
+SAH-46,Air+Rotorcraft
+FS-12,Air+FixedWing
+KR-67,Air+FixedWing
+EW-25,Air+FixedWing
+SFB-81,Air+FixedWing
+VL-49,Air+Rotorcraft
+FS-20,Air+FixedWing
+UH-90,Air+Rotorcraft
+A-19,Air+FixedWing

@@ -1,0 +1,5 @@
+Shard Class Corvette,Sea+Watercraft+Medium+Warship,9000,25000
+Dynamo Class Destroyer,Sea+Watercraft+Medium+Warship,15000,60000
+Hyperion Class Carrier,Sea+Watercraft+Heavy+AircraftCarrier,15000,50000
+Annex Class Carrier,Sea+Watercraft+Heavy+AircraftCarrier,0,50000
+OTB-31 landing craft,Sea+Watercraft,0,0

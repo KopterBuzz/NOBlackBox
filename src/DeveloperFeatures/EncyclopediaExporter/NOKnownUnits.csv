@@ -1,5 +1,4 @@
 prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,TacviewXMLShape
-prefabName,name,unitName,code,TacviewACMIType,TacviewXMLBase,prefabName.obj
 Shell_76mm_guided,Shell_76mm_guided,76mm Guided Shell,SHL,Heavy + Shell,Core.Shell,Shell_76mm_guided.obj
 AAM2,AAM2,AAM-29 Scythe,MSL,Weapon + Missile,Core.Missile,AAM2.obj
 AAM4,AAM4,AAM-36 Scimitar,MSL,Weapon + Missile,Core.Missile,AAM4.obj
@@ -93,8 +92,8 @@ UtilityHelo1,UtilityHelo1,UH-90 Ibis,UH-90,Air + Rotorcraft,Rotorcraft.Attack,Ut
 UGV1_grenade,UGV1_grenade,Hexhound GMG,UGV,Ground + Medium + Vehicle,Vehicle.Military.APC,UGV1_grenade.obj
 UGV1_SAM,UGV1_sam,Hexhound SAM,UGV,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,UGV1_SAM.obj
 UGVDozer1,UGVDozer1,M12 Jackknife,CEV,Ground + Medium + Vehicle,Vehicle.Military.Truck,UGVDozer1.obj
-CRAMTrailer1,CRAMTrailer1,CRAM Trailer,CRAM,Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,CRAMTrailer1.obj
-LaserTrailer1,LaserTrailer1,Laser CIWS Trailer,CIWS (L),Ground + Medium + AntiAircraft + Vehicle,Vehicle.Military.APC,LaserTrailer1.obj
+CRAMTrailer1,CRAMTrailer1,CRAM Trailer,CRAM,Ground + Medium + AntiAircraft + Vehicle,Core.Default,CRAMTrailer1.obj
+LaserTrailer1,LaserTrailer1,Laser CIWS Trailer,CIWS (L),Ground + Medium + AntiAircraft + Vehicle,Core.Default,LaserTrailer1.obj
 ammunitionBunker,ammunitionBunker,Munitions Bunker,AMMO,Ground + Static + Building,Core.Default,ammunitionBunker.obj
 guardTower1,guardTower1,Guard Tower,TWR,Ground + Static + Building,Core.Default,guardTower1.obj
 MunitionsPallet1,MunitionsPallet1,Munitions Pallet,CTNR,Misc + Container,Core.Default,MunitionsPallet1.obj

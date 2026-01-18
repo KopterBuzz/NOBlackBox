@@ -10,6 +10,7 @@ namespace NOBlackBox
 {
     internal class ACMIGroundVehicle_mono : ACMIUnit_mono
     {
+        /*
         private readonly static Dictionary<string, string> TYPES = new()
         {
             { "HLT", "Ground+Heavy+Vehicle" },
@@ -67,6 +68,7 @@ namespace NOBlackBox
             { "Wreck MBT", "Ground+Heavy+Vehicle" }
 
 		};
+        
 
         private readonly static Dictionary<string, int> RANGE = new()
         {
@@ -79,19 +81,35 @@ namespace NOBlackBox
             { "AeroSentry SPAAG", 4000 },
             { "FGA-57 Anvil", 5500 }
         };
+        */
 
         private Unit? lastTarget;
 
         public virtual void Init(GroundVehicle vehicle)
         {
 
+            
             base.unit = vehicle;
             base.unitId = unit.persistentID.Id;
             base.tacviewId = unit.persistentID.Id + 1;
             lastState = unit.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
 
-            if (new[] {"SAM","RDR","SPAAG"}.Any(c => unit.definition.code.Contains(c)))
+            string[] info = { "Default", "Ground", "0", "0" };
+            if (Plugin.NOBlackBoxUnitInfo["vehicles"].ContainsKey(unit.definition.unitName))
+            {
+                info = Plugin.NOBlackBoxUnitInfo["vehicles"][unit.definition.unitName];
+                Plugin.Logger?.LogDebug($"UNIT {unit.definition.unitName} TYPE: {info[1]}");
+            }
+            int range1 = 0;
+            int range2 = 0;
+            int winningRange = 0;
+            int.TryParse(info[2], out range1);
+            int.TryParse(info[3], out range2);
+            if (range1 > range2) { winningRange = range1;  } else { winningRange = range2; }
+
+
+            if (new[] { "AA", "CIWS (L)", "CRAM", "SAM IR", "SAM R", "SPAAG", "RDR", "HPAD", "HGR-H", "HGR-M", "REV" }.Any(c => unit.definition.code.Contains(c)))
             {
                 base.destroyedEvent = true;
             }
@@ -102,7 +120,8 @@ namespace NOBlackBox
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "CallSign", $"{unit.definition.code} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
-                { "Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Ground") },
+                { "Type", info[1]},
+                { "EngagementRange", winningRange.ToString(CultureInfo.InvariantCulture) },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

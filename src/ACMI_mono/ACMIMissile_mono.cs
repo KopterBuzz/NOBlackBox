@@ -41,7 +41,11 @@ namespace NOBlackBox
             base.unitId = missile.persistentID.Id;
             base.tacviewId = missile.persistentID.Id + 1;
             base.canTarget = true;
-
+            string[] info = { "Default", "Weapon" };
+            if (Plugin.NOBlackBoxUnitInfo["missiles"].ContainsKey(missile.definition.code))
+            {
+                info = Plugin.NOBlackBoxUnitInfo["missiles"][missile.definition.code];
+            }
             if (unit.unitName.EndsWith("kt)"))
             {
                 base.destroyedEvent = true;
@@ -54,7 +58,7 @@ namespace NOBlackBox
                 { "Name", base.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
-                { "Type", TYPES.GetValueOrDefault(missile.definition.code, "Weapon") },
+                { "Type", info[1] },
                 { "CallSign", $"{missile.definition.unitName} {tacviewId:X}" },
                 { "Debug", lastState.ToString()}
             };
