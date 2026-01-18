@@ -1,0 +1,53 @@
+HLT,Ground+Heavy+Vehicle
+StratoLance R9 Launcher,Ground+Heavy+Vehicle+AntiAircraft
+T9K41 Boltstrike,Ground+Heavy+Vehicle+AntiAircraft
+Spearhead MBT,Ground+Heavy+Vehicle+Tank
+Type-12 MBT,Ground+Heavy+Vehicle+Tank
+HLT Radar Truck,Ground+Heavy+Vehicle+Sensor
+HLT Flatbed,Ground+Heavy+Vehicle
+HLT Munitions Truck,Ground+Heavy+Vehicle
+HLT Tractor,Ground+Heavy+Vehicle
+HLT Fuel Tanker,Ground+Heavy+Vehicle
+LCV25 AA,Ground+Light+Vehicle+AntiAircraft
+LCV25 AT,Ground+Light+Vehicle
+LCV45 Recon Truck,Ground+Light+Vehicle
+AFV6 APC,Ground+Medium+Vehicle
+AFV6 IFV,Ground+Medium+Vehicle
+AFV6 AA,Ground+Medium+Vehicle+AntiAircraft
+AFV6 AT,Ground+Medium+Vehicle
+AFV8 APC,Ground+Medium+Vehicle
+AFV8 IFV,Ground+Medium+Vehicle
+AFV8 Mobile Air Defense,Ground+Medium+Vehicle+AntiAircraft
+Linebreaker APC,Ground+Medium+Vehicle
+Linebreaker IFV,Ground+Medium+Vehicle
+Linebreaker SAM,Ground+Medium+Vehicle+AntiAircraft
+AeroSentry SPAAG,Ground+Medium+Vehicle+AntiAircraft
+FGA-57 Anvil,Ground+Medium+Vehicle+AntiAircraft
+Hexhound GMG,Ground+Medium+Vehicle
+Hexhound SAM,Ground+Medium+AntiAircraft+Vehicle
+M12 Jackknife,Ground+Medium+Vehicle
+CRAM Trailer,Ground+Medium+AntiAircraft+Vehicle
+Laser CIWS Trailer,Ground+Medium+AntiAircraft+Vehicle
+Munitions Container,Misc+Container
+Munitions Pallet,Misc+Container
+Naval Supply Pallet,Misc+Container
+MSV Flatbed,Ground+Heavy+Vehicle
+MSV Tractor,Ground+Heavy+Vehicle
+MSV Fuel Tanker,Ground+Heavy+Vehicle
+MSV Munitions,Ground+Heavy+Vehicle
+MSV MRAP,Ground+Heavy+Vehicle
+MSV Fire Control,Ground+Heavy+Vehicle
+HLT Fire Control,Ground+Heavy+Vehicle
+Boltstrike RAM45 Launcher,Ground+AntiAircraft+Vehicle
+Radar Container,Misc+Container
+MSV Nuclear Ballistic Missile Launcher,Ground+Heavy+Vehicle
+MSV Ballistic Missile Launcher,Ground+Heavy+Vehicle
+MSV R9 Stratolance Launcher,Ground+AntiAircraft+Vehicle
+MSV CRAM,Ground+Heavy+Vehicle
+MSV LADS,Ground+Heavy+Vehicle
+MSV Radar,Ground+Heavy+Vehicle
+Fuel Bladder 1500L,Misc+Container
+Fuel Bladder 6000L,Misc+Container
+Fuel Bladder 10,000L,Misc+Container
+Wreck HLT,Ground+Heavy+Vehicle
+Wreck MBT,Ground+Heavy+Vehicle

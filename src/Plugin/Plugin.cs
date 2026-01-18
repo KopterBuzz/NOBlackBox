@@ -1,16 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
-using UnityEngine;
-using NuclearOption.SavedMission;
-using System;
-using System.Threading.Tasks;
-using NuclearOption.SceneLoading;
-using System.Linq;
-using NuclearOption.Networking;
 using Mirage;
-using NuclearOption.MissionEditorScripts;
 using NuclearOption.DedicatedServer;
+using NuclearOption.MissionEditorScripts;
+using NuclearOption.Networking;
+using NuclearOption.SavedMission;
+using NuclearOption.SceneLoading;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -39,6 +42,23 @@ namespace NOBlackBox
 
         private Action? OnGameStateChange;
 
+        internal static Dictionary<string, List<string>> aircraftInfo;
+        internal static Dictionary<string, List<string>> groundInfo;
+        internal static Dictionary<string, List<string>> missileInfo;
+        internal static Dictionary<string, List<string>> shipInfo;
+
+        public static Dictionary<string, Dictionary<string, string[]>> NOBlackBoxUnitInfo = new()
+        {
+            { "aircraft",new Dictionary<string, string[]>() },
+            { "vehicles",new Dictionary<string, string[]>() },
+            { "ships",new Dictionary<string, string[]>() },
+            { "missiles",new Dictionary<string, string[]>() },
+            { "buildings",new Dictionary<string, string[]>() },
+            { "otherUnits",new Dictionary<string, string[]>() },
+            { "scenery",new Dictionary<string, string[]>() }
+        };
+
+
         public Plugin()
         {
             //Logger = base.Logger;
@@ -50,6 +70,12 @@ namespace NOBlackBox
             {
                 Logger = base.Logger;
             }
+
+            foreach (string key in NOBlackBoxUnitInfo.Keys)
+            {
+                LoadPluginUnitInfo(key);
+            }
+
             Logger?.LogDebug("LOADED.");
 
             waitTime = Configuration.UpdateRate != 0 ? 1f / Configuration.UpdateRate : 0f;
@@ -172,6 +198,65 @@ namespace NOBlackBox
         private void ResetRecordingManuallyCallback()
         {
             OnGameStateChange?.Invoke();
+        }
+
+        public static void LoadPluginUnitInfo(string key)
+        {
+            string dirPath = Path.Combine(Paths.PluginPath, $"NOBlackBox\\PluginUnitInfo\\{key}");
+            string defaultPath = Path.Combine(dirPath, "default.txt");
+            if (File.Exists(defaultPath))
+            {
+                Plugin.Logger?.LogDebug($"{defaultPath} exists.");
+                ParsePluginUnitInfo(key, defaultPath);
+            } else
+            {
+                Plugin.Logger?.LogDebug($"{defaultPath} DOES NOT exist.");
+            }
+            var extraPaths = GetTxtFilesExcludingDefault(dirPath);
+            if (extraPaths != null)
+            {
+                foreach (var path in extraPaths)
+                {
+                    Plugin.Logger?.LogDebug($"FOUND: {path}");
+                    ParsePluginUnitInfo(key, path);
+                }
+            }
+            Plugin.Logger?.LogDebug($"Loaded {NOBlackBoxUnitInfo[key].Keys.Count} {key} units.");
+        }
+
+        private static void ParsePluginUnitInfo(string PluginUnitInfoKey, string path)
+        {
+
+            if (!File.Exists(path))
+            {
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(path);
+            foreach (string line in lines)
+            {
+                string[] split = line.Split(",");
+                string key = split[0];
+                NOBlackBoxUnitInfo[PluginUnitInfoKey][key] = split;
+                Plugin.Logger?.LogDebug($"{key} : {NOBlackBoxUnitInfo[PluginUnitInfoKey][key]}");
+            }
+        }
+
+        public static IEnumerable<string> GetTxtFilesExcludingDefault(string directoryPath)
+        {
+            if (string.IsNullOrWhiteSpace(directoryPath))
+                throw new ArgumentException("Directory path cannot be null or empty.", nameof(directoryPath));
+
+            if (!Directory.Exists(directoryPath))
+                throw new DirectoryNotFoundException($"Directory not found: {directoryPath}");
+
+            return Directory
+                .EnumerateFiles(directoryPath, "*.txt", SearchOption.TopDirectoryOnly)
+                .Where(file =>
+                    !string.Equals(
+                        Path.GetFileName(file),
+                        "default.txt",
+                        StringComparison.OrdinalIgnoreCase));
         }
     }
 }

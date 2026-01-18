@@ -1,0 +1,5 @@
+ShardClassCorvette,Sea+Watercraft+Medium+Warship,0,0
+DynamoClassDestroyer,Sea+Watercraft+Medium+Warship,0,0
+HyperionClassCarrier,Sea+Watercraft+Heavy+AircraftCarrier,0,0
+AnnexClassCarrier,Sea+Watercraft+Heavy+AircraftCarrier,0,0
+OTB-31landingcraft,Sea+Watercraft,0,0

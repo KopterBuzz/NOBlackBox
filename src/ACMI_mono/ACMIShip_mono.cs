@@ -10,6 +10,7 @@ namespace NOBlackBox
 {
     internal class ACMIShip_mono : ACMIUnit_mono
     {
+        /*
         private static readonly Dictionary<string, string> TYPES = new()
         {
             { "Shard Class Corvette", "Sea+Watercraft+Medium+Warship" },
@@ -25,7 +26,7 @@ namespace NOBlackBox
             { "Dynamo Class Destroyer", 50000 },
             { "Hyperion Class Carrier", 15000 }
         };
-
+        */
         private Unit?[] lastTarget;
         private Ship ship;
 
@@ -39,13 +40,18 @@ namespace NOBlackBox
             base.canTarget = true;
             lastTarget = new Unit?[Math.Min(10, ship.weaponStations.Count)];
             Faction? faction = base.unit.NetworkHQ?.faction;
+            string[] info = { "Default", "Sea+Watercraft" };
+            if (Plugin.NOBlackBoxUnitInfo["ships"].ContainsKey(ship.definition.unitName))
+            {
+                info = Plugin.NOBlackBoxUnitInfo["ships"][ship.definition.unitName];
+            }
             props = new Dictionary<string, string>()
             {
                 { "Name", base.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "CallSign", $"{ship.definition.unitName} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
-                { "Type", TYPES.GetValueOrDefault(ship.definition.unitName, "Sea+Watercraft") },
+                { "Type", info[1] },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

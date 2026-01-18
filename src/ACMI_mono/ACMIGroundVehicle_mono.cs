@@ -10,6 +10,7 @@ namespace NOBlackBox
 {
     internal class ACMIGroundVehicle_mono : ACMIUnit_mono
     {
+        /*
         private readonly static Dictionary<string, string> TYPES = new()
         {
             { "HLT", "Ground+Heavy+Vehicle" },
@@ -67,6 +68,7 @@ namespace NOBlackBox
             { "Wreck MBT", "Ground+Heavy+Vehicle" }
 
 		};
+        
 
         private readonly static Dictionary<string, int> RANGE = new()
         {
@@ -79,6 +81,7 @@ namespace NOBlackBox
             { "AeroSentry SPAAG", 4000 },
             { "FGA-57 Anvil", 5500 }
         };
+        */
 
         private Unit? lastTarget;
 
@@ -91,7 +94,14 @@ namespace NOBlackBox
             lastState = unit.unitState;
             Faction? faction = base.unit.NetworkHQ?.faction;
 
-            if (new[] {"SAM","RDR","SPAAG"}.Any(c => unit.definition.code.Contains(c)))
+            string[] info = { "Default", "Ground" };
+            if (Plugin.NOBlackBoxUnitInfo["vehicles"].ContainsKey(unit.definition.unitName))
+            {
+                info = Plugin.NOBlackBoxUnitInfo["vehicles"][unit.definition.unitName];
+                Plugin.Logger?.LogDebug($"UNIT {unit.definition.unitName} TYPE: {info[1]}");
+            }
+
+            if (new[] {"SAM","RDR","SPAAG","AAA","AA"}.Any(c => unit.definition.code.Contains(c)))
             {
                 base.destroyedEvent = true;
             }
@@ -102,7 +112,7 @@ namespace NOBlackBox
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "CallSign", $"{unit.definition.code} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
-                { "Type", TYPES.GetValueOrDefault(unit.definition.unitName, "Ground") },
+                { "Type", info[1]},
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);

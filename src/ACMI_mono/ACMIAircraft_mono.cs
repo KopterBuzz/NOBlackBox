@@ -8,6 +8,7 @@ namespace NOBlackBox
 {
     internal class ACMIAircraft_mono : ACMIUnit_mono
     {
+        /*
         private readonly static Dictionary<string, string> TYPES = new()
         {
             { "CI-22", "Air+FixedWing" },
@@ -22,6 +23,7 @@ namespace NOBlackBox
             { "UH-90", "Air+Rotorcraft" },
             { "A-19", "Air+FixedWing" }
         };
+        */
 
         private bool lastGear = false;
         private bool lastRadar = false;
@@ -51,13 +53,18 @@ namespace NOBlackBox
             base.canTarget = true;
             lastState = aircraft.unitState;
             Faction? faction = this.unit.NetworkHQ?.faction;
+            string[] info = { "Default", "Air" };
+            if (Plugin.NOBlackBoxUnitInfo["aircraft"].ContainsKey(aircraft.definition.code))
+            {
+                info = Plugin.NOBlackBoxUnitInfo["aircraft"][unit.definition.code];
+            }
             props = new Dictionary<string, string>()
             {
                 { "Name", this.unit.definition.unitName },
                 { "Coalition", faction?.factionName ?? "Neutral" },
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
                 { "Debug", lastState.ToString()},
-                { "Type", TYPES.GetValueOrDefault(aircraft.definition.code, "Air")},
+                { "Type", info[1]},
                 { "CallSign", $"{aircraft.definition.code} {tacviewId:X}" }
             };
             if (aircraft.Player != null)
