@@ -47,7 +47,7 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.8.0" },
+                { "DataRecorder", $"NOBlackBox 0.3.8.1" },
                 { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
 				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
