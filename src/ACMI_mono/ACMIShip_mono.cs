@@ -40,11 +40,18 @@ namespace NOBlackBox
             base.canTarget = true;
             lastTarget = new Unit?[Math.Min(10, ship.weaponStations.Count)];
             Faction? faction = base.unit.NetworkHQ?.faction;
-            string[] info = { "Default", "Sea+Watercraft" };
+            string[] info = { "Default", "Sea+Watercraft", "0", "0" };
             if (Plugin.NOBlackBoxUnitInfo["ships"].ContainsKey(ship.definition.unitName))
             {
                 info = Plugin.NOBlackBoxUnitInfo["ships"][ship.definition.unitName];
             }
+            int range1 = 0;
+            int range2 = 0;
+            int winningRange = 0;
+            int.TryParse(info[2], out range1);
+            int.TryParse(info[3], out range2);
+            if (range1 > range2) { winningRange = range1; } else { winningRange = range2; }
+
             props = new Dictionary<string, string>()
             {
                 { "Name", base.unit.definition.unitName },
@@ -52,6 +59,7 @@ namespace NOBlackBox
                 { "CallSign", $"{ship.definition.unitName} {tacviewId:X}"},
                 { "Color", faction == null ? "Green" : (faction.factionName == "Boscali" ? "Blue" : "Red") },
                 { "Type", info[1] },
+                { "EngagementRange", winningRange.ToString(CultureInfo.InvariantCulture) },
                 { "Debug", lastState.ToString()}
             };
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
