@@ -2,18 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using BepInEx;
+using BepInEx.Bootstrap;
 using BepInEx.Logging;
-using Mirage;
-using NuclearOption.DedicatedServer;
-using NuclearOption.MissionEditorScripts;
 using NuclearOption.Networking;
-using NuclearOption.SavedMission;
-using NuclearOption.SceneLoading;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 #if BEP6
 using BepInEx.Unity.Mono;
@@ -22,12 +15,13 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.1")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.2")]
     [BepInProcess("NuclearOption.exe")]
     [BepInProcess("NuclearOptionServer.exe")]
     internal class Plugin : BaseUnityPlugin
     {
-        internal static new ManualLogSource ?Logger;
+
+        internal static new ManualLogSource? Logger;
         internal static GameObject ?recorderMono;
         internal static bool isRecording = false;
         internal static GameObject ?autoSaveCountDown;
@@ -52,10 +46,7 @@ namespace NOBlackBox
             { "aircraft",new Dictionary<string, string[]>() },
             { "vehicles",new Dictionary<string, string[]>() },
             { "ships",new Dictionary<string, string[]>() },
-            { "missiles",new Dictionary<string, string[]>() },
-            { "buildings",new Dictionary<string, string[]>() },
-            { "otherUnits",new Dictionary<string, string[]>() },
-            { "scenery",new Dictionary<string, string[]>() }
+            { "missiles",new Dictionary<string, string[]>() }
         };
 
 
@@ -65,6 +56,14 @@ namespace NOBlackBox
         }
         private void Awake()
         {
+            GameObject managerObject = Chainloader.ManagerObject;
+            bool flag = managerObject != null;
+            if (flag)
+            {
+                managerObject.hideFlags = HideFlags.HideAndDontSave;
+                global::UnityEngine.Object.DontDestroyOnLoad(managerObject);
+                Logger?.LogWarning("Force Hid ManagerGameObject");
+            }
             Configuration.InitSettings(Config);
             if (Configuration.EnableLogging.Value == true)
             {
@@ -202,7 +201,7 @@ namespace NOBlackBox
 
         public static void LoadPluginUnitInfo(string key)
         {
-            string dirPath = Path.Combine(Paths.PluginPath, $"NOBlackBox\\PluginUnitInfo\\{key}");
+            string dirPath = Path.Combine(Paths.PluginPath, $"NOBlackBox/PluginUnitInfo/{key}");
             string defaultPath = Path.Combine(dirPath, "default.txt");
             if (File.Exists(defaultPath))
             {

@@ -27,7 +27,7 @@ namespace NOBlackBox
                 Directory.CreateDirectory(dir);
             }
 
-            string basename = dir + DateTime.Now.ToString("s").Replace(":", "-");
+            string basename = Path.Combine(dir, DateTime.Now.ToString("s").Replace(":", "-"));
             basename += "_" + MissionManager.CurrentMission.Name + "_" + MapSettingsManager.i.MapLoader.CurrentMap.Path;
             filename = basename + ".acmi";
             int postfix = 0;
@@ -47,7 +47,7 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.8.1" },
+                { "DataRecorder", $"NOBlackBox 0.3.8.2" },
                 { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
 				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
