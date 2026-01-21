@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>NOBlackBox</AssemblyName>
-    <Product>NOBlackbox</Product>
+    <Product>NOBlackBox</Product>
     <Description>Tacview recording for Nuclear Option</Description>
-    <Version>1.0.0</Version>
+    <Version>0.3.9.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
@@ -19,6 +19,10 @@
     <NoWarn>BepInEx002</NoWarn>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Configurations>Debug-Bep6;Release-Bep6;Debug-Bep5;Release-Bep5</Configurations>
+    <Authors>KopterBuzz</Authors>
+    <Company>KopterBuzz</Company>
+    <PackageId>NOBlackBox</PackageId>
+    <Title>NOBlackBox</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug-Bep5' Or '$(Configuration)'=='Debug-Bep6'">

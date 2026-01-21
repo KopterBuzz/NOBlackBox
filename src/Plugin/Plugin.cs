@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -15,11 +16,17 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.2")]
+    [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     [BepInProcess("NuclearOption.exe")]
     [BepInProcess("NuclearOptionServer.exe")]
     internal class Plugin : BaseUnityPlugin
     {
+        internal string latestReleaseVersion;
+        internal Version latestVersion;
+        internal Version pluginVersion = new Version(MyPluginInfo.PLUGIN_VERSION);
+        internal bool versionCheckerFinished = false;
+        internal bool versionChecked = false;
+        internal bool versionIsLatest = false;
 
         internal static new ManualLogSource? Logger;
         internal static GameObject ?recorderMono;
@@ -55,7 +62,7 @@ namespace NOBlackBox
         {
             //Logger = base.Logger;
         }
-        private void Awake()
+        private async Task Awake()
         {
             GameObject managerObject = Chainloader.ManagerObject;
             bool flag = managerObject != null;
@@ -83,12 +90,43 @@ namespace NOBlackBox
             waitTime = MathF.Round(waitTime, 3);
             Logger?.LogDebug($"Wait Time = {waitTime}");
 
+            FetchLatestRelease();
+
+
+            Logger?.LogDebug($"LATEST RELEASE TAG: {tag}");
+
             OnGameStateChange += ResetRecordingManually;
             GameManager.OnGameStateChanged.AddListener(OnGameStateChange);
 
         }
         private void Update()
         {
+
+            if (versionCheckerFinished && !versionChecked)
+            {
+                try
+                {
+                    latestVersion = new Version(latestReleaseVersion);
+
+                    if (latestVersion > pluginVersion)
+                    {
+                        Logger?.LogWarning($"CURRENT VERSION {pluginVersion} IS NOT THE LATEST RELEASE! NEW VERSION {latestVersion} AVAILABLE");
+                        versionIsLatest = false;
+                    } else
+                    {
+                        Logger?.LogWarning($"PLUGIN VERSION {pluginVersion} IS UP TO DATE!");
+                        versionIsLatest = true;
+                    }
+
+                    versionChecked = true;
+                }
+                catch (Exception ex) 
+                {
+                    versionChecked = true;
+                    Logger?.LogError(ex);
+                }
+            }
+
             if (Configuration._GenerateHeightMapKey.Value.IsDown())
             {
                 RaycastHeightmapGenerator.Generate();
@@ -257,6 +295,21 @@ namespace NOBlackBox
                         Path.GetFileName(file),
                         "default.txt",
                         StringComparison.OrdinalIgnoreCase));
+        }
+
+        private async void FetchLatestRelease()
+        {
+            try
+            {
+                var tag = await VersionChecker.GetLatestReleaseTagAsync();
+                Logger?.LogInfo($"Latest release: {tag}");
+                latestReleaseVersion = tag;
+                versionCheckerFinished = true;
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogError(ex);
+            }
         }
     }
 }

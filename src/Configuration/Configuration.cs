@@ -14,6 +14,8 @@ namespace NOBlackBox
         internal const string VisualSettings = "Visual Settings";
         internal const string DeveloperFeatures = "Developer Features";
 
+        internal const bool DefaultCheckForUpdates = true;
+
         internal const int DefaultUpdateRate = 5;
 
         internal const float DefaultUnitDiscoveryDelta = 1f;
@@ -41,7 +43,7 @@ namespace NOBlackBox
         internal const bool DefaultCompressIDs = false;
         internal const bool DefaultRecordExtraTelemetry = true;
 
-        internal const bool DefaultEnableLogging = false;
+        internal const bool DefaultEnableLogging = true;
         
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
         internal const int DefaultMetersPerScan = 4;
@@ -80,6 +82,8 @@ namespace NOBlackBox
 
 #pragma warning disable CS8618
         private static ConfigEntry<int> _UpdateRate;
+
+        internal static ConfigEntry<bool> CheckForUpdates;
 
         internal static ConfigEntry<float> unitDiscoveryDelta;
         internal static ConfigEntry<float> bulletSimDiscoveryDelta;
@@ -420,6 +424,9 @@ namespace NOBlackBox
 
             EnableLogging = config.Bind(DeveloperFeatures, "EnableLogging", DefaultEnableLogging, "Toggle Logging. Default: false");
             Plugin.Logger?.LogDebug($"EnableLogging = {EnableLogging.Value}");
+
+            CheckForUpdates = config.Bind(GeneralSettings, "Check for Updates", DefaultCheckForUpdates, "Automatically check if a newer release is available. Default: true");
+            Plugin.Logger?.LogDebug($"CheckForUpdates = {CheckForUpdates.Value}");
 
         }
     }
