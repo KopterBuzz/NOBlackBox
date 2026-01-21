@@ -43,10 +43,11 @@ namespace NOBlackBox
 
         public static Dictionary<string, Dictionary<string, string[]>> NOBlackBoxUnitInfo = new()
         {
-            { "aircraft",new Dictionary<string, string[]>() },
-            { "vehicles",new Dictionary<string, string[]>() },
-            { "ships",new Dictionary<string, string[]>() },
-            { "missiles",new Dictionary<string, string[]>() }
+            { "aircraft",   new Dictionary<string, string[]>() },
+            { "missiles",   new Dictionary<string, string[]>() },
+            { "ships",      new Dictionary<string, string[]>() },
+            { "vehicles",   new Dictionary<string, string[]>() }
+
         };
 
 
