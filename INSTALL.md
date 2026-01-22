@@ -25,14 +25,12 @@ The mod works with the following loaders:
 	You need the latest "BepInEx_win_x64" release of BepInEx 5.
 
 	[BepInEx Installation Guide.](https://docs.bepinex.dev/articles/user_guide/installation/index.html#where-to-download-bepinex)
+	
+	NOTE: If you are running the game on Linux with Proton, you need to install the same "BepInEx_win_x64", and add this launch option in Steam:
+	```WINEDLLOVERRIDES="winhttp.dll=n,b" %command%```
 2. After installing BepInEx, run the game once so BepInEx can generate its default directory and file structure.
-3. After BepInEx has been installed, change this setting in BepInEx.cfg:
-```
-[Chainloader]
-HideManagerGameObject = true
-```
-4. Copy the NOBlackBox folder to the game's BepInEx plugins folder.
-5. Enjoy :)
+3. Copy the NOBlackBox folder to the game's BepInEx plugins folder.
+4. Enjoy :)
 
 ## The Tacview assets
 ###### Unlike previous versions of Tacview, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
