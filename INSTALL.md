@@ -37,8 +37,9 @@ In case you want to install the mod manually, or install it on a Dedicated Serve
 	NOTE: If you are running the game on Linux with Proton, you need to install the same "BepInEx_win_x64", and add this launch option in Steam:
 	```WINEDLLOVERRIDES="winhttp.dll=n,b" %command%```
 2. After installing BepInEx, run the game once so BepInEx can generate its default directory and file structure.
-3. Copy the NOBlackBox folder to the game's BepInEx plugins folder.
-4. Enjoy :)
+3. Create a NOBlackBox folder inside Nuclear Option/BepInEx/Plugins folder.
+4. Copy ALL of the unzipped NOBlackBox files into the newly created folder.
+5. Launch the game and Enjoy :)
 
 ## The Tacview assets
 ###### Unlike previous versions of Tacview, If you have 1.9.5 or newer, you no longer need to manually switch maps for Tacview.
