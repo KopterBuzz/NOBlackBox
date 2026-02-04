@@ -1,11 +1,11 @@
 # Installation and use of NOBlackBox
-[1 The mod](./INSTALL.md#the-mod)
+[1 Installing the mod The mod](#installing-the-mod)
 
-[2 The Tacview assets](./INSTALL.md#the-tacview-assets)
+[2 The Tacview assets](#the-tacview-assets)
 
-[3 Using NOBlackBox](./INSTALL.md#using-noblackbox)
+[3 Using NOBlackBox](#using-noblackbox)
 
-[4 Configuring NoBlackBox](./INSTALL.md#configuring-noblackbox)
+[4 Configuring NoBlackBox](#configuring-noblackbox)
 
 
 ## Installing NOBlackBox
