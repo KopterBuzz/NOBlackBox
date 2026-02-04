@@ -8,12 +8,20 @@
 [4 Configuring NoBlackBox](./INSTALL.md#configuring-noblackbox)
 
 
-## The mod
-The mod works with the following loaders:
+## Installing NOBlackBox
+I recommend installing via a Mod Manager.
 
-	- BepInEx 5
+The mod is available on the following Mod Managers:
 
-### Installation with BepInEx
+[NO MM](https://github.com/Combat787/NuclearOptionModManager) - [Download](https://github.com/Combat787/NuclearOptionModManager/releases/latest)
+
+[Yellowcake](https://github.com/NaghDiefallah/Yellowcake) - [Download](https://github.com/NaghDiefallah/Yellowcake/releases/latest)
+
+You may still need to manually install Tacview Assets, for which please continue to [this section](#the-tacview-assets)
+
+### Manual Installation
+
+In case you want to install the mod manually, or install it on a Dedicated Server, follow the below instructions.
 
 ###### It is known that this mod may not work if you are running Nuclear Option or Nuclear Option Dedicated Server on Windows with the Built-In Administrator account.
 ###### If you are facing this issue I highly recommend you stop using the Built-In Administrator to run the game.
