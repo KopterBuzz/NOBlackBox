@@ -13,7 +13,7 @@ I recommend installing via a Mod Manager.
 
 The mod is available on the following Mod Managers:
 
-[NO MM](https://github.com/Combat787/NuclearOptionModManager) - [Download](https://github.com/Combat787/NuclearOptionModManager/releases/latest)
+[NOMM](https://github.com/Combat787/NuclearOptionModManager) - [Download](https://github.com/Combat787/NuclearOptionModManager/releases/latest)
 
 [Yellowcake](https://github.com/NaghDiefallah/Yellowcake) - [Download](https://github.com/NaghDiefallah/Yellowcake/releases/latest)
 
