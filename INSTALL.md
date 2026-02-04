@@ -1,5 +1,5 @@
 # Installation and use of NOBlackBox
-[1 Installing the mod The mod](#installing-the-mod)
+[1 Installing the mod The mod](#installing-noblackbox)
 
 [2 The Tacview assets](#the-tacview-assets)
 
