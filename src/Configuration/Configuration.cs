@@ -1,8 +1,10 @@
-﻿using BepInEx.Configuration;
-using System.Linq;
-using UnityEngine;
-using System;
+﻿using System;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using BepInEx;
+using BepInEx.Configuration;
+using UnityEngine;
 
 namespace NOBlackBox
 {
@@ -252,7 +254,7 @@ namespace NOBlackBox
             }
 
 
-            string DefaultOutputPath = Application.persistentDataPath + "/Replays/";
+            string DefaultOutputPath = Path.Combine(Paths.PluginPath, "NOBlackBox/Replays");
             _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
             Plugin.Logger?.LogDebug($"OutputPath = {_OutputPath.Value}");
 
