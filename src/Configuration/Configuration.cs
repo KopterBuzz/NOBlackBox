@@ -254,7 +254,7 @@ namespace NOBlackBox
             }
 
 
-            string DefaultOutputPath = Path.Combine(Paths.PluginPath, "NOBlackBox/Replays");
+            string DefaultOutputPath = Path.Combine(Paths.PluginPath, $"NOBlackBox/Replays");
             _OutputPath = config.Bind(GeneralSettings, "OutputPath", DefaultOutputPath, "The location where Tacview files will be saved. Must be a valid folder path.");
             Plugin.Logger?.LogDebug($"OutputPath = {_OutputPath.Value}");
 

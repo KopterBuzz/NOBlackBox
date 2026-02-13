@@ -24,7 +24,7 @@ Linebreaker SAM,Ground+Medium+Vehicle+AntiAircraft,8000,0
 AeroSentry SPAAG,Ground+Medium+Vehicle+AntiAircraft,5000,0
 FGA-57 Anvil,Ground+Medium+Vehicle+AntiAircraft,4500,0
 Hexhound GMG,Ground+Medium+Vehicle,0,0
-Hexhound SAM,Ground+Medium+AntiAircraft+Vehicle,0,0
+Hexhound SAM,Ground+Medium+AntiAircraft+Vehicle,2000,0
 M12 Jackknife,Ground+Medium+Vehicle,0,0
 CRAM Trailer,Ground+Medium+AntiAircraft+Vehicle,6000,0
 Laser CIWS Trailer,Ground+Medium+AntiAircraft+Vehicle,6000,0
@@ -35,7 +35,7 @@ MSV Flatbed,Ground+Heavy+Vehicle,0,0
 MSV Tractor,Ground+Heavy+Vehicle,0,0
 MSV Fuel Tanker,Ground+Heavy+Vehicle,0,0
 MSV Munitions,Ground+Heavy+Vehicle,0,0
-MSV MRAP,Ground+Heavy+Vehicle,0,0
+MSV MRAP,Ground+Heavy+Vehicle,6000,0
 MSV Fire Control,Ground+Heavy+Vehicle,0,0
 HLT Fire Control,Ground+Heavy+Vehicle,0,0
 Boltstrike RAM45 Launcher,Ground+AntiAircraft+Vehicle,0,0
@@ -43,9 +43,9 @@ Radar Container,Misc+Container,0,0
 MSV Nuclear Ballistic Missile Launcher,Ground+Heavy+Vehicle,0,0
 MSV Ballistic Missile Launcher,Ground+Heavy+Vehicle,0,0
 MSV R9 Stratolance Launcher,Ground+AntiAircraft+Vehicle,0,0
-MSV CRAM,Ground+Heavy+Vehicle,0,0
-MSV LADS,Ground+Heavy+Vehicle,0,0
-MSV Radar,Ground+Heavy+Vehicle,0,0
+MSV CRAM,Ground+Heavy+Vehicle,6000,0
+MSV LADS,Ground+Heavy+Vehicle,6000,0
+MSV Radar,Ground+Heavy+Vehicle,0,50000
 Fuel Bladder 1500L,Misc+Container,0,0
 Fuel Bladder 6000L,Misc+Container,0,0
 Fuel Bladder 10,000L,Misc+Container,0,0

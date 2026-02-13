@@ -1,0 +1,2 @@
+Emplacement1_23mm,Ground + Static + Building,4000,0
+Emplacement1_MANPADS,Ground + Static + Building,4000,0
