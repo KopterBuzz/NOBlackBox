@@ -65,7 +65,7 @@ Flight recording automatically starts when a mission is loaded, and automaticall
 
 The recording will be saved to disk when you go back to the main menu.
 
-You will find the Tacview recordings in the <path to game's folder in your steam library>\BepInEx\plugins\Replays directory.
+You will find the Tacview recordings in the <path to game's folder in your steam library>\BepInEx\plugins\NOBlackBox\Replays directory.
 
 ## Configuring NOBlackBox
 All configurable settings conform to BepInEx Configuration Standards.
@@ -139,7 +139,7 @@ Default value: 1
 ### OutputPath
 The location where Tacview files will be saved. Must be a valid folder path.
 
-Default value: <path to game's folder in your steam library>\BepInEx\plugins\Replays
+Default value: <path to game's folder in your steam library>\BepInEx\plugins\NOBlackBox\Replays
 
 ### AutoSaveInterval
 
