@@ -67,18 +67,6 @@ The recording will be saved to disk when you go back to the main menu.
 
 You will find the Tacview recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
 
-## Using the Heightmap Generator
-
-You can use NOBlackBox to generate Tacview-compatible elevation maps and textures for your Terrains.
-
-The Heightmap Generator is DISABLED by default. To Enable it, set EnableHeightmapGenerator Configuration Setting to `true`.
-
-To start the Heightmap Generator, load any mission, then once the mission has loaded, press the GenerateHeightmapKey, which is F10 by default.
-
-Please note that with the default settings this will take 2-3 minutes, if you increased the resolution and the sampling rate, it can take significantly longer with no real benefit to quality.
-
-ALSO THERE IS A MEMORY LEAK INTRODUCED BY THE TEXTURE GENERATOR, QUIT THE GAME IMMEDIATELY AFTER THE PROCESS FINISHED OR IT WILL EAT ALL YOUR RAM.
-
 ## Configuring NOBlackBox
 All configurable settings conform to BepInEx Configuration Standards.
 
@@ -225,4 +213,16 @@ Sample rate of the Heightmap Generator. Must be at least 1 (this will be very sl
 ### GenerateHeightMapKey
 
 Key binding for the hotkey that triggers the Heightmap Generator.
+
+## Using the Heightmap Generator Developer Feature
+
+You can use NOBlackBox to generate Tacview-compatible elevation maps and textures for your Terrains.
+
+The Heightmap Generator is DISABLED by default. To Enable it, set EnableHeightmapGenerator Configuration Setting to `true`.
+
+To start the Heightmap Generator, load any mission, then once the mission has loaded, press the GenerateHeightmapKey, which is F10 by default.
+
+Please note that with the default settings this will take 2-3 minutes, if you increased the resolution and the sampling rate, it can take significantly longer with no real benefit to quality.
+
+ALSO THERE IS A MEMORY LEAK INTRODUCED BY THE TEXTURE GENERATOR, QUIT THE GAME IMMEDIATELY AFTER THE PROCESS FINISHED OR IT WILL EAT ALL YOUR RAM.
 
