@@ -76,16 +76,6 @@ The Following parameters are configurable in BepInEx/config/xzy.KopteBuzz.NOBlac
 
 Default values are automatically set.
 
-### UpdateRate
-
-DEPRECATED USE THE REST OF THE UPDATE AND DISCOVERY RATE SETTINGS TO CUSTOMIZE UPDATE FREQUENCIES
-
-The number of times per second NOBlackBox will record events. Max Value: 1000
-
-Please do note that higher values impact performance.
-
-Default value: 5
-
 ### Unit Discovery Rate
 
 Time interval in seconds to discover Units.
