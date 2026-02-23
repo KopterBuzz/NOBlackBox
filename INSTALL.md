@@ -163,7 +163,7 @@ The location where Tacview files will be saved. Must be a valid folder path.
 
 MUST END WITH /
 
-Default value: %LocalAppData%Low/Shockfront/NuclearOption/Replays/
+Default value: <path to game's folder in your steam library>\BepInEx\plugins
 
 ### AutoSaveInterval
 
