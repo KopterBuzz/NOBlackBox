@@ -15,8 +15,6 @@ The mod is available on the following Mod Managers:
 
 [NOMM](https://github.com/Combat787/NuclearOptionModManager) - [Download](https://github.com/Combat787/NuclearOptionModManager/releases/latest)
 
-[Yellowcake](https://github.com/NaghDiefallah/Yellowcake) - [Download](https://github.com/NaghDiefallah/Yellowcake/releases/latest)
-
 You may still need to manually install Tacview Assets, for which please continue to [this section](#the-tacview-assets)
 
 ### Manual Installation
