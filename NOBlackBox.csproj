@@ -57,16 +57,20 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' == ''">..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' != ''">$(NUCLEAR_OPTION_ROOT)\NuclearOption_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' == ''">..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' != ''">$(NUCLEAR_OPTION_ROOT)\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Mirage">
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' == ''">..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\Mirage.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' != ''">$(NUCLEAR_OPTION_ROOT)\NuclearOption_Data\Managed\Mirage.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' == ''">..\..\Program Files (x86)\Steam\steamapps\common\Nuclear Option\NuclearOption_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath Condition="'$(NUCLEAR_OPTION_ROOT)' != ''">$(NUCLEAR_OPTION_ROOT)\NuclearOption_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

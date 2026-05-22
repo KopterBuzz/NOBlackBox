@@ -36,6 +36,8 @@ namespace NOBlackBox
 
         private Action? OnGameStateChange;
 
+        internal static RTTTelemetryServer? rttServer;
+
         internal static Dictionary<string, List<string>> aircraftInfo;
         internal static Dictionary<string, List<string>> groundInfo;
         internal static Dictionary<string, List<string>> missileInfo;
@@ -69,6 +71,30 @@ namespace NOBlackBox
             if (Configuration.EnableLogging.Value == true)
             {
                 Logger = base.Logger;
+            }
+
+            if (Configuration.LiveTelemetryEnabled.Value)
+            {
+                try
+                {
+                    rttServer = new RTTTelemetryServer(
+                        Configuration.LiveTelemetryPort.Value,
+                        Configuration.LiveTelemetryBindAddress.Value,
+                        Configuration.LiveTelemetryMaxClients.Value,
+                        Configuration.LiveTelemetryClientQueueLimit.Value,
+                        Configuration.LiveTelemetryPassword.Value,
+                        Logger
+                    );
+                    rttServer.Start();
+                    Logger?.LogInfo($"RTT server started on " +
+                        $"{Configuration.LiveTelemetryBindAddress.Value}:" +
+                        $"{Configuration.LiveTelemetryPort.Value}");
+                }
+                catch (Exception ex)
+                {
+                    Logger?.LogError($"Failed to start RTT server: {ex.Message}");
+                    rttServer = null;
+                }
             }
 
             foreach (string key in NOBlackBoxUnitInfo.Keys)
@@ -188,6 +214,12 @@ namespace NOBlackBox
             {
                 GameObject.Destroy(obj);
             }
+        }
+
+        private void OnDestroy()
+        {
+            rttServer?.Dispose();
+            rttServer = null;
         }
 
         private void ResetRecordingManually()

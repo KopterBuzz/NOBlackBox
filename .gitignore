@@ -7,6 +7,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Local build overrides (contains machine-specific paths)
+Directory.Build.props
+
 # User-specific files
 *.rsuser
 *.suo

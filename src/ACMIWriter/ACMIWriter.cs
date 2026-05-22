@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,13 +36,20 @@ namespace NOBlackBox
                 filename = basename + $" ({++postfix}).acmi";
 
             output = new MultiThreadedStreamWriter(File.CreateText(filename));
-            //sb = new StringBuilder();
             this.reference = reference;
             currentMapKey = MapSettingsManager.i.MapLoader.CurrentMap;
 
             Plugin.Logger?.LogDebug("MAP NAME IS " + currentMapKey.Path);
-            output.WriteLine("FileType=text/acmi/tacview");
-            output.WriteLine("FileVersion=2.2");
+
+            Plugin.rttServer?.BeginSession();
+
+            string fileTypeLine = "FileType=text/acmi/tacview";
+            output.WriteLine(fileTypeLine);
+            Plugin.rttServer?.PublishLine(fileTypeLine, replay: true);
+
+            string fileVerLine = "FileVersion=2.2";
+            output.WriteLine(fileVerLine);
+            Plugin.rttServer?.PublishLine(fileVerLine, replay: true);
 
             Dictionary<string, string> initProps = new()
             {
@@ -55,16 +63,10 @@ namespace NOBlackBox
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
-            
-            /*
-            if (mission.missionSettings.description != null)
-            {
-                string briefing = mission.missionSettings.description.Replace(",", "\\,");
-                if (briefing != "")
-                    initProps.Add("Briefing", briefing);
-            }
-            */
-            output.WriteLine($"0,{StringifyProps(initProps)}");
+
+            string metadataLine = $"0,{StringifyProps(initProps)}";
+            output.WriteLine(metadataLine);
+            Plugin.rttServer?.PublishLine(metadataLine, replay: true);
             output.Flush();
 
             lastFlushTime = DateTime.Now;
@@ -155,14 +157,19 @@ namespace NOBlackBox
 
         internal void WriteLine(string line)
         {
+            if (line.StartsWith("#"))
+            {
+                Plugin.rttServer?.PublishFlushMarker();
+            }
+
             if ((DateTime.Now - lastFlushTime).TotalSeconds > Configuration.AutoSaveInterval)
             {
                 output.Flush();
                 lastFlushTime = DateTime.Now;
-                //output.Close();
-                //output = new StreamWriter(filename, append: true);
             }
             output.WriteLine(line);
+
+            Plugin.rttServer?.PublishLine(line, replay: false);
         }
 
         internal void Flush()
@@ -170,8 +177,15 @@ namespace NOBlackBox
             output.Flush();
         }
 
+        private int _closed;
+
         internal async void Close()
         {
+            if (Interlocked.Exchange(ref _closed, 1) == 1)
+                return;
+
+            Plugin.rttServer?.EndSession(disconnectClients: true);
+
             output.Close();
             string zipPath = await ZipHelper.ZipFileAsync(filename);
             Plugin.Logger?.LogDebug($"saving compressed acmi {zipPath}");

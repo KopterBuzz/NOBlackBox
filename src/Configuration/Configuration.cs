@@ -42,6 +42,22 @@ namespace NOBlackBox
         internal const bool DefaultRecordExtraTelemetry = true;
 
         internal const bool DefaultEnableLogging = false;
+
+        internal const string LiveTelemetrySettings = "Real-Time Telemetry";
+
+        internal const bool DefaultLiveTelemetryEnabled = false;
+        internal const string DefaultLiveTelemetryBindAddress = "127.0.0.1";
+        internal const int DefaultLiveTelemetryPort = 42674;
+        internal const string DefaultLiveTelemetryPassword = "";
+        internal const int DefaultLiveTelemetryMaxClients = 4;
+        internal const int DefaultLiveTelemetryClientQueueLimit = 5000;
+
+        internal static ConfigEntry<bool> LiveTelemetryEnabled;
+        internal static ConfigEntry<string> LiveTelemetryBindAddress;
+        internal static ConfigEntry<int> LiveTelemetryPort;
+        internal static ConfigEntry<string> LiveTelemetryPassword;
+        internal static ConfigEntry<int> LiveTelemetryMaxClients;
+        internal static ConfigEntry<int> LiveTelemetryClientQueueLimit;
         
         internal const KeyCode DefaultGenerateHeightMapKey = KeyCode.F10;
         internal const int DefaultMetersPerScan = 4;
@@ -420,6 +436,32 @@ namespace NOBlackBox
 
             EnableLogging = config.Bind(DeveloperFeatures, "EnableLogging", DefaultEnableLogging, "Toggle Logging. Default: false");
             Plugin.Logger?.LogDebug($"EnableLogging = {EnableLogging.Value}");
+
+            LiveTelemetryEnabled = config.Bind(LiveTelemetrySettings, "LiveTelemetryEnabled",
+                DefaultLiveTelemetryEnabled, "Enable Real-Time Telemetry server.");
+            Plugin.Logger?.LogDebug($"LiveTelemetryEnabled = {LiveTelemetryEnabled.Value}");
+
+            LiveTelemetryBindAddress = config.Bind(LiveTelemetrySettings, "LiveTelemetryBindAddress",
+                DefaultLiveTelemetryBindAddress,
+                "IP address to bind. Use 0.0.0.0 for all interfaces (network access).");
+            Plugin.Logger?.LogDebug($"LiveTelemetryBindAddress = {LiveTelemetryBindAddress.Value}");
+
+            LiveTelemetryPort = config.Bind(LiveTelemetrySettings, "LiveTelemetryPort",
+                DefaultLiveTelemetryPort, "TCP port for Real-Time Telemetry (default 42674).");
+            Plugin.Logger?.LogDebug($"LiveTelemetryPort = {LiveTelemetryPort.Value}");
+
+            LiveTelemetryPassword = config.Bind(LiveTelemetrySettings, "LiveTelemetryPassword",
+                DefaultLiveTelemetryPassword, "RTT password (uses CRC-64-ECMA over UTF-16LE).");
+            Plugin.Logger?.LogDebug($"LiveTelemetryPassword = {LiveTelemetryPassword.Value}");
+
+            LiveTelemetryMaxClients = config.Bind(LiveTelemetrySettings, "LiveTelemetryMaxClients",
+                DefaultLiveTelemetryMaxClients, "Maximum concurrent Tacview client connections.");
+            Plugin.Logger?.LogDebug($"LiveTelemetryMaxClients = {LiveTelemetryMaxClients.Value}");
+
+            LiveTelemetryClientQueueLimit = config.Bind(LiveTelemetrySettings, "LiveTelemetryClientQueueLimit",
+                DefaultLiveTelemetryClientQueueLimit,
+                "Max queued lines per client before disconnect (per-client).");
+            Plugin.Logger?.LogDebug($"LiveTelemetryClientQueueLimit = {LiveTelemetryClientQueueLimit.Value}");
 
         }
     }
