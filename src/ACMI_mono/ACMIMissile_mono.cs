@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -124,7 +124,7 @@ namespace NOBlackBox
                 {
                     props.Add("LockedTarget", $"{GetTacviewIdOfUnit(missile.targetID.Id):X}");
 
-                    if (lastTarget != 0)
+                    if (lastTarget == 0)
                         props.Add("LockedTargetMode", "1");
                 }
                 else
