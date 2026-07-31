@@ -40,7 +40,7 @@ namespace NOBlackBox
         private Vector3 lastHead = Vector3.zero;
 
         Aircraft aircraft;
-        Aircraft localAircraft = null;
+        Aircraft? localAircraft;
 
         public virtual void Init(Aircraft aircraft)
         {
@@ -70,7 +70,7 @@ namespace NOBlackBox
             if (aircraft.Player != null)
             {
                 //props.Add("Pilot", aircraft.Player.PlayerName);
-                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.PlayerName}) {tacviewId:X}";
+                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.GetPlayerName().SanitizedName}) {tacviewId:X}";
                 if (Configuration.RecordSteamID.Value == true)
                 {
                     props.Add("Registration", aircraft.Player.SteamID.ToString());

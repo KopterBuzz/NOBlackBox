@@ -120,11 +120,11 @@ namespace NOBlackBox
             
             if (missile.targetID.Id != lastTarget)
             {
-                if (missile.targetID.Id != -1)
+                if (missile.targetID.IsValid)
                 {
                     props.Add("LockedTarget", $"{GetTacviewIdOfUnit(missile.targetID.Id):X}");
 
-                    if (lastTarget == -1)
+                    if (lastTarget != 0)
                         props.Add("LockedTargetMode", "1");
                 }
                 else
