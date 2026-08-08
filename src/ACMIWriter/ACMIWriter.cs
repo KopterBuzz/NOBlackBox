@@ -1,13 +1,11 @@
-using BepInEx.Logging;
-using NuclearOption.SavedMission;
-using NuclearOption.SceneLoading;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using NuclearOption.SavedMission;
+using NuclearOption.SceneLoading;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NOBlackBox
 {
@@ -47,15 +45,15 @@ namespace NOBlackBox
             {
                 { "ReferenceTime", reference.ToString("s") + "Z" },
                 { "DataSource", $"Nuclear Option {Application.version}" },
-                { "DataRecorder", $"NOBlackBox 0.3.8.2" },
+                { "DataRecorder", $"NOBlackBox 0.3.8.4" },
                 { "Author", Plugin.localPlayer?.name.Replace(",", "\\,") ?? "Server" },
                 { "RecordingTime", DateTime.Now.ToString("s") + "Z" },
-				{ "MapId", $"NuclearOption.{currentMapKey.Path}"},
+                { "MapId", $"NuclearOption.{currentMapKey.Path}"},
             };
 
             Mission mission = MissionManager.CurrentMission;
             initProps.Add("Title", mission.Name.Replace(",", "\\,"));
-            
+
             /*
             if (mission.missionSettings.description != null)
             {

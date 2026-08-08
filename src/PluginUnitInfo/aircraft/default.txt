@@ -9,3 +9,5 @@ VL-49,Air+Rotorcraft
 FS-20,Air+FixedWing
 UH-90,Air+Rotorcraft
 A-19,Air+FixedWing
+VT-7,Air+FixedWing
+AB-4,Air+FixedWing

@@ -45,7 +45,7 @@ namespace NOBlackBox
         public virtual void Init(Aircraft aircraft)
         {
             GameManager.GetLocalAircraft(out localAircraft);
-            if(localAircraft && localAircraft.persistentID == aircraft.persistentID) { base.unit = localAircraft; } else { base.unit = aircraft; }
+            if (localAircraft && localAircraft.persistentID == aircraft.persistentID) { base.unit = localAircraft; } else { base.unit = aircraft; }
             this.aircraft = (Aircraft)base.unit;
             base.unitId = aircraft.persistentID.Id;
             base.tacviewId = aircraft.persistentID.Id + 1;
@@ -70,11 +70,11 @@ namespace NOBlackBox
             if (aircraft.Player != null)
             {
                 //props.Add("Pilot", aircraft.Player.PlayerName);
-                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.PlayerName}) {tacviewId:X}";
+                props["CallSign"] = $"{aircraft.definition.code} ({aircraft.Player.GetPlayerName()}) {tacviewId:X}";
                 if (Configuration.RecordSteamID.Value == true)
                 {
                     props.Add("Registration", aircraft.Player.SteamID.ToString());
-                } 
+                }
             }
             Plugin.recorderMono.GetComponent<Recorder_mono>().invokeWriterUpdate(this);
             props = [];
@@ -84,7 +84,7 @@ namespace NOBlackBox
 
         public override void Update()
         {
-            
+
             base.destroyedEvent = !aircraft.IsLanded();
             if (!this.enabled || unit.disabled)
             {
@@ -117,7 +117,7 @@ namespace NOBlackBox
                 }
                 if (targets.Length > 1)
                 {
-                    
+
                     for (int i = 0; i < max; i++)
                     {
                         if (i == 0)
@@ -128,7 +128,7 @@ namespace NOBlackBox
                         {
                             lockedTargetString = $"LockedTarget{i:X}";
                         }
-                            props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID.Id):X}");
+                        props.Add(lockedTargetString, $"{GetTacviewIdOfUnit(targets[i].persistentID.Id):X}");
                     }
                 }
             }
@@ -139,16 +139,17 @@ namespace NOBlackBox
             float avgThrust = float.NaN;
 
             int count = aircraft.engines.Count;
-            for (int i = 0; i < aircraft.engines.Count;i++)
+            for (int i = 0; i < aircraft.engines.Count; i++)
             {
                 float thrust = aircraft.engines[i].GetThrust();
                 if (thrust != 0f)
                 {
                     avgThrust = avgThrust + thrust;
-                } else
+                }
+                else
                 {
                     count = count - 1;
-                } 
+                }
             }
             if (avgThrust != 0f)
             {
@@ -195,7 +196,7 @@ namespace NOBlackBox
 
             if (localAircraft && localAircraft.persistentID == aircraft.persistentID && CameraStateManager.cameraMode == CameraMode.cockpit && Configuration.RecordPilotHead.Value == true)
             {
-                
+
                 Camera camera = CameraStateManager.i.mainCamera;
 
                 Vector3 rot = camera.transform.localEulerAngles;
@@ -226,7 +227,7 @@ namespace NOBlackBox
 
             if (Configuration.RecordExtraTelemetry.Value == true)
             {
-               
+
                 if (lastThrottle != aircraft.GetInputs().throttle)
                 {
                     props.Add("Throttle", aircraft.GetInputs().throttle.ToString("0.##", CultureInfo.InvariantCulture));

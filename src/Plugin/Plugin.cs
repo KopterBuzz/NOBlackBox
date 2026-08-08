@@ -15,22 +15,22 @@ using BepInEx.Unity.Mono;
 
 namespace NOBlackBox
 {
-    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.2")]
+    [BepInPlugin("xyz.KopterBuzz.NOBlackBox", "NOBlackBox", "0.3.8.4")]
     [BepInProcess("NuclearOption.exe")]
     [BepInProcess("NuclearOptionServer.exe")]
     internal class Plugin : BaseUnityPlugin
     {
 
         internal static new ManualLogSource? Logger;
-        internal static GameObject ?recorderMono;
+        internal static GameObject? recorderMono;
         internal static bool isRecording = false;
-        internal static GameObject ?autoSaveCountDown;
-        internal static GameObject ?recordingIndicator;
+        internal static GameObject? autoSaveCountDown;
+        internal static GameObject? recordingIndicator;
         private float waitTime = 0.2f;
         private float timer = 0f;
         internal static int recordedScreenWidth, recordedScreenHeight;
         internal static float guiAnchorLeft, guiAnchorRight;
-        internal static BasePlayer ?localPlayer = null;
+        internal static BasePlayer? localPlayer = null;
 
         internal static bool recordingManually = false;
 
@@ -103,31 +103,32 @@ namespace NOBlackBox
                 recordingManually = true;
                 if (!isRecording)
                 {
-                    
+
                     StartRecording();
                     if (isRecording)
                     {
                         Logger?.LogDebug("RECORDING STARTED MANUALLY");
                     }
-                    
-                } else
+
+                }
+                else
                 {
                     StopRecording();
                     if (!isRecording)
                     {
                         Logger?.LogDebug("RECORDING STOPPED MANUALLY");
                     }
-                    
-                }    
+
+                }
             }
 
-            
+
 
             if (!isRecording && MissionManager.IsRunning && !recordingManually)
             {
                 StartRecording();
             }
-            
+
             if (isRecording && !MissionManager.IsRunning && !recordingManually)
             {
                 StopRecording();
@@ -156,7 +157,7 @@ namespace NOBlackBox
             recorderMono = new GameObject();
             recorderMono.AddComponent<Recorder_mono>();
             recorderMono.GetComponent<Recorder_mono>().enabled = true;
-            
+
 
             autoSaveCountDown = new GameObject();
             autoSaveCountDown.AddComponent<UIElements>();
@@ -208,7 +209,8 @@ namespace NOBlackBox
             {
                 Plugin.Logger?.LogDebug($"{defaultPath} exists.");
                 ParsePluginUnitInfo(key, defaultPath);
-            } else
+            }
+            else
             {
                 Plugin.Logger?.LogDebug($"{defaultPath} DOES NOT exist.");
             }

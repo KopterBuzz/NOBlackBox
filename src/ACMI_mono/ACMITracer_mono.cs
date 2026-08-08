@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -46,7 +46,7 @@ namespace NOBlackBox
 
         public virtual void LateUpdate()
         {
-            if (bullet.tracer == null || !bullet.tracer.activeSelf)
+            if (bullet.tracer == null || !bullet.tracer.gameObject.activeSelf)
             {
                 this.enabled = false;
                 base.enabled = false;
