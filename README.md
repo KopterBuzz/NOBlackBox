@@ -1,4 +1,7 @@
 # NOBlackBox
+
+# DISCLAIMER: DUE TO API CHANGES IN 0.34, THIS MOD CAUSES SEVERE PERFORMANCE ISSUES. WILL FIX, BUT TRY TO AVOID USE FOR THE TIME BEING.
+
 Mission Recorder for [Nuclear Option](https://store.steampowered.com/app/2168680/Nuclear_Option/)
 
 This is a mod project that makes it possible to record your game sessions and review/analyse them using [Tacview](https://www.tacview.net/).

@@ -15,8 +15,6 @@ The mod is available on the following Mod Managers:
 
 [NOMM](https://github.com/Combat787/NuclearOptionModManager) - [Download](https://github.com/Combat787/NuclearOptionModManager/releases/latest)
 
-[Yellowcake](https://github.com/NaghDiefallah/Yellowcake) - [Download](https://github.com/NaghDiefallah/Yellowcake/releases/latest)
-
 You may still need to manually install Tacview Assets, for which please continue to [this section](#the-tacview-assets)
 
 ### Manual Installation
@@ -65,19 +63,7 @@ Flight recording automatically starts when a mission is loaded, and automaticall
 
 The recording will be saved to disk when you go back to the main menu.
 
-You will find the Tacview recordings in the %localappdata%low\Shockfront\NuclearOption\Replays directory.
-
-## Using the Heightmap Generator
-
-You can use NOBlackBox to generate Tacview-compatible elevation maps and textures for your Terrains.
-
-The Heightmap Generator is DISABLED by default. To Enable it, set EnableHeightmapGenerator Configuration Setting to `true`.
-
-To start the Heightmap Generator, load any mission, then once the mission has loaded, press the GenerateHeightmapKey, which is F10 by default.
-
-Please note that with the default settings this will take 2-3 minutes, if you increased the resolution and the sampling rate, it can take significantly longer with no real benefit to quality.
-
-ALSO THERE IS A MEMORY LEAK INTRODUCED BY THE TEXTURE GENERATOR, QUIT THE GAME IMMEDIATELY AFTER THE PROCESS FINISHED OR IT WILL EAT ALL YOUR RAM.
+You will find the Tacview recordings in the <path to game's folder in your steam library>\BepInEx\plugins\NOBlackBox\Replays directory.
 
 ## Configuring NOBlackBox
 All configurable settings conform to BepInEx Configuration Standards.
@@ -87,16 +73,6 @@ As a result, you can install and use [BepInEx Configuration Manager](https://git
 The Following parameters are configurable in BepInEx/config/xzy.KopteBuzz.NOBlackBox.cfg. You have to load the mod at least once for the config file to exist.
 
 Default values are automatically set.
-
-### UpdateRate
-
-DEPRECATED USE THE REST OF THE UPDATE AND DISCOVERY RATE SETTINGS TO CUSTOMIZE UPDATE FREQUENCIES
-
-The number of times per second NOBlackBox will record events. Max Value: 1000
-
-Please do note that higher values impact performance.
-
-Default value: 5
 
 ### Unit Discovery Rate
 
@@ -161,9 +137,7 @@ Default value: 1
 ### OutputPath
 The location where Tacview files will be saved. Must be a valid folder path.
 
-MUST END WITH /
-
-Default value: %LocalAppData%Low/Shockfront/NuclearOption/Replays/
+Default value: <path to game's folder in your steam library>\BepInEx\plugins\NOBlackBox\Replays
 
 ### AutoSaveInterval
 
@@ -225,4 +199,16 @@ Sample rate of the Heightmap Generator. Must be at least 1 (this will be very sl
 ### GenerateHeightMapKey
 
 Key binding for the hotkey that triggers the Heightmap Generator.
+
+## Using the Heightmap Generator Developer Feature
+
+You can use NOBlackBox to generate Tacview-compatible elevation maps and textures for your Terrains.
+
+The Heightmap Generator is DISABLED by default. To Enable it, set EnableHeightmapGenerator Configuration Setting to `true`.
+
+To start the Heightmap Generator, load any mission, then once the mission has loaded, press the GenerateHeightmapKey, which is F10 by default.
+
+Please note that with the default settings this will take 2-3 minutes, if you increased the resolution and the sampling rate, it can take significantly longer with no real benefit to quality.
+
+ALSO THERE IS A MEMORY LEAK INTRODUCED BY THE TEXTURE GENERATOR, QUIT THE GAME IMMEDIATELY AFTER THE PROCESS FINISHED OR IT WILL EAT ALL YOUR RAM.
 
