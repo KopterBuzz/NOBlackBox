@@ -1,4 +1,4 @@
-# Installation and use of NOBlackBox
+# Installation and Usage of NOBlackBox
 [1 Installing NOBlackBox](#installing-noblackbox)
 
 [2 The Tacview assets](#the-tacview-assets)
