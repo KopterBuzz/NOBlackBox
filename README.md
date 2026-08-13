@@ -4,7 +4,7 @@ Mission Recorder for [Nuclear Option](https://store.steampowered.com/app/2168680
 
 This is a mod project that makes it possible to record your game sessions and review/analyse them using [Tacview](https://www.tacview.net/).
 
-For installation guide, please see the [installation guide](./INSTALL.md).
+For Installation and Usage Guide, please see the [installation guide](./INSTALL.md).
 
 For general discussion & chat, please join us on the [Nuclear Option Discord](https://discord.gg/nuclear-option-909034158205059082).
 
