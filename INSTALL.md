@@ -63,7 +63,7 @@ Flight recording automatically starts when a mission is loaded, and automaticall
 
 The recording will be saved to disk when you go back to the main menu.
 
-You will find the Tacview recordings in the <path to game's folder in your steam library>\BepInEx\plugins\NOBlackBox\Replays directory.
+You will find the Tacview recordings in the C:\Users\YOUR USERNAME\AppData\LocalLow\Shockfront\NuclearOption\Replays directory.
 
 ## Configuring NOBlackBox
 All configurable settings conform to BepInEx Configuration Standards.
